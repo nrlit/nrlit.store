@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { User, ShoppingCart, Menu } from "lucide-react";
+import { User, Menu } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +10,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ThemeLogo } from "./theme-logo";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -38,12 +46,33 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center space-x-4">
-          <Link href="/account" className="hidden sm:inline-block">
-            <User className="h-6 w-6" />
-          </Link>
-          <Link href="/cart" className="hidden sm:inline-block">
-            <ShoppingCart className="h-6 w-6" />
-          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <User className="h-6 w-6" />
+                <span className="sr-only">Toggle menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end" forceMount>
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">
+                    Welcome to NRLIT Store
+                  </p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    Please sign in to continue.
+                  </p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link href="/login">Sign In</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/register">Sign Up</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <ModeToggle />
           <Sheet>
             <SheetTrigger asChild>
@@ -66,12 +95,6 @@ export function Header() {
                     {item.name}
                   </Link>
                 ))}
-                <Link href="/account" className="text-sm font-medium">
-                  Account
-                </Link>
-                <Link href="/cart" className="text-sm font-medium">
-                  Cart
-                </Link>
               </nav>
             </SheetContent>
           </Sheet>
