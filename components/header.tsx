@@ -2,7 +2,13 @@ import Link from "next/link";
 import { User, ShoppingCart, Menu } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { ThemeLogo } from "./theme-logo";
 
 const navItems = [
@@ -46,7 +52,10 @@ export function Header() {
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right">
+            <SheetContent side="right" aria-describedby="">
+              <SheetHeader>
+                <SheetTitle>Menu</SheetTitle>
+              </SheetHeader>
               <nav className="flex flex-col space-y-4">
                 {navItems.map((item) => (
                   <Link
