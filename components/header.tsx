@@ -53,7 +53,7 @@ export function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" aria-describedby="">
-              <SheetHeader>
+              <SheetHeader className="pt-2 pb-5">
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col space-y-4">
