@@ -6,6 +6,7 @@ import Link from "next/link";
 interface ProductCardProps {
   id: string;
   name: string;
+  slug: string;
   description: string;
   price: number;
   image: string;
@@ -15,6 +16,7 @@ interface ProductCardProps {
 export function ProductCard({
   id,
   name,
+  slug,
   description,
   price,
   image,
@@ -26,7 +28,7 @@ export function ProductCard({
       style={{ animationDelay: `${index * 100}ms` }}
     >
       <CardContent className="p-4">
-        <Link href={`/products/${id}`}>
+        <Link href={`/product/${slug}`}>
           <div className="overflow-hidden rounded-lg">
             <Image
               src={image}
@@ -38,15 +40,17 @@ export function ProductCard({
           </div>
         </Link>
         <Link href={`/products/${id}`} className="hover:underline">
-          <h3 className="font-semibold mt-4 text-lg">{name}</h3>
+          <h3 className="font-semibold mt-4 text-lg line-clamp-1">{name}</h3>
         </Link>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 line-clamp-2">
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 line-clamp-1">
           {description}
         </p>
       </CardContent>
-      <CardFooter className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800">
+      <CardFooter className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900">
         <span className="text-lg font-bold">${price.toFixed(2)}</span>
-        <Button size="sm">Add to Cart</Button>
+        <Button size="sm" asChild>
+          <Link href={`/product/${slug}`}>View Product</Link>
+        </Button>
       </CardFooter>
     </Card>
   );

@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default async function LoginPage() {
+export default async function RegisterPage() {
   const user = await auth.getUser();
   if (user) {
     redirect("/");
@@ -14,12 +14,16 @@ export default async function LoginPage() {
   return (
     <div className="mx-auto max-w-sm space-y-6">
       <div className="space-y-2 text-center">
-        <h1 className="text-3xl font-bold">Login</h1>
+        <h1 className="text-3xl font-bold">Register</h1>
         <p className="text-gray-500 dark:text-gray-400">
-          Enter your credentials to access your account
+          Create an account to get started
         </p>
       </div>
-      <form action={auth.createSession} className="space-y-4">
+      <form action={auth.createUser} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="name">Name</Label>
+          <Input id="name" name="name" placeholder="John Doe" required />
+        </div>
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input
@@ -34,14 +38,23 @@ export default async function LoginPage() {
           <Label htmlFor="password">Password</Label>
           <Input id="password" name="password" required type="password" />
         </div>
+        <div className="space-y-2">
+          <Label htmlFor="confirmPassword">Confirm Password</Label>
+          <Input
+            id="confirmPassword"
+            name="confirmPassword"
+            required
+            type="password"
+          />
+        </div>
         <Button className="w-full" type="submit">
-          Login
+          Register
         </Button>
       </form>
       <div className="text-center text-sm">
-        Don&apos;t have an account?{" "}
-        <Link className="underline" href="/register">
-          Sign up
+        Already have an account?{" "}
+        <Link className="underline" href="/login">
+          Log in
         </Link>
       </div>
     </div>

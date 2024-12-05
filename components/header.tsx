@@ -18,6 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import auth from "@/auth";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -27,7 +28,9 @@ const navItems = [
   { name: "Contact", href: "/contact" },
 ];
 
-export function Header() {
+export async function Header() {
+  const user = await auth.getUser();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -53,25 +56,55 @@ export function Header() {
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
-              <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    Welcome to NRLIT Store
-                  </p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    Please sign in to continue.
-                  </p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Link href="/login">Sign In</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/register">Sign Up</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
+            {user ? (
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      Welcome back, {user.name}
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <form>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link href="/account">Account</Link>
+                    </Button>
+                  </form>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <form action={auth.deleteSession} className="p-0 m-0">
+                    <Button variant="ghost" type="submit" size="sm">
+                      Sign Out
+                    </Button>
+                  </form>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            ) : (
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      Welcome to NRLIT Store
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      Please sign in to continue.
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/login">Sign In</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/register">Sign Up</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            )}
           </DropdownMenu>
           <ModeToggle />
           <Sheet>

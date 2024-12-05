@@ -4,6 +4,7 @@ const featuredProducts = [
   {
     id: "1",
     name: "Premium Streaming Package",
+    slug: "premium-streaming-package",
     description: "High-quality streaming tools for professionals",
     price: 99.99,
     image: "/placeholder.svg",
@@ -11,6 +12,7 @@ const featuredProducts = [
   {
     id: "2",
     name: "Advanced Learning Course",
+    slug: "advanced-learning-course",
     description: "Comprehensive online course bundle",
     price: 149.99,
     image: "/placeholder.svg",
@@ -18,6 +20,7 @@ const featuredProducts = [
   {
     id: "3",
     name: "Creative Suite Pro",
+    slug: "creative-suite-pro",
     description: "Full set of creative tools for designers",
     price: 199.99,
     image: "/placeholder.svg",
@@ -25,6 +28,7 @@ const featuredProducts = [
   {
     id: "4",
     name: "Productivity Boost Pack",
+    slug: "productivity-boost-pack",
     description: "Essential tools to increase your productivity",
     price: 79.99,
     image: "/placeholder.svg",
