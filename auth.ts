@@ -21,6 +21,8 @@ const auth: Auth = {
 
     try {
       const { account } = await createSessionClient(auth.sessionCookie?.value);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       auth.user = await account.get();
     } catch (error) {
       console.error(error);
