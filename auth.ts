@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { cookies } from "next/headers";
 import { createAdminClient, createSessionClient } from "./appwrite/config";
 import { redirect } from "next/navigation";
@@ -21,7 +22,6 @@ const auth: Auth = {
 
     try {
       const { account } = await createSessionClient(auth.sessionCookie?.value);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       auth.user = await account.get();
     } catch (error) {
