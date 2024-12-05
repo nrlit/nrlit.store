@@ -1,7 +1,7 @@
 import CustomersTable from "@/components/customers-table";
 import axiosInstance from "@/lib/axiosInstance";
 
-export default async function CustomersPage() {
+export default async function AdminCustomers() {
   const response = await axiosInstance({
     url: `${process.env.NEXT_PUBLIC_API_URL}/users`,
     method: "get",
