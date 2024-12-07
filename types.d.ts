@@ -19,7 +19,7 @@ interface ISessionCookie {
   value: string;
 }
 
-type User = {
+interface User {
   userId: string; // Primary key
   userName: string;
   userEmail: string; // Unique
@@ -27,9 +27,9 @@ type User = {
   userContactNumber?: string; // Optional, unique if required
   creationDate: string; // ISO 8601 DateTime
   updatingDate: string; // ISO 8601 DateTime
-};
+}
 
-type Product = {
+interface Product {
   productId: string; // Primary key
   productSlug: string; // Unique
   name: string;
@@ -46,9 +46,9 @@ type Product = {
   image?: string; // URL to product image
   tags?: string[]; // Array of tags
   available: boolean;
-};
+}
 
-type Order = {
+interface Order {
   orderId: string; // Primary key
   productId: string; // Foreign key referencing Products
   userId: string; // Foreign key referencing Users
@@ -64,4 +64,4 @@ type Order = {
   userAdditionalNote?: string; // Optional
   paymentMethod: "bKash" | "Nagad" | "Card" | "Cash"; // Enum
   transactionId?: string; // Optional, only for paid orders
-};
+}
