@@ -104,8 +104,13 @@ export async function generateMetadata({
   };
 }
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
-  const product = products.find((p) => p.slug === params.slug);
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const slug = (await params).slug;
+  const product = products.find((p) => p.slug === slug);
 
   if (!product) {
     notFound();

@@ -144,8 +144,13 @@ export async function generateMetadata({
   };
 }
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
-  const category = categories.find((cat) => cat.slug === params.slug);
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const slug = (await params).slug;
+  const category = categories.find((cat) => cat.slug === slug);
 
   if (!category) {
     notFound();
