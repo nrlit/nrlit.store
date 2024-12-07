@@ -6,29 +6,26 @@ import Link from "next/link";
 interface ProductCardProps {
   id: string;
   name: string;
-  slug: string;
   description: string;
   price: number;
   image: string;
+  slug: string;
   index: number;
 }
 
 export function ProductCard({
   id,
   name,
-  slug,
   description,
   price,
   image,
+  slug,
   index,
 }: ProductCardProps) {
   return (
-    <Card
-      className="overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 animate-fade-in-up"
-      style={{ animationDelay: `${index * 100}ms` }}
-    >
+    <Card className="overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
       <CardContent className="p-4">
-        <Link href={`/product/${slug}`}>
+        <Link href={`/products/${slug}`}>
           <div className="overflow-hidden rounded-lg">
             <Image
               src={image}
@@ -39,17 +36,17 @@ export function ProductCard({
             />
           </div>
         </Link>
-        <Link href={`/products/${id}`} className="hover:underline">
+        <Link href={`/products/${slug}`} className="hover:underline">
           <h3 className="font-semibold mt-4 text-lg line-clamp-1">{name}</h3>
         </Link>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 line-clamp-1">
+        <p className="text-sm text-muted-foreground mt-2 line-clamp-1">
           {description}
         </p>
       </CardContent>
-      <CardFooter className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900">
-        <span className="text-lg font-bold">${price.toFixed(2)}</span>
+      <CardFooter className="flex items-center justify-between p-4 bg-secondary">
+        <span className="text-lg font-bold">From ${price.toFixed(2)}</span>
         <Button size="sm" asChild>
-          <Link href={`/product/${slug}`}>View Product</Link>
+          <Link href={`/products/${slug}`}>View Details</Link>
         </Button>
       </CardFooter>
     </Card>

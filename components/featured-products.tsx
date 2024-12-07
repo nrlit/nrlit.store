@@ -4,49 +4,56 @@ const featuredProducts = [
   {
     id: "1",
     name: "Premium Streaming Package",
-    slug: "premium-streaming-package",
     description: "High-quality streaming tools for professionals",
     price: 99.99,
     image: "/placeholder.svg",
+    slug: "premium-streaming-package",
+    category: "Streaming",
   },
   {
     id: "2",
     name: "Advanced Learning Course",
-    slug: "advanced-learning-course",
     description: "Comprehensive online course bundle",
     price: 149.99,
     image: "/placeholder.svg",
+    slug: "advanced-learning-course",
+    category: "Learning",
   },
   {
     id: "3",
     name: "Creative Suite Pro",
-    slug: "creative-suite-pro",
     description: "Full set of creative tools for designers",
     price: 199.99,
     image: "/placeholder.svg",
+    slug: "creative-suite-pro",
+    category: "Creativity",
   },
   {
     id: "4",
     name: "Productivity Boost Pack",
-    slug: "productivity-boost-pack",
     description: "Essential tools to increase your productivity",
     price: 79.99,
     image: "/placeholder.svg",
+    slug: "productivity-boost-pack",
+    category: "Utility",
   },
 ];
 
 export function FeaturedProducts() {
   return (
-    <section className="py-16 px-4 bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800">
+    <section className="py-16 px-4 bg-secondary">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold mb-8 text-center">
-          <span className="bg-gradient-to-r from-blue-400 via-blue-600 to-blue-900 bg-[length:200%_200%] animate-gradient-move text-transparent bg-clip-text">
-            Featured Products
-          </span>
+          Featured Products
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {featuredProducts.map((product, index) => (
-            <ProductCard key={product.id} {...product} index={index} />
+            <div
+              key={product.id}
+              className="transform transition duration-300 hover:scale-105"
+            >
+              <ProductCard {...product} index={index} />
+            </div>
           ))}
         </div>
       </div>

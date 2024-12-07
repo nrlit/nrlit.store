@@ -43,12 +43,10 @@ const categories = [
 
 export function CategoryGrid() {
   return (
-    <section className="py-16 px-4 bg-gray-50 dark:bg-gray-900">
+    <section className="py-16 px-4 bg-background">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold mb-8 text-center">
-          <span className="bg-gradient-to-r from-blue-400 via-blue-600 to-blue-900 bg-[length:200%_200%] animate-gradient-move text-transparent bg-clip-text">
-            Shop by Category
-          </span>
+          Shop by Category
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
           {categories.map((category, index) => (

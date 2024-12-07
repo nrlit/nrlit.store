@@ -23,9 +23,17 @@ import auth from "@/auth";
 const navItems = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/shop" },
-  { name: "Categories", href: "/categories" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
+];
+
+const categories = [
+  { name: "Streaming", href: "/categories/streaming" },
+  { name: "Learning", href: "/categories/learning" },
+  { name: "Creativity", href: "/categories/creativity" },
+  { name: "Utility", href: "/categories/utility" },
+  { name: "Service", href: "/categories/service" },
+  { name: "Others", href: "/categories/others" },
 ];
 
 export async function Header() {
@@ -38,6 +46,18 @@ export async function Header() {
           <ThemeLogo variant="theme" className="w-14 h-14" />
         </Link>
         <nav className="hidden md:flex items-center space-x-6">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Link href="#">Categories</Link>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {categories.map((category) => (
+                <DropdownMenuItem key={category.name} asChild>
+                  <Link href={category.href}>{category.name}</Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
           {navItems.map((item) => (
             <Link
               key={item.name}

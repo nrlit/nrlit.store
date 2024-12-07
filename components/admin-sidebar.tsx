@@ -1,6 +1,6 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function AdminSidebar() {
   return (
@@ -14,7 +14,7 @@ export function AdminSidebar() {
         <ScrollArea className="flex-1 px-3">
           <div className="flex flex-col gap-2 py-2">
             <Button variant="ghost" className="w-full justify-start" asChild>
-              <Link href="/admin">Dashboard</Link>
+              <Link href="/admin/dashboard">Dashboard</Link>
             </Button>
             <Button variant="ghost" className="w-full justify-start" asChild>
               <Link href="/admin/products">Products</Link>
@@ -32,6 +32,5 @@ export function AdminSidebar() {
         </ScrollArea>
       </div>
     </div>
-  )
+  );
 }
-
