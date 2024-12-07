@@ -23,7 +23,11 @@ export function ProductCard({
   index,
 }: ProductCardProps) {
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
+    <Card
+      className="overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1"
+      key={id}
+      style={{ animationDelay: `${index * 100}ms` }}
+    >
       <CardContent className="p-4">
         <Link href={`/products/${slug}`}>
           <div className="overflow-hidden rounded-lg">
