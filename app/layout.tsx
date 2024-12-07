@@ -17,6 +17,7 @@ export const metadata: Metadata = {
       "Discover Digital Excellence, Shop Smart, Shop Digital, Elevate Your Digital Experience with NRLIT Store",
     url: "https://www.nrlitstore.com",
     type: "website",
+    siteName: "NRLIT Store",
     images: [
       {
         url: "/opengraph-image.png",
