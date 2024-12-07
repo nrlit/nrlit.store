@@ -128,9 +128,10 @@ const categories = [
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const category = categories.find((cat) => cat.slug === params.slug);
+  const slug = (await params).slug;
+  const category = categories.find((cat) => cat.slug === slug);
 
   if (!category) {
     return {

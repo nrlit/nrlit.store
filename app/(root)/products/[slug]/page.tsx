@@ -88,9 +88,10 @@ const relatedProducts = [
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const product = products.find((p) => p.slug === params.slug);
+  const slug = (await params).slug;
+  const product = products.find((p) => p.slug === slug);
 
   if (!product) {
     return {
