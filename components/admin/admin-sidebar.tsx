@@ -40,9 +40,9 @@ export function AdminSidebar() {
               </Link>
             </Button>
             <Button variant="ghost" className="w-full justify-start" asChild>
-              <Link href="/admin/customers">
+              <Link href="/admin/users">
                 <Users className="mr-2 h-4 w-4" />
-                Customers
+                Users
               </Link>
             </Button>
             <Button variant="ghost" className="w-full justify-start" asChild>

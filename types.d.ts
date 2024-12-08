@@ -1,14 +1,3 @@
-// interface IUser {
-//   name: string;
-//   email: string;
-//   $id: string;
-//   $createdAt: string;
-//   $updatedAt: string;
-//   $permissions: Array;
-//   $databaseId: string;
-//   $collectionId: string;
-// }
-
 interface IUser {
   $id: string;
   $createdAt: string;
@@ -32,49 +21,67 @@ interface ISessionCookie {
   value: string;
 }
 
-interface User {
-  userId: string; // Primary key
+interface UserData {
   userName: string;
-  userEmail: string; // Unique
-  userPassword: string; // Hashed before storage
-  userContactNumber?: string; // Optional, unique if required
-  creationDate: string; // ISO 8601 DateTime
-  updatingDate: string; // ISO 8601 DateTime
+  userEmail: string;
+  userPassword: string;
+  orders: Array;
+  totalSpent: number;
+  isAdmin: boolean;
+  $id: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $permissions: Array;
+  $databaseId: string;
+  $collectionId: string;
 }
 
-interface Product {
-  productId: string; // Primary key
-  productSlug: string; // Unique
+interface ProductData {
+  productSlug: string;
   name: string;
   description: string;
-  category: string;
+  category:
+    | "streaming"
+    | "learning"
+    | "creativity"
+    | "utility"
+    | "service"
+    | "others";
   variation: Array<{
-    validity: string; // e.g., "1month", "3months"
-    price: number; // Price in numeric format
+    validity: string;
+    price: number;
   }>;
-  creationDate: string; // ISO 8601 DateTime
-  updatingDate: string; // ISO 8601 DateTime
-  metaTitle?: string; // Optional metadata
-  metaDescription?: string; // Optional metadata
-  image?: string; // URL to product image
-  tags?: string[]; // Array of tags
+  metaTitle: string;
+  metaDescription: string;
+  image: string;
+  tags?: string[];
   available: boolean;
+  isFeatured: boolean;
+  $id: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $permissions: Array;
+  $databaseId: string;
+  $collectionId: string;
 }
 
-interface Order {
-  orderId: string; // Primary key
-  productId: string; // Foreign key referencing Products
-  userId: string; // Foreign key referencing Users
+interface OrderData {
+  productId: string;
+  userId: string;
   orderEmail: string;
   userContactNumber: string;
   variation: {
-    validity: string; // e.g., "1month"
-    price: number; // Price in numeric format
+    validity: string;
+    price: number;
   };
-  orderStatus: "pending" | "confirmed" | "delivered" | "cancelled"; // Enum
-  creationDate: string; // ISO 8601 DateTime
-  updatingDate: string; // ISO 8601 DateTime
-  userAdditionalNote?: string; // Optional
-  paymentMethod: "bKash" | "Nagad" | "Card" | "Cash"; // Enum
-  transactionId?: string; // Optional, only for paid orders
+  orderStatus: "pending" | "confirmed" | "delivered" | "cancelled";
+  userAdditionalNote?: string;
+  paymentMethod: "bKash" | "Nagad" | "Card";
+  transactionId?: string;
+  $id: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $permissions: Array;
+  $databaseId: string;
+  $collectionId: string;
 }

@@ -6,12 +6,12 @@ export async function GET() {
 
   try {
     const { databases } = await createSessionClient(sessionCookie!.value);
-    const { documents: users, total } = await databases.listDocuments(
+    const { documents } = await databases.listDocuments(
       process.env.NEXT_PUBLIC_APPWRITE_DATABSE!,
       process.env.NEXT_PUBLIC_APPWRITE_USER_COLLECTION!
     );
 
-    return Response.json({ users, total });
+    return Response.json(documents);
   } catch (error) {
     console.error(error);
     return Response.json("Access denied", { status: 403 });

@@ -1,4 +1,5 @@
 import auth from "@/auth";
+import { GoogleLoginButton } from "@/components/google-login-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,11 +13,11 @@ export default async function RegisterPage() {
   }
 
   return (
-    <div className="mx-auto max-w-sm space-y-6">
+    <div className="mx-auto max-w-sm space-y-6 py-10">
       <div className="space-y-2 text-center">
         <h1 className="text-3xl font-bold">Register</h1>
         <p className="text-gray-500 dark:text-gray-400">
-          Create an account to get started
+          Enter your credentials to create your account
         </p>
       </div>
       <form action={auth.createUser} className="space-y-4">
@@ -29,20 +30,27 @@ export default async function RegisterPage() {
           <Input
             id="email"
             name="email"
-            placeholder="m@example.com"
+            placeholder="name@example.com"
             required
             type="email"
           />
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" name="password" required type="password" />
+          <Input
+            id="password"
+            name="password"
+            placeholder="********"
+            required
+            type="password"
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="confirmPassword">Confirm Password</Label>
           <Input
             id="confirmPassword"
             name="confirmPassword"
+            placeholder="********"
             required
             type="password"
           />
@@ -51,6 +59,7 @@ export default async function RegisterPage() {
           Register
         </Button>
       </form>
+      <GoogleLoginButton />
       <div className="text-center text-sm">
         Already have an account?{" "}
         <Link className="underline" href="/login">

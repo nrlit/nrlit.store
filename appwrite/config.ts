@@ -13,13 +13,12 @@ const createAdminClient = async () => {
     get databases() {
       return new Databases(client);
     },
-    get Users() {
+    get users() {
       return new Users(client);
     },
   };
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const createSessionClient = async (session: string) => {
   const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
