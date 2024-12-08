@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// import { Overview } from "@/components/admin/overview";
-// import { RecentSales } from "@/components/admin/recent-sales";
+import { Overview } from "@/components/admin/overview";
+import { RecentSales } from "@/components/admin/recent-sales";
 
 export default function AdminDashboardPage() {
   return (
@@ -108,13 +108,17 @@ export default function AdminDashboardPage() {
           <CardHeader>
             <CardTitle>Overview</CardTitle>
           </CardHeader>
-          <CardContent className="pl-2">{/* <Overview /> */}</CardContent>
+          <CardContent>
+            <Overview />
+          </CardContent>
         </Card>
         <Card className="col-span-3">
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
-            <CardContent>{/* <RecentSales /> */}</CardContent>
           </CardHeader>
+          <CardContent>
+            <RecentSales />
+          </CardContent>
         </Card>
       </div>
     </div>

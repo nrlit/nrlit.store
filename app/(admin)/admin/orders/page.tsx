@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -7,36 +8,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 
+// This would typically come from an API or database
 const orders = [
   {
-    id: 1,
-    customer: "John Doe",
-    date: "2023-06-01",
-    total: 99.99,
+    id: "1",
+    product: "Premium Streaming Package",
+    user: "John Doe",
+    email: "john@example.com",
+    phone: "+1234567890",
+    variation: {
+      validity: "1 month",
+      price: 100,
+    },
     status: "Completed",
+    creationDate: "2023-06-01",
+    updatingDate: "2023-06-02",
+    paymentMethod: "bKash",
+    paymentId: "TXN123456",
   },
-  {
-    id: 2,
-    customer: "Jane Smith",
-    date: "2023-06-02",
-    total: 149.99,
-    status: "Processing",
-  },
-  {
-    id: 3,
-    customer: "Bob Johnson",
-    date: "2023-06-03",
-    total: 199.99,
-    status: "Shipped",
-  },
-  {
-    id: 4,
-    customer: "Alice Brown",
-    date: "2023-06-04",
-    total: 79.99,
-    status: "Pending",
-  },
+  // ... other orders
 ];
 
 export default function AdminOrdersPage() {
@@ -44,14 +36,13 @@ export default function AdminOrdersPage() {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold tracking-tight">Orders</h2>
-        <Button>Export Orders</Button>
       </div>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Order ID</TableHead>
+            <TableHead>Product</TableHead>
             <TableHead>Customer</TableHead>
-            <TableHead>Date</TableHead>
             <TableHead>Total</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Actions</TableHead>
@@ -61,13 +52,21 @@ export default function AdminOrdersPage() {
           {orders.map((order) => (
             <TableRow key={order.id}>
               <TableCell>{order.id}</TableCell>
-              <TableCell>{order.customer}</TableCell>
-              <TableCell>{order.date}</TableCell>
-              <TableCell>${order.total.toFixed(2)}</TableCell>
-              <TableCell>{order.status}</TableCell>
+              <TableCell>{order.product}</TableCell>
+              <TableCell>{order.user}</TableCell>
+              <TableCell>${order.variation.price}</TableCell>
               <TableCell>
-                <Button variant="outline" size="sm">
-                  View Details
+                <Badge
+                  variant={
+                    order.status === "Completed" ? "outline" : "secondary"
+                  }
+                >
+                  {order.status}
+                </Badge>
+              </TableCell>
+              <TableCell>
+                <Button asChild variant="outline" size="sm">
+                  <Link href={`/admin/orders/${order.id}`}>Edit</Link>
                 </Button>
               </TableCell>
             </TableRow>

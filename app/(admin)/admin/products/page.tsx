@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -7,35 +8,73 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 
+// This would typically come from an API or database
 const products = [
   {
-    id: 1,
+    id: "1",
+    slug: "premium-streaming-package",
     name: "Premium Streaming Package",
+    description: "High-quality streaming tools for professionals",
     category: "Streaming",
-    price: 99.99,
-    stock: 100,
+    variation: [
+      { validity: "1 month", price: 100 },
+      { validity: "3 months", price: 250 },
+      { validity: "6 months", price: 500 },
+      { validity: "12 months", price: 800 },
+    ],
+    creationDate: "2023-01-01",
+    updatingDate: "2023-06-15",
+    available: true,
   },
   {
-    id: 2,
+    id: "2",
+    slug: "advanced-learning-course",
     name: "Advanced Learning Course",
+    description: "In-depth learning materials for various subjects",
     category: "Learning",
-    price: 149.99,
-    stock: 50,
+    variation: [
+      { validity: "1 month", price: 150 },
+      { validity: "3 months", price: 350 },
+      { validity: "6 months", price: 650 },
+      { validity: "12 months", price: 1000 },
+    ],
+    creationDate: "2023-02-15",
+    updatingDate: "2023-07-20",
+    available: true,
   },
   {
-    id: 3,
+    id: "3",
+    slug: "creative-suite-pro",
     name: "Creative Suite Pro",
+    description: "Professional creative tools for designers",
     category: "Creativity",
-    price: 199.99,
-    stock: 75,
+    variation: [
+      { validity: "1 month", price: 200 },
+      { validity: "3 months", price: 450 },
+      { validity: "6 months", price: 800 },
+      { validity: "12 months", price: 1200 },
+    ],
+    creationDate: "2023-03-10",
+    updatingDate: "2023-08-10",
+    available: false,
   },
   {
-    id: 4,
+    id: "4",
+    slug: "productivity-boost-pack",
     name: "Productivity Boost Pack",
+    description: "Tools to enhance productivity",
     category: "Utility",
-    price: 79.99,
-    stock: 200,
+    variation: [
+      { validity: "1 month", price: 80 },
+      { validity: "3 months", price: 180 },
+      { validity: "6 months", price: 350 },
+      { validity: "12 months", price: 600 },
+    ],
+    creationDate: "2023-04-20",
+    updatingDate: "2023-09-15",
+    available: true,
   },
 ];
 
@@ -44,15 +83,17 @@ export default function AdminProductsPage() {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold tracking-tight">Products</h2>
-        <Button>Add New Product</Button>
+        <Button asChild>
+          <Link href="/admin/products/create">Add New Product</Link>
+        </Button>
       </div>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
             <TableHead>Category</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Stock</TableHead>
+            <TableHead>Price Range</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -61,14 +102,21 @@ export default function AdminProductsPage() {
             <TableRow key={product.id}>
               <TableCell>{product.name}</TableCell>
               <TableCell>{product.category}</TableCell>
-              <TableCell>${product.price.toFixed(2)}</TableCell>
-              <TableCell>{product.stock}</TableCell>
               <TableCell>
-                <Button variant="outline" size="sm" className="mr-2">
-                  Edit
+                ${Math.min(...product.variation.map((v) => v.price))} - $
+                {Math.max(...product.variation.map((v) => v.price))}
+              </TableCell>
+              <TableCell>
+                <Badge variant={product.available ? "outline" : "destructive"}>
+                  {product.available ? "Available" : "Unavailable"}
+                </Badge>
+              </TableCell>
+              <TableCell>
+                <Button asChild variant="outline" size="sm" className="mr-2">
+                  <Link href={`/admin/products/${product.id}`}>Edit</Link>
                 </Button>
-                <Button variant="outline" size="sm">
-                  Delete
+                <Button asChild variant="outline" size="sm">
+                  <Link href={`/products/${product.slug}`}>View</Link>
                 </Button>
               </TableCell>
             </TableRow>
