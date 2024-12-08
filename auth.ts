@@ -22,7 +22,6 @@ const auth: Auth = {
 
     try {
       const { account } = await createSessionClient(auth.sessionCookie?.value);
-      // @ts-expect-error
       auth.user = await account.get();
     } catch (error) {
       console.error(error);
@@ -87,7 +86,7 @@ const auth: Auth = {
     const { name, email, password } = data;
 
     try {
-      const { account, databases } = await createAdminClient();
+      const { account } = await createAdminClient();
 
       const newUserAccount = await account.create(
         ID.unique(),
@@ -98,25 +97,6 @@ const auth: Auth = {
 
       if (!newUserAccount.$id) {
         throw new Error("User account not created");
-      }
-
-      const newUserData = await databases.createDocument(
-        process.env.NEXT_PUBLIC_APPWRITE_DATABSE!,
-        process.env.NEXT_PUBLIC_APPWRITE_USER_COLLECTION!,
-        newUserAccount.$id,
-        {
-          id: newUserAccount.$id,
-          name: name,
-          email: email,
-          password: password,
-          lastOrder: null,
-          totalSpent: 0,
-          isAdmin: false,
-        }
-      );
-
-      if (!newUserData) {
-        throw new Error("User data not created");
       }
 
       const session = await account.createEmailPasswordSession(

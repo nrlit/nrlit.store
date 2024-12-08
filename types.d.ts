@@ -1,18 +1,31 @@
+// interface IUser {
+//   name: string;
+//   email: string;
+//   $id: string;
+//   $createdAt: string;
+//   $updatedAt: string;
+//   $permissions: Array;
+//   $databaseId: string;
+//   $collectionId: string;
+// }
+
 interface IUser {
-  name: string;
-  email: string;
-  id: string;
-  password: string;
-  lastOrder: string;
-  totalSpent: number;
-  isAdmin: boolean;
   $id: string;
   $createdAt: string;
   $updatedAt: string;
-  $permissions: Array;
-  $databaseId: string;
-  $collectionId: string;
-  preference: Preference;
+  name: string;
+  registration: string;
+  status: boolean;
+  labels: Array;
+  passwordUpdate: string;
+  email: string;
+  phone: string;
+  emailVerification: boolean;
+  phoneVerification: boolean;
+  mfa: boolean;
+  prefs: object;
+  targets: Array;
+  accessedAt: string;
 }
 
 interface ISessionCookie {
