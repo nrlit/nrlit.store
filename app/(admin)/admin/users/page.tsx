@@ -13,7 +13,7 @@ import { currency } from "@/lib/constants";
 
 export default async function AdminCustomersPage() {
   const { data } = await axiosInstance({
-    url: `${process.env.NEXT_PUBLIC_API_URL}/users`,
+    url: `https://nrlit.store/api/v1/users`,
     method: "get",
   });
   const users: UserData[] = data;
