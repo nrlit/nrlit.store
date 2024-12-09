@@ -43,7 +43,10 @@ export function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    const result = await loginAction(values);
+    const formData = new FormData();
+    formData.append("email", values.email);
+    formData.append("password", values.password);
+    const result = await loginAction(formData);
     setIsLoading(false);
 
     if (result.success) {
@@ -55,7 +58,8 @@ export function LoginForm() {
     } else {
       toast({
         title: "Login Failed",
-        description: result.error || "An error occurred during login.",
+        description:
+          JSON.stringify(result.errors) || "An error occurred during login.",
         variant: "destructive",
       });
     }
