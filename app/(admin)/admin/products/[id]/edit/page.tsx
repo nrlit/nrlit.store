@@ -6,7 +6,7 @@ import { toast } from "@/hooks/use-toast";
 
 interface Props {
   params: {
-    id: string;
+    id: string | "";
   };
 }
 
