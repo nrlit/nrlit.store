@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import auth from "./actions/auth";
+import auth from "@/lib/auth";
 
 export async function middleware(request: Request) {
   const user = await auth.getUser();
