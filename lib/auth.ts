@@ -1,16 +1,47 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { cookies } from "next/headers";
-import { createAdminClient, createSessionClient } from "./appwrite/config";
+import { createAdminClient, createSessionClient } from "../appwrite/config";
 import { redirect } from "next/navigation";
 import { ID } from "node-appwrite";
+import { z } from "zod";
+
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters long"),
+});
+
+const registerSchema = z
+  .object({
+    name: z.string().min(2, "Name must be at least 2 characters long"),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters long"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+interface IUser {
+  $id: string;
+  name: string;
+  email: string;
+}
+
+interface ISessionCookie {
+  value: string;
+}
 
 interface Auth {
   user: IUser | null;
   sessionCookie: ISessionCookie | null;
   getUser: () => Promise<IUser | null>;
-  createSession: (formData: FormData) => Promise<void>;
+  createSession: (
+    formData: FormData
+  ) => Promise<{ success: boolean; errors?: Record<string, string[]> }>;
   deleteSession: () => Promise<void>;
-  createUser: (formData: FormData) => Promise<void>;
+  createUser: (
+    formData: FormData
+  ) => Promise<{ success: boolean; errors?: Record<string, string[]> }>;
 }
 
 const auth: Auth = {
@@ -22,7 +53,6 @@ const auth: Auth = {
 
     try {
       const { account } = await createSessionClient(auth.sessionCookie?.value);
-
       auth.user = await account.get();
     } catch (error) {
       console.error(error);
@@ -34,17 +64,18 @@ const auth: Auth = {
   },
 
   createSession: async (formData: FormData) => {
-    "use server";
-    const data = Object.fromEntries(formData);
-    const { email, password } = data;
+    const result = loginSchema.safeParse(Object.fromEntries(formData));
+
+    if (!result.success) {
+      return { success: false, errors: result.error.flatten().fieldErrors };
+    }
+
+    const { email, password } = result.data;
 
     try {
       const { account } = await createAdminClient();
 
-      const session = await account.createEmailPasswordSession(
-        email as string,
-        password as string
-      );
+      const session = await account.createEmailPasswordSession(email, password);
 
       (await cookies()).set("session", session.secret, {
         httpOnly: true,
@@ -54,16 +85,16 @@ const auth: Auth = {
         path: "/",
       });
 
-      redirect("/");
+      return { success: true };
     } catch (error) {
       console.error(error);
       auth.user = null;
       auth.sessionCookie = null;
+      return { success: false, errors: { _form: ["Invalid credentials"] } };
     }
   },
 
   deleteSession: async () => {
-    "use server";
     auth.sessionCookie = (await cookies()).get("session") as ISessionCookie;
 
     try {
@@ -71,8 +102,6 @@ const auth: Auth = {
       await account.deleteSession("current");
     } catch (error) {
       console.error(error);
-      auth.user = null;
-      auth.sessionCookie = null;
     }
 
     (await cookies()).delete("session");
@@ -82,18 +111,22 @@ const auth: Auth = {
   },
 
   createUser: async (formData: FormData) => {
-    "use server";
-    const data = Object.fromEntries(formData);
-    const { name, email, password } = data;
+    const result = registerSchema.safeParse(Object.fromEntries(formData));
+
+    if (!result.success) {
+      return { success: false, errors: result.error.flatten().fieldErrors };
+    }
+
+    const { name, email, password } = result.data;
 
     try {
       const { account, databases, users } = await createAdminClient();
 
       const newUserAccount = await account.create(
         ID.unique(),
-        email as string,
-        password as string,
-        name as string
+        email,
+        password,
+        name
       );
 
       if (!newUserAccount.$id) {
@@ -105,9 +138,9 @@ const auth: Auth = {
         process.env.NEXT_PUBLIC_APPWRITE_USER_COLLECTION!,
         newUserAccount.$id,
         {
-          userName: name as string,
-          userEmail: email as string,
-          userPassword: password as string,
+          userName: name,
+          userEmail: email,
+          userPassword: password,
           orders: [],
           totalSpent: 0,
           isAdmin: false,
@@ -119,10 +152,7 @@ const auth: Auth = {
         throw new Error("User data not created");
       }
 
-      const session = await account.createEmailPasswordSession(
-        email as string,
-        password as string
-      );
+      const session = await account.createEmailPasswordSession(email, password);
 
       (await cookies()).set("session", session.secret, {
         httpOnly: true,
@@ -132,11 +162,12 @@ const auth: Auth = {
         path: "/",
       });
 
-      redirect("/");
+      return { success: true };
     } catch (error) {
       console.error(error);
       auth.user = null;
       auth.sessionCookie = null;
+      return { success: false, errors: { _form: ["Failed to create user"] } };
     }
   },
 };

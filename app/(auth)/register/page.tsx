@@ -1,15 +1,87 @@
-import auth from "@/auth";
+"use client";
+
+import { useFormState } from "react-dom";
+import { registerAction } from "@/app/actions/auth";
 import { GoogleLoginButton } from "@/components/google-login-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
-export default async function RegisterPage() {
-  const user = await auth.getUser();
-  if (user) {
-    redirect("/");
+const formSchema = z
+  .object({
+    name: z.string().min(2, "Name must be at least 2 characters long"),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters long"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+const initialState = {
+  success: false,
+  errors: {},
+};
+
+export default function RegisterPage() {
+  const [state, formAction] = useFormState(registerAction, initialState);
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  useEffect(() => {
+    if (state.success) {
+      toast({
+        title: "Registration Successful",
+        description: "Your account has been created successfully.",
+      });
+      router.push("/dashboard");
+    } else if (state.errors && Object.keys(state.errors).length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      Object.entries(state.errors).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((error) => {
+            toast({
+              title: "Registration Error",
+              description: error,
+              variant: "destructive",
+            });
+          });
+        }
+      });
+    }
+  }, [state, toast, router]);
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const formData = new FormData();
+    Object.entries(values).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    formAction(formData);
   }
 
   return (
@@ -20,45 +92,69 @@ export default async function RegisterPage() {
           Enter your credentials to create your account
         </p>
       </div>
-      <form action={auth.createUser} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="name">Name</Label>
-          <Input id="name" name="name" placeholder="John Doe" required />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="John Doe" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="email"
-            placeholder="name@example.com"
-            required
-            type="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="name@example.com"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
+          <FormField
+            control={form.control}
             name="password"
-            placeholder="********"
-            required
-            type="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="********" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="confirmPassword">Confirm Password</Label>
-          <Input
-            id="confirmPassword"
+          <FormField
+            control={form.control}
             name="confirmPassword"
-            placeholder="********"
-            required
-            type="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="********" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        <Button className="w-full" type="submit">
-          Register
-        </Button>
-      </form>
+          <Button className="w-full" type="submit">
+            Register
+          </Button>
+        </form>
+      </Form>
       <GoogleLoginButton />
       <div className="text-center text-sm">
         Already have an account?{" "}
