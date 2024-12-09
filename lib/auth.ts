@@ -111,7 +111,7 @@ const auth: Auth = {
   },
   // ====================== Logout User End ======================
 
-  // ====================== Register User ======================
+  // ====================== Register User Start ======================
   createUser: async (formData: FormData) => {
     const result = registerSchema.safeParse(Object.fromEntries(formData));
 
@@ -135,23 +135,41 @@ const auth: Auth = {
         throw new Error("User account not created");
       }
 
-      const newUserData = await databases.createDocument(
-        process.env.NEXT_PUBLIC_APPWRITE_DATABSE!,
-        process.env.NEXT_PUBLIC_APPWRITE_USER_COLLECTION!,
-        newUserAccount.$id,
-        {
-          userName: name,
-          userEmail: email,
-          userPassword: password,
-          orders: [],
-          totalSpent: 0,
-          isAdmin: false,
-        }
-      );
+      try {
+        await databases.createDocument(
+          process.env.NEXT_PUBLIC_APPWRITE_DATABSE!,
+          process.env.NEXT_PUBLIC_APPWRITE_USER_COLLECTION!,
+          newUserAccount.$id,
+          {
+            userName: newUserAccount.name,
+            userEmail: newUserAccount.email,
+            orders: [],
+            totalSpent: 0,
+            isAdmin: false,
+          }
+        );
+      } catch {
+        try {
+          console.log(
+            "Attempting to update user data instead of creating new data"
+          );
+          const updatedUser = await databases.updateDocument(
+            process.env.NEXT_PUBLIC_APPWRITE_DATABSE!,
+            process.env.NEXT_PUBLIC_APPWRITE_USER_COLLECTION!,
+            newUserAccount.$id,
+            {
+              userName: newUserAccount.name,
+              userEmail: newUserAccount.email,
+            }
+          );
 
-      if (!newUserData.$id) {
-        await users.delete(newUserAccount.$id);
-        throw new Error("User data not created");
+          if (!updatedUser.$id) {
+            await users.delete(newUserAccount.$id);
+            throw new Error("User data not updated");
+          }
+        } catch (fallbackError) {
+          console.error("Fallback function also failed:", fallbackError);
+        }
       }
 
       const session = await account.createEmailPasswordSession(email, password);
@@ -169,10 +187,13 @@ const auth: Auth = {
       console.error(error);
       auth.user = null;
       auth.sessionCookie = null;
-      return { success: false, errors: { _form: ["Failed to create user"] } };
+      return {
+        success: false,
+        errors: { _form: ["Failed to create user. Please try with google."] },
+      };
     }
   },
-  // ====================== Register User ======================
+  // ====================== Register User End ======================
 };
 
 export default auth;

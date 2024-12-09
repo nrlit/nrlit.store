@@ -20,6 +20,7 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { continueWithGoogle } from "@/lib/server/oauth";
 
 const formSchema = z
   .object({
@@ -83,6 +84,10 @@ export default function RegisterPage() {
     });
     formAction(formData);
   }
+
+  const handleGoogleAuth = async () => {
+    await continueWithGoogle();
+  };
 
   return (
     <div className="mx-auto max-w-sm space-y-6 py-10">
@@ -155,7 +160,7 @@ export default function RegisterPage() {
           </Button>
         </form>
       </Form>
-      <GoogleLoginButton />
+      <GoogleLoginButton onClick={handleGoogleAuth} />
       <div className="text-center text-sm">
         Already have an account?{" "}
         <Link className="underline" href="/login">

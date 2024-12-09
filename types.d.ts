@@ -24,7 +24,6 @@ interface ISessionCookie {
 interface UserData {
   userName: string;
   userEmail: string;
-  userPassword: string;
   orders: Array;
   totalSpent: number;
   isAdmin: boolean;

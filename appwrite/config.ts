@@ -38,6 +38,9 @@ const createSessionClient = async (session: string) => {
     get users() {
       return new Users(client);
     },
+    get currentUserAccount() {
+      return new Account(client);
+    },
   };
 };
 
