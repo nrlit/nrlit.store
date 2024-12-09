@@ -35,7 +35,7 @@ const createSessionClient = async (session: string) => {
     get databases() {
       return new Databases(client);
     },
-    get Users() {
+    get users() {
       return new Users(client);
     },
   };

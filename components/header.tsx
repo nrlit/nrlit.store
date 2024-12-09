@@ -18,7 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import auth from "@/actions/auth";
+import auth from "@/lib/auth";
 
 const navItems = [
   { name: "Home", href: "/" },

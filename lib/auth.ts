@@ -21,12 +21,6 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
-interface IUser {
-  $id: string;
-  name: string;
-  email: string;
-}
-
 interface ISessionCookie {
   value: string;
 }
@@ -48,6 +42,7 @@ const auth: Auth = {
   user: null,
   sessionCookie: null,
 
+  // ====================== Get User Start ======================
   getUser: async () => {
     auth.sessionCookie = (await cookies()).get("session") as ISessionCookie;
 
@@ -62,7 +57,9 @@ const auth: Auth = {
 
     return auth.user;
   },
+  // ====================== Get User End ======================
 
+  // ====================== Login User Start ======================
   createSession: async (formData: FormData) => {
     const result = loginSchema.safeParse(Object.fromEntries(formData));
 
@@ -93,7 +90,9 @@ const auth: Auth = {
       return { success: false, errors: { _form: ["Invalid credentials"] } };
     }
   },
+  // ====================== Login User End ======================
 
+  // ====================== Logout User Start ======================
   deleteSession: async () => {
     auth.sessionCookie = (await cookies()).get("session") as ISessionCookie;
 
@@ -109,7 +108,9 @@ const auth: Auth = {
     auth.sessionCookie = null;
     redirect("/");
   },
+  // ====================== Logout User End ======================
 
+  // ====================== Register User ======================
   createUser: async (formData: FormData) => {
     const result = registerSchema.safeParse(Object.fromEntries(formData));
 
@@ -170,6 +171,7 @@ const auth: Auth = {
       return { success: false, errors: { _form: ["Failed to create user"] } };
     }
   },
+  // ====================== Register User ======================
 };
 
 export default auth;
