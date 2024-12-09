@@ -1,14 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { ProductForm, ProductFormData } from "@/components/product-form";
 import { toast } from "@/hooks/use-toast";
-
-interface Props {
-  params: {
-    id: string | "";
-  };
-}
 
 // This is a mock function to simulate fetching product data
 // In a real application, you would fetch this data from your API
@@ -33,10 +27,10 @@ const getProductData = (id: string): ProductFormData => {
   };
 };
 
-export default function EditProductPage({ params }: Props) {
-  const id = params.id;
+export default function EditProductPage() {
+  const params = useParams<{ id: string }>();
   const router = useRouter();
-  const productData = getProductData(id);
+  const productData = getProductData(params.id);
 
   const handleSubmit = async (data: ProductFormData) => {
     // Here you would typically send the data to your API
