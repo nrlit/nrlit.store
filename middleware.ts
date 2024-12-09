@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/account", request.url));
   }
 
-  if (pathname.startsWith("/api/v1/users")) {
+  if (pathname.startsWith("/api/v1/admin")) {
     if (!user || user.labels[0] !== "admin") {
       return new NextResponse(
         JSON.stringify({ success: false, message: "Authentication failed" }),
@@ -41,6 +41,6 @@ export const config = {
     "/admin/:path*",
     "/login",
     "/register",
-    "/api/v1/admin/users/:path*",
+    "/api/v1/admin/:path*",
   ],
 };

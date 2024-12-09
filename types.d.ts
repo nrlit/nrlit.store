@@ -35,24 +35,26 @@ interface UserData {
   $collectionId: string;
 }
 
+interface ProductVariation {
+  validity: string;
+  price: number;
+}
+
 interface ProductData {
   productSlug: string;
-  name: string;
-  description: string;
-  category:
+  productName: string;
+  productDescription: string;
+  productCategory:
     | "streaming"
     | "learning"
     | "creativity"
     | "utility"
     | "service"
     | "others";
-  variation: Array<{
-    validity: string;
-    price: number;
-  }>;
-  metaTitle: string;
-  metaDescription: string;
-  image: string;
+  variations: string;
+  productMetaTitle: string;
+  productMetaDescription: string;
+  productImage: string;
   tags?: string[];
   available: boolean;
   isFeatured: boolean;

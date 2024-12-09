@@ -9,42 +9,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import axiosInstance from "@/lib/axiosInstance";
+import { currency } from "@/lib/constants";
 
-// This is a mock function to simulate fetching products data
-// In a real application, you would fetch this data from your API
-const getProducts = () => [
-  {
-    id: "1",
-    name: "Premium Streaming Package",
-    category: "Streaming",
-    price: 99.99,
-    available: true,
-  },
-  {
-    id: "2",
-    name: "Advanced Learning Course",
-    category: "Learning",
-    price: 149.99,
-    available: true,
-  },
-  {
-    id: "3",
-    name: "Creative Suite Pro",
-    category: "Creativity",
-    price: 199.99,
-    available: false,
-  },
-  {
-    id: "4",
-    name: "Productivity Boost Pack",
-    category: "Utility",
-    price: 79.99,
-    available: true,
-  },
-];
-
-export default function AdminProductsPage() {
-  const products = getProducts();
+export default async function AdminProductsPage() {
+  const { data } = await axiosInstance({
+    url: `${process.env.NEXT_PUBLIC_API_URL!}/admin/products`,
+    method: "get",
+  });
+  const products: ProductData[] = data;
 
   return (
     <div className="space-y-4">
@@ -65,26 +38,38 @@ export default function AdminProductsPage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products.map((product) => (
-            <TableRow key={product.id}>
-              <TableCell>{product.name}</TableCell>
-              <TableCell>{product.category}</TableCell>
-              <TableCell>${product.price.toFixed(2)}</TableCell>
-              <TableCell>
-                <Badge variant={product.available ? "outline" : "destructive"}>
-                  {product.available ? "Available" : "Unavailable"}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                <Button asChild variant="outline" size="sm" className="mr-2">
-                  <Link href={`/admin/products/${product.id}/edit`}>Edit</Link>
-                </Button>
-                <Button variant="outline" size="sm">
-                  Delete
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+          {products.map((product) => {
+            const rawVariations = product.variations;
+            const variations = JSON.parse(rawVariations);
+            return (
+              <TableRow key={product.$id}>
+                <TableCell>{product.productName}</TableCell>
+                <TableCell>{product.productCategory}</TableCell>
+                <TableCell>
+                  {currency}
+                  {variations[0].price} - {currency}
+                  {variations[variations.length - 1].price}
+                </TableCell>
+                <TableCell>
+                  <Badge
+                    variant={product.available ? "outline" : "destructive"}
+                  >
+                    {product.available ? "Available" : "Unavailable"}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <Button asChild variant="outline" size="sm" className="mr-2">
+                    <Link href={`/admin/products/${product.$id}/edit`}>
+                      Edit
+                    </Link>
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>
