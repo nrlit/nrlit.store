@@ -59,7 +59,7 @@ export default function RegisterPage() {
         title: "Registration Successful",
         description: "Your account has been created successfully.",
       });
-      router.push("/dashboard");
+      router.push("/");
     } else if (state.errors && Object.keys(state.errors).length > 0) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.entries(state.errors).forEach(([key, value]) => {

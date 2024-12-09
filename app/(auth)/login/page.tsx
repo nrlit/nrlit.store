@@ -50,7 +50,7 @@ export default function LoginPage() {
         title: "Login Successful",
         description: "You have been logged in successfully.",
       });
-      router.push("/dashboard");
+      router.push("/");
     } else if (state.errors && Object.keys(state.errors).length > 0) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.entries(state.errors).forEach(([key, value]) => {
