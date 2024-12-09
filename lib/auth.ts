@@ -94,6 +94,7 @@ const auth: Auth = {
 
   // ====================== Logout User Start ======================
   deleteSession: async () => {
+    "use server";
     auth.sessionCookie = (await cookies()).get("session") as ISessionCookie;
 
     try {
