@@ -1,4 +1,4 @@
-import { ProductCard } from "@/components/product-card";
+// import { ProductCard } from "@/components/product-card";
 
 // This would typically come from a database or API
 const categories = [
@@ -126,9 +126,9 @@ export function CategoryProducts() {
           <div key={category.name} className="mb-16">
             <h3 className="text-2xl font-semibold mb-6">{category.name}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {category.products.map((product, index) => (
+              {/* {category.products.map((product, index) => (
                 <ProductCard key={product.id} {...product} index={index} />
-              ))}
+              ))} */}
             </div>
           </div>
         ))}
