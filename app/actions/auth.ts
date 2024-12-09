@@ -4,7 +4,7 @@
 import auth from "@/lib/auth";
 import { redirect } from "next/navigation";
 
-export async function loginAction(formData: FormData) {
+export async function loginAction(prevState: any, formData: FormData) {
   const result = await auth.createSession(formData);
   if (result.success) {
     redirect("/");
@@ -12,7 +12,7 @@ export async function loginAction(formData: FormData) {
   return result;
 }
 
-export async function registerAction(formData: FormData) {
+export async function registerAction(prevState: any, formData: FormData) {
   const result = await auth.createUser(formData);
   if (result.success) {
     redirect("/");

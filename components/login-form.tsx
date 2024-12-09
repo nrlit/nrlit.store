@@ -46,7 +46,7 @@ export function LoginForm() {
     const formData = new FormData();
     formData.append("email", values.email);
     formData.append("password", values.password);
-    const result = await loginAction(formData);
+    const result = await loginAction(null, formData);
     setIsLoading(false);
 
     if (result.success) {
