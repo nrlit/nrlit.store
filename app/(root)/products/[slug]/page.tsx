@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ProductCard } from "@/components/product-card";
+// import { ProductCard } from "@/components/product-card";
 
 // This would typically come from a database or API
 const products = [
@@ -58,32 +58,32 @@ const products = [
   // ... other products ...
 ];
 
-const relatedProducts = [
-  {
-    id: "2",
-    name: "Beginner Streaming Kit",
-    description: "Everything you need to start streaming",
-    price: 49.99,
-    image: "/placeholder.svg",
-    slug: "beginner-streaming-kit",
-  },
-  {
-    id: "3",
-    name: "Pro Webcam",
-    description: "Full HD webcam for crystal clear video",
-    price: 79.99,
-    image: "/placeholder.svg",
-    slug: "pro-webcam",
-  },
-  {
-    id: "4",
-    name: "Studio Microphone",
-    description: "Professional-grade microphone for streamers",
-    price: 129.99,
-    image: "/placeholder.svg",
-    slug: "studio-microphone",
-  },
-];
+// const relatedProducts = [
+//   {
+//     id: "2",
+//     name: "Beginner Streaming Kit",
+//     description: "Everything you need to start streaming",
+//     price: 49.99,
+//     image: "/placeholder.svg",
+//     slug: "beginner-streaming-kit",
+//   },
+//   {
+//     id: "3",
+//     name: "Pro Webcam",
+//     description: "Full HD webcam for crystal clear video",
+//     price: 79.99,
+//     image: "/placeholder.svg",
+//     slug: "pro-webcam",
+//   },
+//   {
+//     id: "4",
+//     name: "Studio Microphone",
+//     description: "Professional-grade microphone for streamers",
+//     price: 129.99,
+//     image: "/placeholder.svg",
+//     slug: "studio-microphone",
+//   },
+// ];
 
 export async function generateMetadata({
   params,
@@ -280,9 +280,9 @@ export default async function ProductPage({
         <div>
           <h2 className="text-2xl font-bold mb-4">Related Products</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {relatedProducts.map((product, index) => (
+            {/* {relatedProducts.map((product, index) => (
               <ProductCard key={product.id} {...product} index={index} />
-            ))}
+            ))} */}
           </div>
         </div>
       </div>
