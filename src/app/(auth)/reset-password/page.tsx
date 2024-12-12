@@ -153,7 +153,7 @@
 //   );
 // }
 
-export async function Page() {
+export async function ResetPasswordPage() {
   return (
     <div>
       <h1>Reset Page</h1>
