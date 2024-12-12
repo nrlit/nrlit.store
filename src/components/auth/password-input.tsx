@@ -7,6 +7,7 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 interface PasswordInputProps {
   id: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: any;
   error?: string;
 }
