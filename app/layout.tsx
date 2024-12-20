@@ -4,6 +4,8 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { dark } from "@clerk/themes";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -56,6 +58,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <Analytics />
+            <SpeedInsights />
           </ThemeProvider>
         </body>
       </html>
