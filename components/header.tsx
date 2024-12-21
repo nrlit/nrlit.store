@@ -19,13 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import {
-  SignInButton,
-  SignOutButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-} from "@clerk/nextjs";
+import { SignInButton, SignOutButton, SignUpButton } from "@clerk/nextjs";
 import { checkUser } from "@/lib/checkUser";
 
 const navItems = [
@@ -85,49 +79,45 @@ export async function Header() {
               </Button>
             </DropdownMenuTrigger>
             {user ? (
-              <SignedIn>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">
-                        Welcome back, {user.username}
-                      </p>
-                      <p className="text-xs leading-none text-muted-foreground">
-                        {user.email}
-                      </p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <Link href="/user-profile">Account</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <SignOutButton />
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </SignedIn>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      Welcome back, {user.username}
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Link href="/user-profile">Account</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <SignOutButton />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
             ) : (
-              <SignedOut>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">
-                        Welcome to NRLIT Store
-                      </p>
-                      <p className="text-xs leading-none text-muted-foreground">
-                        Please sign in to continue.
-                      </p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <SignInButton />
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <SignUpButton />
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </SignedOut>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      Welcome to NRLIT Store
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      Please sign in to continue.
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <SignInButton />
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <SignUpButton />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
             )}
           </DropdownMenu>
           <ModeToggle />
