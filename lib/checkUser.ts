@@ -9,28 +9,43 @@ export const checkUser = async () => {
     return null;
   }
 
-  // check if the user is already in the database
-  const loggedInUser = await db.user.findUnique({
-    where: {
-      clerkUserId: user.id,
-    },
-  });
+  const email = user.primaryEmailAddress?.emailAddress;
 
-  // if user in database return user
-  if (loggedInUser) {
-    return loggedInUser;
+  if (!email) {
+    throw new Error("User email not found");
   }
 
-  // if user not in database create user
-  const newUser = await db.user.create({
-    data: {
-      clerkUserId: user.id,
-      name: `${user.firstName} ${user.lastName}`,
-      imageUrl: user.imageUrl,
-      email: user.primaryEmailAddress?.emailAddress as string,
-      username: user.username,
+  // check if the user is already in the database by email or clerkUserId
+  let dbUser = await db.user.findFirst({
+    where: {
+      OR: [{ email: email }, { clerkUserId: user.id }],
     },
   });
 
-  return newUser;
+  if (dbUser) {
+    // If user exists, update their information
+    dbUser = await db.user.update({
+      where: { id: dbUser.id },
+      data: {
+        clerkUserId: user.id,
+        name: `${user.firstName} ${user.lastName}`,
+        imageUrl: user.imageUrl,
+        email: email,
+        username: user.username,
+      },
+    });
+  } else {
+    // If user doesn't exist, create a new user
+    dbUser = await db.user.create({
+      data: {
+        clerkUserId: user.id,
+        name: `${user.firstName} ${user.lastName}`,
+        imageUrl: user.imageUrl,
+        email: email,
+        username: user.username,
+      },
+    });
+  }
+
+  return dbUser;
 };
