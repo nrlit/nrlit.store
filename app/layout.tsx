@@ -10,6 +10,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.nrlit.store"),
   title: "NRLIT Store - A Digital Shop",
   description:
     "Discover Digital Excellence, Shop Smart, Shop Digital, Elevate Your Digital Experience with NRLIT Store",
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
     title: "NRLIT Store - A Digital Shop",
     description:
       "Discover Digital Excellence, Shop Smart, Shop Digital, Elevate Your Digital Experience with NRLIT Store",
-    images: ["twitter-image.png"],
+    images: ["/twitter-image.png"],
   },
 };
 

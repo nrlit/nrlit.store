@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  clerkUserId String   @unique
+  email       String   @unique
+  name        String?
+  username    String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  orders      Order[] // Relation to Order model
+
+  @@index([clerkUserId])
+  @@index([email])
+  @@map("users")
+}
+
+model Product {
+  id              String          @id @default(uuid())
+  slug            String          @unique
+  name            String
+  description     String
+  category        ProductCategory
+  variations      String
+  metaTitle       String
+  metaDescription String
+  image           String
+  tags            String[]
+  available       Boolean
+  isFeatured      Boolean
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  orders          Order[] // Relation to Order model
+
+  @@index([slug])
+  @@index([category])
+  @@index([available, isFeatured])
+  @@map("products")
+}
+
+model Order {
+  id                 String        @id @default(uuid())
+  orderEmail         String
+  userContactNumber  String
+  variation          String
+  orderStatus        OrderStatus
+  userAdditionalNote String?
+  paymentMethod      PaymentMethod
+  transactionId      String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  // Relations
+  userId    String
+  user      User    @relation(fields: [userId], references: [clerkUserId])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@index([userId])
+  @@index([productId])
+  @@index([orderStatus])
+  @@index([paymentMethod])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+enum ProductCategory {
+  streaming
+  learning
+  creativity
+  utility
+  service
+  others
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  completed
+  cancelled
+}
+
+enum PaymentMethod {
+  bKash
+}

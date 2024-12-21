@@ -26,7 +26,7 @@ import {
   SignedIn,
   SignedOut,
 } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
+import { checkUser } from "@/lib/checkUser";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -45,7 +45,7 @@ const categories = [
 ];
 
 export async function Header() {
-  const user = await currentUser();
+  const user = await checkUser();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -93,7 +93,7 @@ export async function Header() {
                         Welcome back, {user.username}
                       </p>
                       <p className="text-xs leading-none text-muted-foreground">
-                        {user.primaryEmailAddress?.emailAddress}
+                        {user.email}
                       </p>
                     </div>
                   </DropdownMenuLabel>
