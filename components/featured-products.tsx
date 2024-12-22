@@ -1,4 +1,5 @@
 import { ProductCard } from "@/components/product-card";
+import { Suspense } from "react";
 
 const featuredProducts = [
   {
@@ -56,12 +57,19 @@ export async function FeaturedProducts() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {featuredProducts.map((product, index) => (
-            <div
+            <Suspense
               key={product.$id}
-              className="transform transition duration-300 hover:scale-105"
+              fallback={
+                <div className="aspect-square w-full animate-pulse rounded-lg bg-gray-200" />
+              }
             >
-              <ProductCard {...product} index={index} />
-            </div>
+              <div
+                key={product.$id}
+                className="transform transition duration-300 hover:scale-105"
+              >
+                <ProductCard {...product} index={index} />
+              </div>
+            </Suspense>
           ))}
         </div>
       </div>
