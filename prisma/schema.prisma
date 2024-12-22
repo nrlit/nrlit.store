@@ -20,6 +20,7 @@ model User {
   name        String?
   username    String?
   imageUrl    String?
+  isAdmin     Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   orders      Order[] // Relation to Order model

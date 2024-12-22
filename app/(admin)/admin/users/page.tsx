@@ -59,6 +59,7 @@ export default async function AdminCustomersPage() {
             <TableHead>Customer ID</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
+            <TableHead>Role</TableHead>
             <TableHead>Clerk ID</TableHead>
             <TableHead>Orders</TableHead>
             <TableHead>Spent</TableHead>
@@ -78,8 +79,9 @@ export default async function AdminCustomersPage() {
             return (
               <TableRow key={user.id}>
                 <TableCell>{user.id}</TableCell>
-                <TableCell>{user.username}</TableCell>
+                <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
+                <TableCell>{user.isAdmin ? "Admin" : "Customer"}</TableCell>
                 <TableCell>{user.clerkUserId}</TableCell>
                 <TableCell>{userOrders.length}</TableCell>
                 <TableCell>

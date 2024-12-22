@@ -1,5 +1,5 @@
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
-import isAdmin from "@/lib/isAdmin";
+import checkAdmin from "@/lib/isAdmin";
 import { redirect } from "next/navigation";
 
 export default async function AdminLayout({
@@ -7,7 +7,7 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const isUserAdmin = await isAdmin();
+  const isUserAdmin = await checkAdmin();
   if (!isUserAdmin) {
     redirect("/");
   }

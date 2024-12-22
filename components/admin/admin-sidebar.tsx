@@ -1,7 +1,14 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { LayoutDashboard, Package, ShoppingCart, Users } from "lucide-react";
+import {
+  LayoutDashboard,
+  Package,
+  Shield,
+  ShoppingCart,
+  Store,
+  Users,
+} from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
 
 export async function AdminSidebar() {
@@ -10,7 +17,7 @@ export async function AdminSidebar() {
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="flex justify-between items-center h-[60px] border-b px-6">
           <Link className="flex items-center gap-2 font-semibold" href="/admin">
-            <Package className="h-6 w-6" />
+            <Shield className="h-6 w-6" />
             <span className="">NRLIT Admin</span>
           </Link>
           <UserButton />
@@ -39,6 +46,12 @@ export async function AdminSidebar() {
               <Link href="/admin/users">
                 <Users className="mr-2 h-4 w-4" />
                 Users
+              </Link>
+            </Button>
+            <Button variant="ghost" className="w-full justify-start" asChild>
+              <Link href="/">
+                <Store className="mr-2 h-4 w-4" />
+                Storefront
               </Link>
             </Button>
           </div>
