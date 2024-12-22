@@ -21,6 +21,7 @@ import {
 } from "./ui/dropdown-menu";
 import { SignInButton, SignOutButton, SignUpButton } from "@clerk/nextjs";
 import { checkUser } from "@/lib/checkUser";
+import isAdmin from "@/lib/isAdmin";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -40,6 +41,7 @@ const categories = [
 
 export async function Header() {
   const user = await checkUser();
+  const admin = await isAdmin();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -91,6 +93,11 @@ export async function Header() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                {admin && (
+                  <DropdownMenuItem>
+                    <Link href="/admin">Admin Dashboard</Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem>
                   <Link href="/user-profile">Account</Link>
                 </DropdownMenuItem>
