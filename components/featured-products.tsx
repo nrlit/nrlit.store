@@ -1,5 +1,8 @@
-import { ProductCard } from "@/components/product-card";
+"use client";
+
 import { Suspense } from "react";
+import { ProductCard } from "@/components/product-card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const featuredProducts = [
   {
@@ -48,7 +51,17 @@ const featuredProducts = [
   },
 ];
 
-export async function FeaturedProducts() {
+function ProductCardSkeleton() {
+  return (
+    <div className="space-y-2">
+      <Skeleton className="h-[200px] w-full" />
+      <Skeleton className="h-4 w-3/4" />
+      <Skeleton className="h-4 w-1/2" />
+    </div>
+  );
+}
+
+export function FeaturedProducts() {
   return (
     <section className="py-16 px-4 bg-secondary">
       <div className="container mx-auto">
@@ -57,16 +70,8 @@ export async function FeaturedProducts() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {featuredProducts.map((product, index) => (
-            <Suspense
-              key={product.$id}
-              fallback={
-                <div className="aspect-square w-full animate-pulse rounded-lg bg-gray-200" />
-              }
-            >
-              <div
-                key={product.$id}
-                className="transform transition duration-300 hover:scale-105"
-              >
+            <Suspense key={product.$id} fallback={<ProductCardSkeleton />}>
+              <div className="transform transition duration-300 hover:scale-105">
                 <ProductCard {...product} index={index} />
               </div>
             </Suspense>
