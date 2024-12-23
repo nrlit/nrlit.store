@@ -4,8 +4,8 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { dark } from "@clerk/themes";
-// import { Analytics } from "@vercel/analytics/next";
-// import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 // import GA4Analytics from "@/components/GoogleAnalytics";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -61,9 +61,9 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
-            {/* <Analytics />
+            <Analytics />
             <SpeedInsights />
-            <GA4Analytics /> */}
+            {/* <GA4Analytics /> */}
             <Toaster />
           </ThemeProvider>
         </body>

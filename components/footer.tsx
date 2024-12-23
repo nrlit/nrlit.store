@@ -1,10 +1,5 @@
 import Link from "next/link";
-import {
-  Facebook,
-  Twitter,
-  Instagram,
-  GitlabIcon as GitHub,
-} from "lucide-react";
+import { Facebook, Github, Linkedin, Youtube } from "lucide-react";
 
 export function Footer() {
   return (
@@ -127,17 +122,30 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Connect With Us</h3>
             <div className="flex space-x-4">
-              <a href="#" className="text-muted-foreground hover:text-primary">
+              <a
+                href="https://www.facebook.com/nrlitbd"
+                className="text-muted-foreground hover:text-primary"
+              >
                 <Facebook className="h-6 w-6" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary">
-                <Twitter className="h-6 w-6" />
+              <a
+                href="https://www.linkedin.com/company/nrlit"
+                className="text-muted-foreground hover:text-primary"
+              >
+                <Linkedin className="h-6 w-6" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary">
-                <Instagram className="h-6 w-6" />
+
+              <a
+                href="https://github.com/nrlit"
+                className="text-muted-foreground hover:text-primary"
+              >
+                <Github className="h-6 w-6" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary">
-                <GitHub className="h-6 w-6" />
+              <a
+                href="https://www.youtube.com/@NRLIT"
+                className="text-muted-foreground hover:text-primary"
+              >
+                <Youtube className="h-6 w-6" />
               </a>
             </div>
           </div>
