@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Facebook, Github, Linkedin, Youtube } from "lucide-react";
+import { Facebook, Github, Instagram, Linkedin, Youtube } from "lucide-react";
 
 export function Footer() {
   return (
@@ -124,12 +124,24 @@ export function Footer() {
             <div className="flex space-x-4">
               <a
                 href="https://www.facebook.com/nrlitbd"
+                target="_blank"
+                aria-label="Facebook"
                 className="text-muted-foreground hover:text-primary"
               >
                 <Facebook className="h-6 w-6" />
               </a>
               <a
+                href="https://www.instagram.com/nrlitbd"
+                target="_blank"
+                aria-label="Instagram"
+                className="text-muted-foreground hover:text-primary"
+              >
+                <Instagram className="h-6 w-6" />
+              </a>
+              <a
                 href="https://www.linkedin.com/company/nrlit"
+                target="_blank"
+                aria-label="Linkedin"
                 className="text-muted-foreground hover:text-primary"
               >
                 <Linkedin className="h-6 w-6" />
@@ -137,12 +149,16 @@ export function Footer() {
 
               <a
                 href="https://github.com/nrlit"
+                target="_blank"
+                aria-label="Github"
                 className="text-muted-foreground hover:text-primary"
               >
                 <Github className="h-6 w-6" />
               </a>
               <a
                 href="https://www.youtube.com/@NRLIT"
+                target="_blank"
+                aria-label="Youtube"
                 className="text-muted-foreground hover:text-primary"
               >
                 <Youtube className="h-6 w-6" />
