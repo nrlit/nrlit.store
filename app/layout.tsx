@@ -94,6 +94,14 @@ export default function RootLayout({
           />
           <meta name="apple-mobile-web-app-title" content="NRLIT Store" />
           <link rel="apple-touch-icon" href="/icons/apple-icon-180x180.png" />
+          <link
+            rel="manifest"
+            href="https://progressier.app/yZn3IWyC8HcM3MXX2YMC/progressier.json"
+          />
+          <script
+            defer
+            src="https://progressier.app/yZn3IWyC8HcM3MXX2YMC/script.js"
+          ></script>
         </head>
         <body className={inter.className} suppressHydrationWarning>
           <ThemeProvider
