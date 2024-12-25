@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -6,7 +6,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { dark } from "@clerk/themes";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-// import GA4Analytics from "@/components/GoogleAnalytics";
 import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,6 +15,15 @@ export const metadata: Metadata = {
   title: "NRLIT Store - A Digital Shop",
   description:
     "Discover Digital Excellence, Shop Smart, Shop Digital, Elevate Your Digital Experience with NRLIT Store",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "NRLIT Store",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   openGraph: {
     title: "NRLIT Store - A Digital Shop",
     description:
@@ -39,6 +47,30 @@ export const metadata: Metadata = {
       "Discover Digital Excellence, Shop Smart, Shop Digital, Elevate Your Digital Experience with NRLIT Store",
     images: ["/twitter-image.png"],
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      {
+        url: "/icons/apple-icon-180x180.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  interactiveWidget: "resizes-visual",
+  themeColor: "#000000",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -53,6 +85,16 @@ export default function RootLayout({
       }}
     >
       <html lang="en" suppressHydrationWarning>
+        <head>
+          <link rel="manifest" href="/manifest.json" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="default"
+          />
+          <meta name="apple-mobile-web-app-title" content="NRLIT Store" />
+          <link rel="apple-touch-icon" href="/icons/apple-icon-180x180.png" />
+        </head>
         <body className={inter.className} suppressHydrationWarning>
           <ThemeProvider
             attribute="class"
@@ -63,7 +105,6 @@ export default function RootLayout({
             {children}
             <Analytics />
             <SpeedInsights />
-            {/* <GA4Analytics /> */}
             <Toaster />
           </ThemeProvider>
         </body>

@@ -168,7 +168,7 @@ export function Footer() {
         </div>
         <div className="mt-8 pt-8 border-t border-muted">
           <p className="text-center text-sm text-muted-foreground">
-            © 2024 NRLIT. All rights reserved.
+            © 2024 NRLIT. All rights reserved. Created by NRLIT.
           </p>
         </div>
       </div>

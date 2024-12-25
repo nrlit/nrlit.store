@@ -1,0 +1,3 @@
+interface ServiceWorkerRegistration {
+  sync: SyncManager;
+}

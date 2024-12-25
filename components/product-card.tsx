@@ -40,6 +40,8 @@ export async function ProductCard({
               width={300}
               height={200}
               className="h-48 w-full object-cover transition-all hover:scale-105"
+              loading="lazy"
+              layout="responsive"
             />
           </div>
         </Link>
