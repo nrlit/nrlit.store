@@ -4,7 +4,7 @@ import { CustomerTable } from "@/components/admin/customer-tables";
 import { SearchParams } from "@/components/admin/customer-types";
 
 async function getFilteredCustomers(search?: string) {
-  return db.user.findMany({
+  return await db.user.findMany({
     where: search
       ? {
           OR: [
@@ -29,9 +29,9 @@ async function getFilteredCustomers(search?: string) {
 export default async function AdminCustomersPage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }) {
-  const customers = await getFilteredCustomers(searchParams.search);
+  const customers = await getFilteredCustomers((await searchParams).search);
 
   const customersWithMetadata = customers.map((customer) => ({
     ...customer,
