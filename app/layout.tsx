@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "NRLIT Store - A Digital Shop",
   description:
     "Discover Digital Excellence, Shop Smart, Shop Digital, Elevate Your Digital Experience with NRLIT Store",
-  manifest: "/manifest.json",
+  // manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
