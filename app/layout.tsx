@@ -7,7 +7,7 @@ import { dark } from "@clerk/themes";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "@/components/ui/toaster";
-import { InstallPWA } from "./components/InstallPWA";
+// import { InstallPWA } from "./components/InstallPWA";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -110,7 +110,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <InstallPWA />
+            {/* <InstallPWA /> */}
             {children}
             <Analytics />
             <SpeedInsights />
