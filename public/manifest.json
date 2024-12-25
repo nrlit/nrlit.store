@@ -64,6 +64,55 @@
       "description": "Go to the home page",
       "url": "/",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Shop",
+      "short_name": "Shop",
+      "description": "Go to the shop page",
+      "url": "/shop",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "About",
+      "short_name": "About",
+      "description": "Go to the about page",
+      "url": "/about",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Contact",
+      "short_name": "Contact",
+      "description": "Go to the contact page",
+      "url": "/contact",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Privacy Policy",
+      "short_name": "Privacy Policy",
+      "description": "Go to the privacy policy page",
+      "url": "/privacy-policy",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Terms of Service",
+      "short_name": "Terms of Service",
+      "description": "Go to the terms of service page",
+      "url": "/terms-of-service",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Return Refund",
+      "short_name": "Return Refund",
+      "description": "Go to the return refunds page",
+      "url": "/return-refunds",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "FAQ",
+      "short_name": "FAQ",
+      "description": "Go to the FAQ page",
+      "url": "/faq",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     }
   ],
   "categories": ["shopping", "productivity", "utilities"],
