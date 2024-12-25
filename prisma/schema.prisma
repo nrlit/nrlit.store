@@ -60,6 +60,7 @@ model Order {
   variation          String
   orderStatus        OrderStatus
   userAdditionalNote String?
+  invoiceNumber      String
   paymentMethod      PaymentMethod
   transactionId      String?
   createdAt          DateTime      @default(now())
