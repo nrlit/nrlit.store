@@ -85,5 +85,3 @@ async function syncData() {
   // Implement background sync logic here
   console.log("Background sync executed");
 }
-
-importScripts("https://progressier.app/yZn3IWyC8HcM3MXX2YMC/sw.js");

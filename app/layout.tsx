@@ -7,7 +7,7 @@ import { dark } from "@clerk/themes";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "@/components/ui/toaster";
-// import { InstallPWA } from "./components/InstallPWA";
+import { InstallPWA } from "./components/InstallPWA";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "NRLIT Store - A Digital Shop",
   description:
     "Discover Digital Excellence, Shop Smart, Shop Digital, Elevate Your Digital Experience with NRLIT Store",
-  // manifest: "/manifest.json",
+  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -86,7 +86,7 @@ export default function RootLayout({
     >
       <html lang="en" suppressHydrationWarning>
         <head>
-          {/* <link rel="manifest" href="/manifest.json" /> */}
+          <link rel="manifest" href="/manifest.json" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta
             name="apple-mobile-web-app-status-bar-style"
@@ -94,14 +94,6 @@ export default function RootLayout({
           />
           <meta name="apple-mobile-web-app-title" content="NRLIT Store" />
           <link rel="apple-touch-icon" href="/icons/apple-icon-180x180.png" />
-          <link
-            rel="manifest"
-            href="https://progressier.app/yZn3IWyC8HcM3MXX2YMC/progressier.json"
-          />
-          <script
-            defer
-            src="https://progressier.app/yZn3IWyC8HcM3MXX2YMC/script.js"
-          ></script>
         </head>
         <body className={inter.className} suppressHydrationWarning>
           <ThemeProvider
@@ -110,7 +102,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {/* <InstallPWA /> */}
+            <InstallPWA />
             {children}
             <Analytics />
             <SpeedInsights />
