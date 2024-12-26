@@ -5,22 +5,22 @@ import Link from "next/link";
 import { currency } from "@/lib/constants";
 
 interface ProductCardProps {
-  $id: string;
-  productName: string;
-  productDescription: string;
+  id: string;
+  name: string;
+  description: string;
   variations: string;
-  productImage: string;
-  productSlug: string;
+  image: string;
+  slug: string;
   index: number;
 }
 
 export async function ProductCard({
-  $id,
-  productName,
-  productDescription,
+  id,
+  name,
+  description,
   variations,
-  productImage,
-  productSlug,
+  image,
+  slug,
   index,
 }: ProductCardProps) {
   const rawVariations = await variations;
@@ -28,15 +28,15 @@ export async function ProductCard({
   return (
     <Card
       className="overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1"
-      key={$id}
+      key={id}
       style={{ animationDelay: `${index * 100}ms` }}
     >
       <CardContent className="p-4">
-        <Link href={`/products/${productSlug}`}>
+        <Link href={`/products/${slug}`}>
           <div className="overflow-hidden rounded-lg">
             <Image
-              src={productImage}
-              alt={productName}
+              src={image}
+              alt={name}
               width={400}
               height={210}
               className="h-48 w-full object-cover transition-all hover:scale-105 aspect-[1.91/1]"
@@ -44,13 +44,11 @@ export async function ProductCard({
             />
           </div>
         </Link>
-        <Link href={`/products/${productSlug}`} className="hover:underline">
-          <h3 className="font-semibold mt-4 text-lg line-clamp-1">
-            {productName}
-          </h3>
+        <Link href={`/products/${slug}`} className="hover:underline">
+          <h3 className="font-semibold mt-4 text-lg line-clamp-1">{name}</h3>
         </Link>
         <p className="text-sm text-muted-foreground mt-2 line-clamp-1">
-          {productDescription}
+          {description}
         </p>
       </CardContent>
       <CardFooter className="flex items-center justify-between p-4 bg-secondary">
@@ -69,7 +67,7 @@ export async function ProductCard({
           )}
         </span>
         <Button size="sm" asChild>
-          <Link href={`/products/${productSlug}`}>View Details</Link>
+          <Link href={`/products/${slug}`}>View Details</Link>
         </Button>
       </CardFooter>
     </Card>

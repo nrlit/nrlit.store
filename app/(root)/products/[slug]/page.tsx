@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Star, Share2 } from "lucide-react";
+import { Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -13,97 +13,98 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ProductCard } from "@/components/product-card";
+// import { ProductCard } from "@/components/product-card";
+import { getProductBySlug } from "@/app/actions/product";
 
 // This would typically come from a database or API
-const products = [
-  {
-    id: "1",
-    slug: "premium-streaming-package",
-    name: "Premium Streaming Package",
-    description:
-      "High-quality streaming tools for professionals. This package includes everything you need to start your streaming career.",
-    longDescription:
-      "The Premium Streaming Package is designed for serious content creators who demand the best. It includes a high-quality webcam, professional microphone, green screen, and lighting setup. The package also comes with a 1-year license for top-tier streaming software, giving you access to advanced features like multi-camera switching, custom overlays, and integrated chat management.",
-    category: "Streaming",
-    variation: [
-      { validity: "1 month", price: 100 },
-      { validity: "3 months", price: 250 },
-      { validity: "6 months", price: 500 },
-      { validity: "12 months", price: 800 },
-    ],
-    creationDate: "2023-01-01",
-    updatingDate: "2023-06-15",
-    metaTitle: "Premium Streaming Package | NRLIT Store",
-    metaDescription:
-      "Get our high-quality streaming tools for professionals. Start your streaming career with the best equipment.",
-    image: "/placeholder.svg",
-    tags: ["streaming", "professional", "high-quality"],
-    available: true,
-    reviews: [
-      {
-        id: 1,
-        author: "John Doe",
-        rating: 5,
-        comment: "Excellent package, really improved my stream quality!",
-      },
-      {
-        id: 2,
-        author: "Jane Smith",
-        rating: 4,
-        comment: "Great value for money, but the setup was a bit tricky.",
-      },
-    ],
-  },
-  // ... other products ...
-];
+// const products = [
+//   {
+//     id: "1",
+//     slug: "premium-streaming-package",
+//     name: "Premium Streaming Package",
+//     description:
+//       "High-quality streaming tools for professionals. This package includes everything you need to start your streaming career.",
+//     longDescription:
+//       "The Premium Streaming Package is designed for serious content creators who demand the best. It includes a high-quality webcam, professional microphone, green screen, and lighting setup. The package also comes with a 1-year license for top-tier streaming software, giving you access to advanced features like multi-camera switching, custom overlays, and integrated chat management.",
+//     category: "Streaming",
+//     variation: [
+//       { validity: "1 month", price: 100 },
+//       { validity: "3 months", price: 250 },
+//       { validity: "6 months", price: 500 },
+//       { validity: "12 months", price: 800 },
+//     ],
+//     creationDate: "2023-01-01",
+//     updatingDate: "2023-06-15",
+//     metaTitle: "Premium Streaming Package | NRLIT Store",
+//     metaDescription:
+//       "Get our high-quality streaming tools for professionals. Start your streaming career with the best equipment.",
+//     image: "/placeholder.svg",
+//     tags: ["streaming", "professional", "high-quality"],
+//     available: true,
+//     reviews: [
+//       {
+//         id: 1,
+//         author: "John Doe",
+//         rating: 5,
+//         comment: "Excellent package, really improved my stream quality!",
+//       },
+//       {
+//         id: 2,
+//         author: "Jane Smith",
+//         rating: 4,
+//         comment: "Great value for money, but the setup was a bit tricky.",
+//       },
+//     ],
+//   },
+//   // ... other products ...
+// ];
 
-const relatedProducts = [
-  {
-    $id: "1",
-    productName: "Beginner Streaming Kit",
-    productDescription: "Everything you need to start streaming",
-    variations: JSON.stringify([
-      { validity: "Monthly", price: 19.99 },
-      { validity: "Yearly", price: 199.99 },
-    ]),
-    productImage: "/placeholder.svg",
-    productSlug: "beginner-streaming-kit",
-  },
-  {
-    $id: "2",
-    productName: "Beginner Streaming Kit",
-    productDescription: "Everything you need to start streaming",
-    variations: JSON.stringify([
-      { validity: "Monthly", price: 19.99 },
-      { validity: "Yearly", price: 199.99 },
-    ]),
-    productImage: "/placeholder.svg",
-    productSlug: "beginner-streaming-kit",
-  },
-  {
-    $id: "3",
-    productName: "Pro Webcam",
-    productDescription: "Full HD webcam for crystal clear v$ideo",
-    variations: JSON.stringify([
-      { validity: "Monthly", price: 19.99 },
-      { validity: "Yearly", price: 199.99 },
-    ]),
-    productImage: "/placeholder.svg",
-    productSlug: "pro-webcam",
-  },
-  {
-    $id: "4",
-    productName: "Studio Microphone",
-    productDescription: "Professional-grade microphone for streamers",
-    variations: JSON.stringify([
-      { validity: "Monthly", price: 19.99 },
-      { validity: "Yearly", price: 199.99 },
-    ]),
-    productImage: "/placeholder.svg",
-    productSlug: "studio-microphone",
-  },
-];
+// const relatedProducts = [
+//   {
+//     $id: "1",
+//     productName: "Beginner Streaming Kit",
+//     productDescription: "Everything you need to start streaming",
+//     variations: JSON.stringify([
+//       { validity: "Monthly", price: 19.99 },
+//       { validity: "Yearly", price: 199.99 },
+//     ]),
+//     productImage: "/placeholder.svg",
+//     productSlug: "beginner-streaming-kit",
+//   },
+//   {
+//     $id: "2",
+//     productName: "Beginner Streaming Kit",
+//     productDescription: "Everything you need to start streaming",
+//     variations: JSON.stringify([
+//       { validity: "Monthly", price: 19.99 },
+//       { validity: "Yearly", price: 199.99 },
+//     ]),
+//     productImage: "/placeholder.svg",
+//     productSlug: "beginner-streaming-kit",
+//   },
+//   {
+//     $id: "3",
+//     productName: "Pro Webcam",
+//     productDescription: "Full HD webcam for crystal clear v$ideo",
+//     variations: JSON.stringify([
+//       { validity: "Monthly", price: 19.99 },
+//       { validity: "Yearly", price: 199.99 },
+//     ]),
+//     productImage: "/placeholder.svg",
+//     productSlug: "pro-webcam",
+//   },
+//   {
+//     $id: "4",
+//     productName: "Studio Microphone",
+//     productDescription: "Professional-grade microphone for streamers",
+//     variations: JSON.stringify([
+//       { validity: "Monthly", price: 19.99 },
+//       { validity: "Yearly", price: 199.99 },
+//     ]),
+//     productImage: "/placeholder.svg",
+//     productSlug: "studio-microphone",
+//   },
+// ];
 
 export async function generateMetadata({
   params,
@@ -111,7 +112,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const slug = (await params).slug;
-  const product = products.find((p) => p.slug === slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     return {
@@ -131,11 +132,13 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const slug = (await params).slug;
-  const product = products.find((p) => p.slug === slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
   }
+
+  const variants = JSON.parse(product.variations);
 
   return (
     <div className="container mx-auto py-8">
@@ -181,12 +184,11 @@ export default async function ProductPage({
               height={400}
               className="rounded-lg object-cover w-full h-[400px]"
               loading="lazy"
-              layout="responsive"
             />
           </div>
           <div className="space-y-6">
             <h1 className="text-3xl font-bold">{product.name}</h1>
-            <div className="flex items-center space-x-2">
+            {/* <div className="flex items-center space-x-2">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -208,8 +210,8 @@ export default async function ProductPage({
               <span className="text-sm text-muted-foreground">
                 ({product.reviews.length} reviews)
               </span>
-            </div>
-            <p className="text-muted-foreground">{product.description}</p>
+            </div> */}
+            <p className="text-muted-foreground">{product.metaDescription}</p>
             <div className="flex flex-wrap gap-2">
               {product.tags.map((tag) => (
                 <Badge key={tag} variant="secondary">
@@ -224,7 +226,7 @@ export default async function ProductPage({
                     <SelectValue placeholder="Select a plan" />
                   </SelectTrigger>
                   <SelectContent>
-                    {product.variation.map((variant) => (
+                    {variants.map((variant: {validity: string, price: number}) => (
                       <SelectItem
                         key={variant.validity}
                         value={variant.validity}
@@ -245,11 +247,11 @@ export default async function ProductPage({
             <div className="text-sm text-muted-foreground">
               <p>Category: {product.category}</p>
               <p>
-                Created: {new Date(product.creationDate).toLocaleDateString()}
+                Created: {new Date(product.createdAt).toLocaleDateString()}
               </p>
               <p>
                 Last Updated:{" "}
-                {new Date(product.updatingDate).toLocaleDateString()}
+                {new Date(product.updatedAt).toLocaleDateString()}
               </p>
             </div>
           </div>
@@ -259,12 +261,12 @@ export default async function ProductPage({
 
         <div>
           <h2 className="text-2xl font-bold mb-4">Product Details</h2>
-          <p className="text-muted-foreground">{product.longDescription}</p>
+          <p className="text-muted-foreground">{product.description}</p>
         </div>
 
         <Separator className="my-8" />
 
-        <div>
+        {/* <div>
           <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
           <div className="space-y-4">
             {product.reviews.map((review) => (
@@ -295,18 +297,18 @@ export default async function ProductPage({
               </Card>
             ))}
           </div>
-        </div>
+        </div> */}
 
         <Separator className="my-8" />
 
-        <div>
+        {/* <div>
           <h2 className="text-2xl font-bold mb-4">Related Products</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {relatedProducts.map((product, index) => (
-              <ProductCard key={product.$id} {...product} index={index} />
+              <ProductCard key={product.id} {...product} index={index} />
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

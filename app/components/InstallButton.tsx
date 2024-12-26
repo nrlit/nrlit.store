@@ -97,9 +97,16 @@ export function PWAInstallButton() {
 
   const handleClick = async () => {
     if (isInstalled) {
-      // If installed, open the PWA by using the manifest start_url
+      // Reset the app
       localStorage.setItem("appInstalled", "false");
+      if (navigator.serviceWorker) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (const registration of registrations) {
+          await registration.unregister();
+        }
+      }
       window.location.reload();
+
       return;
     }
 

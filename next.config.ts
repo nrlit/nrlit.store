@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "zest-bd.store",
+      },
+      {
+        protocol: "https",
         hostname: "drive.google.com",
       },
     ],
