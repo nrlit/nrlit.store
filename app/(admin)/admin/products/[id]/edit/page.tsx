@@ -16,7 +16,7 @@ const getProductData = async (id: string): Promise<ProductFormData> => {
     });
     throw new Error("Product not found");
   }
-  console.log(result);
+
   return {
     productSlug: result.slug,
     name: result.name,

@@ -103,7 +103,7 @@ export function InstallPWA() {
       deferredPrompt.current = e as BeforeInstallPromptEvent;
       setIsInstallable(true);
       setIsButtonVisible(true);
-      console.log("Before Install Prompt Event Captured");
+      // console.log("Before Install Prompt Event Captured");
     };
 
     checkInstallState();

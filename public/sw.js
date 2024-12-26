@@ -83,5 +83,6 @@ self.addEventListener("sync", (event) => {
 
 async function syncData() {
   // Implement background sync logic here
-  console.log("Background sync executed");
+  // console.log("Background sync executed");
+  // TODO: Add your sync logic here
 }

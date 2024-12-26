@@ -67,7 +67,7 @@ export const checkUser = async () => {
   // If the user exists in the database, update their information if data has changed
   if (dbUser) {
     if (hasUserDataChanged(dbUser)) {
-      console.log("Data has changed, updating the user.");
+      // console.log("Data has changed, updating the user.");
       try {
         dbUser = await db.user.update({
           where: { id: dbUser.id },
@@ -85,11 +85,11 @@ export const checkUser = async () => {
         throw new Error("Failed to update user");
       }
     } else {
-      console.log("Data has not changed, no update needed.");
+      // console.log("Data has not changed, no update needed.");
     }
   } else {
     // If the user doesn't exist, create a new user in the database
-    console.log("User does not exist, creating a new user.");
+    // console.log("User does not exist, creating a new user.");
     try {
       dbUser = await db.user.create({
         data: {
