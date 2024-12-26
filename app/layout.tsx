@@ -102,11 +102,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <InstallPWA />
-            {children}
-            <Analytics />
-            <SpeedInsights />
-            <Toaster />
+              <InstallPWA />
+              {children}
+              <Analytics />
+              <SpeedInsights />
+              <Toaster />
           </ThemeProvider>
         </body>
       </html>

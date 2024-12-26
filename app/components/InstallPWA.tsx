@@ -23,6 +23,8 @@ interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
 }
 
+type NavigatorWithStandalone = Navigator & { standalone?: boolean };
+
 const isIOS = (): boolean => {
   if (typeof window !== "undefined" && typeof navigator !== "undefined") {
     return (
@@ -35,11 +37,10 @@ const isIOS = (): boolean => {
 
 const isInStandaloneMode = (): boolean => {
   if (typeof window !== "undefined" && typeof navigator !== "undefined") {
+    const nav = navigator as NavigatorWithStandalone;
     return (
       window.matchMedia("(display-mode: standalone)").matches ||
-      ("standalone" in navigator &&
-        (navigator as Navigator & { standalone?: boolean }).standalone ===
-          true) ||
+      nav.standalone === true ||
       document.referrer.includes("android-app://")
     );
   }
@@ -58,13 +59,16 @@ export function InstallPWA() {
     const checkPlatform = () => {
       const iOS = isIOS();
       setIsIOSDevice(iOS);
-      setIsInstallable(!isInStandaloneMode());
+      const standalone = isInStandaloneMode();
+      setIsInstallable(!standalone);
+      setIsButtonVisible(!standalone);
     };
 
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       deferredPrompt.current = e as BeforeInstallPromptEvent;
       setIsInstallable(true);
+      setIsButtonVisible(true);
     };
 
     checkPlatform();
@@ -76,13 +80,6 @@ export function InstallPWA() {
         handleBeforeInstallPrompt
       );
     };
-  }, []);
-
-  useEffect(() => {
-    const dismissed = localStorage.getItem("installPromptDismissed");
-    if (dismissed) {
-      setIsButtonVisible(false);
-    }
   }, []);
 
   const handleInstallClick = async () => {
@@ -117,10 +114,12 @@ export function InstallPWA() {
 
   const handleDismiss = () => {
     setIsButtonVisible(false);
-    localStorage.setItem("installPromptDismissed", "true");
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem("installPromptDismissed", "true");
+    }
   };
 
-  if (!isInstallable && !isIOSDevice) {
+  if (!isInstallable || !isButtonVisible) {
     return null;
   }
 
