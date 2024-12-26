@@ -37,11 +37,10 @@ export async function ProductCard({
             <Image
               src={productImage}
               alt={productName}
-              width={300}
-              height={200}
-              className="h-48 w-full object-cover transition-all hover:scale-105"
+              width={400}
+              height={210}
+              className="h-48 w-full object-cover transition-all hover:scale-105 aspect-[1.91/1]"
               loading="lazy"
-              layout="responsive"
             />
           </div>
         </Link>

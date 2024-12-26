@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Download, ExternalLink } from "lucide-react";
+import { Download, RefreshCw } from "lucide-react";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -98,7 +98,8 @@ export function PWAInstallButton() {
   const handleClick = async () => {
     if (isInstalled) {
       // If installed, open the PWA by using the manifest start_url
-      window.open(window.location.origin, "_blank");
+      localStorage.setItem("appInstalled", "false");
+      window.location.reload();
       return;
     }
 
@@ -133,8 +134,8 @@ export function PWAInstallButton() {
     >
       {isInstalled ? (
         <>
-          <ExternalLink className="mr-2 h-4 w-4" />
-          Open App
+          <RefreshCw className="mr-2 h-4 w-4" />
+          Reset App
         </>
       ) : (
         <>
