@@ -110,3 +110,18 @@ export const deleteProduct = async (id: string) => {
   }
   return true;
 };
+
+export const getFeaturedProducts = async () => {
+  try {
+    const products = await db.product.findMany({
+      where: {
+        isFeatured: true,
+      },
+    });
+
+    return products;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
