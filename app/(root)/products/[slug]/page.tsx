@@ -120,7 +120,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: product.metaTitle,
+    title: `${product.metaTitle} | NRLIT Store`,
     description: product.metaDescription,
   };
 }
