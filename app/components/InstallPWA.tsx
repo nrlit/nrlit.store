@@ -13,6 +13,7 @@ import {
 import { Download, X, Store } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
+// import { useEffect as useEffectReact, useState as useStateReact } from 'react';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -41,10 +42,35 @@ const isInStandaloneMode = (): boolean => {
     return (
       window.matchMedia("(display-mode: standalone)").matches ||
       nav.standalone === true ||
-      document.referrer.includes("android-app://")
+      document.referrer.includes("android-app://") ||
+      window.matchMedia("(display-mode: window-controls-overlay)").matches
     );
   }
   return false;
+};
+
+const isAppInstalled = (): boolean => {
+  if (typeof window !== "undefined") {
+    return (
+      localStorage.getItem("appInstalled") === "true" ||
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (navigator as NavigatorWithStandalone).standalone === true ||
+      window.matchMedia("(display-mode: window-controls-overlay)").matches
+    );
+  }
+  return false;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getInstallationStatus = (): string => {
+  if (isInStandaloneMode()) return "Installed (Standalone)";
+  if (window.matchMedia("(display-mode: standalone)").matches)
+    return "Installed (Display Mode)";
+  if ((navigator as NavigatorWithStandalone).standalone)
+    return "Installed (iOS)";
+  if (window.matchMedia("(display-mode: window-controls-overlay)").matches)
+    return "Installed (Window Controls Overlay)";
+  return "Not Installed";
 };
 
 export function InstallPWA() {
@@ -56,12 +82,20 @@ export function InstallPWA() {
   const { toast } = useToast();
 
   useEffect(() => {
-    const checkPlatform = () => {
+    const checkInstallState = () => {
       const iOS = isIOS();
       setIsIOSDevice(iOS);
-      const standalone = isInStandaloneMode();
-      setIsInstallable(!standalone);
-      setIsButtonVisible(!standalone);
+      const installed = isAppInstalled();
+      setIsInstallable(!installed);
+      setIsButtonVisible(!installed);
+
+      // Debug logging
+      //   console.log(
+      //     "Installation Status:",
+      //     installed ? "Installed" : "Not Installed"
+      //   );
+      //   console.log("Is Installable:", !installed);
+      //   console.log("Is Button Visible:", !installed);
     };
 
     const handleBeforeInstallPrompt = (e: Event) => {
@@ -69,16 +103,37 @@ export function InstallPWA() {
       deferredPrompt.current = e as BeforeInstallPromptEvent;
       setIsInstallable(true);
       setIsButtonVisible(true);
+      console.log("Before Install Prompt Event Captured");
     };
 
-    checkPlatform();
+    checkInstallState();
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    // Check installation state periodically
+    const intervalId = setInterval(checkInstallState, 1000);
+
+    // Check installation state when the window gains focus
+    window.addEventListener("focus", checkInstallState);
+
+    // Debug: Log when display mode changes
+    const displayModeHandler = () => {
+      console.log("Display mode changed");
+      checkInstallState();
+    };
+    window
+      .matchMedia("(display-mode: standalone)")
+      .addListener(displayModeHandler);
 
     return () => {
       window.removeEventListener(
         "beforeinstallprompt",
         handleBeforeInstallPrompt
       );
+      window.removeEventListener("focus", checkInstallState);
+      window
+        .matchMedia("(display-mode: standalone)")
+        .removeListener(displayModeHandler);
+      clearInterval(intervalId);
     };
   }, []);
 
@@ -98,17 +153,19 @@ export function InstallPWA() {
       const choiceResult = await deferredPrompt.current.userChoice;
       if (choiceResult.outcome === "accepted") {
         console.log("User accepted the install prompt");
+        localStorage.setItem("appInstalled", "true");
         toast({
           title: "App Installed",
           description: "Thank you for installing NRLIT Store!",
           className:
             "bg-gradient-to-r from-blue-500 to-blue-600 text-white border-none",
         });
+        setIsInstallable(false);
+        setIsButtonVisible(false);
       } else {
         console.log("User dismissed the install prompt");
       }
       deferredPrompt.current = null;
-      setIsInstallable(false);
     }
   };
 
