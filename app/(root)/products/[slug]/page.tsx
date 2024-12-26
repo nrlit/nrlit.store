@@ -116,6 +116,7 @@ export default async function ProductPage({
               height={400}
               className="rounded-lg object-cover w-full h-[400px]"
               loading="lazy"
+              layout="responsive"
             />
           </div>
           <div className="space-y-6">
