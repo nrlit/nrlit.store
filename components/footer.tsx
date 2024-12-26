@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Facebook, Github, Instagram, Linkedin, Youtube } from "lucide-react";
+import { PWAInstallButton } from "@/app/components/InstallButton";
 
 export function Footer() {
   return (
@@ -12,6 +13,9 @@ export function Footer() {
               NRLIT is your one-stop shop for digital products, offering a wide
               range of tools for streaming, learning, creativity, and more.
             </p>
+            <div className="mt-4">
+              <PWAInstallButton />
+            </div>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
