@@ -41,6 +41,7 @@ export async function ProductCard({
               height={210}
               className="h-48 w-full object-cover transition-all hover:scale-105 aspect-[1.91/1]"
               loading="lazy"
+              layout="responsive"
             />
           </div>
         </Link>
