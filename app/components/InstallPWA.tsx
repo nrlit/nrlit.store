@@ -13,6 +13,7 @@ import {
 import { Download, X, Store } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
+import InstallButton from "./InstallButton";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -135,14 +136,15 @@ export function InstallPWA() {
             className="fixed bottom-4 right-4 z-50"
           >
             <div className="bg-black/90 backdrop-blur-sm rounded-lg shadow-lg shadow-blue-500/20 p-4 flex items-center space-x-4 border border-white/10">
-              <Button
+              {/* <Button
                 onClick={() => setIsOpen(true)}
                 className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white flex items-center space-x-2 rounded-full"
                 aria-label="Open install dialog"
               >
                 <Download className="w-5 h-5" />
                 <span>Install NRLIT</span>
-              </Button>
+              </Button> */}
+              <InstallButton setIsOpen={setIsOpen} Download={Download} />
               <button
                 onClick={handleDismiss}
                 className="text-gray-400 hover:text-white transition-colors"
