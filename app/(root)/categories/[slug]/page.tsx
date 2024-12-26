@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { ProductCard } from "@/components/product-card";
 
 // This would typically come from a database or API
 const categories = [
@@ -198,9 +197,9 @@ export default async function CategoryPage({
       <h1 className="text-3xl font-bold mb-4">{category.name}</h1>
       <p className="text-muted-foreground mb-8">{category.description}</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {category.products.map((product, index) => (
-          <ProductCard key={product.$id} {...product} index={index} />
-        ))}
+        {/* {category.products.map((product, index) => (
+          <ProductCard key={product.id} {...product} index={index} />
+        ))} */}
       </div>
     </div>
   );
