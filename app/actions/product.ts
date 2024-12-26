@@ -1,6 +1,7 @@
 "use server";
 import { ProductFormData } from "@/components/product-form";
 import { db } from "@/lib/db";
+import { ProductCategory } from "@prisma/client";
 
 export const createProduct = async (data: ProductFormData) => {
   const productData = {
@@ -116,6 +117,21 @@ export const getFeaturedProducts = async () => {
     const products = await db.product.findMany({
       where: {
         isFeatured: true,
+      },
+    });
+
+    return products;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+export const getProductByCategory = async (category: ProductCategory) => {
+  try {
+    const products = await db.product.findMany({
+      where: {
+        category,
       },
     });
 

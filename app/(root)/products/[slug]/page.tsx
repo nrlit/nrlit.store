@@ -16,96 +16,6 @@ import { Separator } from "@/components/ui/separator";
 // import { ProductCard } from "@/components/product-card";
 import { getProductBySlug } from "@/app/actions/product";
 
-// This would typically come from a database or API
-// const products = [
-//   {
-//     id: "1",
-//     slug: "premium-streaming-package",
-//     name: "Premium Streaming Package",
-//     description:
-//       "High-quality streaming tools for professionals. This package includes everything you need to start your streaming career.",
-//     longDescription:
-//       "The Premium Streaming Package is designed for serious content creators who demand the best. It includes a high-quality webcam, professional microphone, green screen, and lighting setup. The package also comes with a 1-year license for top-tier streaming software, giving you access to advanced features like multi-camera switching, custom overlays, and integrated chat management.",
-//     category: "Streaming",
-//     variation: [
-//       { validity: "1 month", price: 100 },
-//       { validity: "3 months", price: 250 },
-//       { validity: "6 months", price: 500 },
-//       { validity: "12 months", price: 800 },
-//     ],
-//     creationDate: "2023-01-01",
-//     updatingDate: "2023-06-15",
-//     metaTitle: "Premium Streaming Package | NRLIT Store",
-//     metaDescription:
-//       "Get our high-quality streaming tools for professionals. Start your streaming career with the best equipment.",
-//     image: "/placeholder.svg",
-//     tags: ["streaming", "professional", "high-quality"],
-//     available: true,
-//     reviews: [
-//       {
-//         id: 1,
-//         author: "John Doe",
-//         rating: 5,
-//         comment: "Excellent package, really improved my stream quality!",
-//       },
-//       {
-//         id: 2,
-//         author: "Jane Smith",
-//         rating: 4,
-//         comment: "Great value for money, but the setup was a bit tricky.",
-//       },
-//     ],
-//   },
-//   // ... other products ...
-// ];
-
-// const relatedProducts = [
-//   {
-//     $id: "1",
-//     productName: "Beginner Streaming Kit",
-//     productDescription: "Everything you need to start streaming",
-//     variations: JSON.stringify([
-//       { validity: "Monthly", price: 19.99 },
-//       { validity: "Yearly", price: 199.99 },
-//     ]),
-//     productImage: "/placeholder.svg",
-//     productSlug: "beginner-streaming-kit",
-//   },
-//   {
-//     $id: "2",
-//     productName: "Beginner Streaming Kit",
-//     productDescription: "Everything you need to start streaming",
-//     variations: JSON.stringify([
-//       { validity: "Monthly", price: 19.99 },
-//       { validity: "Yearly", price: 199.99 },
-//     ]),
-//     productImage: "/placeholder.svg",
-//     productSlug: "beginner-streaming-kit",
-//   },
-//   {
-//     $id: "3",
-//     productName: "Pro Webcam",
-//     productDescription: "Full HD webcam for crystal clear v$ideo",
-//     variations: JSON.stringify([
-//       { validity: "Monthly", price: 19.99 },
-//       { validity: "Yearly", price: 199.99 },
-//     ]),
-//     productImage: "/placeholder.svg",
-//     productSlug: "pro-webcam",
-//   },
-//   {
-//     $id: "4",
-//     productName: "Studio Microphone",
-//     productDescription: "Professional-grade microphone for streamers",
-//     variations: JSON.stringify([
-//       { validity: "Monthly", price: 19.99 },
-//       { validity: "Yearly", price: 199.99 },
-//     ]),
-//     productImage: "/placeholder.svg",
-//     productSlug: "studio-microphone",
-//   },
-// ];
-
 export async function generateMetadata({
   params,
 }: {
@@ -123,6 +33,28 @@ export async function generateMetadata({
   return {
     title: `${product.metaTitle} | NRLIT Store`,
     description: product.metaDescription,
+    openGraph: {
+      title: `${product.metaTitle} | NRLIT Store`,
+      description: product.metaDescription,
+      url: `https://nrlit.com/products/${product.slug}`,
+      type: "website",
+      siteName: "NRLIT Store",
+      images: [
+        {
+          url: product.image,
+          width: 1200,
+          height: 630,
+          alt: `${product.name} - NRLIT Store`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.metaTitle} | NRLIT Store`,
+
+      description: product.metaDescription,
+      images: [product.image],
+    },
   };
 }
 
@@ -226,14 +158,16 @@ export default async function ProductPage({
                     <SelectValue placeholder="Select a plan" />
                   </SelectTrigger>
                   <SelectContent>
-                    {variants.map((variant: {validity: string, price: number}) => (
-                      <SelectItem
-                        key={variant.validity}
-                        value={variant.validity}
-                      >
-                        {variant.validity} - ${variant.price}
-                      </SelectItem>
-                    ))}
+                    {variants.map(
+                      (variant: { validity: string; price: number }) => (
+                        <SelectItem
+                          key={variant.validity}
+                          value={variant.validity}
+                        >
+                          {variant.validity} - ${variant.price}
+                        </SelectItem>
+                      )
+                    )}
                   </SelectContent>
                 </Select>
               </CardContent>
@@ -246,12 +180,9 @@ export default async function ProductPage({
             </div>
             <div className="text-sm text-muted-foreground">
               <p>Category: {product.category}</p>
+              <p>Created: {new Date(product.createdAt).toLocaleDateString()}</p>
               <p>
-                Created: {new Date(product.createdAt).toLocaleDateString()}
-              </p>
-              <p>
-                Last Updated:{" "}
-                {new Date(product.updatedAt).toLocaleDateString()}
+                Last Updated: {new Date(product.updatedAt).toLocaleDateString()}
               </p>
             </div>
           </div>
@@ -299,7 +230,7 @@ export default async function ProductPage({
           </div>
         </div> */}
 
-        <Separator className="my-8" />
+        {/* <Separator className="my-8" /> */}
 
         {/* <div>
           <h2 className="text-2xl font-bold mb-4">Related Products</h2>
