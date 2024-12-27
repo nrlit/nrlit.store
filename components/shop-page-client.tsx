@@ -29,15 +29,14 @@ export function ShopPageClient({
 }: {
   initialProducts: Product[];
 }) {
-  const [products, setProducts] = useState(initialProducts);
+  const [filteredProducts, setFilteredProducts] = useState(initialProducts);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc" | "">("");
 
   const filterProducts = useCallback(() => {
-    const filteredProducts = initialProducts.filter((product) => {
+    const filtered = initialProducts.filter((product) => {
       const matchesSearch =
-        searchTerm === "" ||
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.description.toLowerCase().includes(searchTerm.toLowerCase());
 
@@ -48,14 +47,15 @@ export function ShopPageClient({
       return matchesSearch && matchesCategory;
     });
 
-    const sortedProducts = [...filteredProducts].sort((a, b) => {
-      if (!sortOrder) return 0;
-      const priceA = JSON.parse(a.variations)[0].price;
-      const priceB = JSON.parse(b.variations)[0].price;
-      return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
-    });
+    const result = sortOrder
+      ? [...filtered].sort((a, b) => {
+          const priceA = JSON.parse(a.variations)[0].price;
+          const priceB = JSON.parse(b.variations)[0].price;
+          return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
+        })
+      : filtered;
 
-    setProducts(sortedProducts);
+    setFilteredProducts(result);
   }, [initialProducts, searchTerm, selectedCategories, sortOrder]);
 
   useEffect(() => {
@@ -72,7 +72,7 @@ export function ShopPageClient({
     setSearchTerm("");
     setSelectedCategories([]);
     setSortOrder("");
-    setProducts(initialProducts);
+    setFilteredProducts(initialProducts);
   };
 
   return (
@@ -135,7 +135,7 @@ export function ShopPageClient({
         </div>
         <div className="w-full md:w-3/4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product, index) => (
+            {filteredProducts.map((product, index) => (
               <ProductCard key={product.id} {...product} index={index} />
             ))}
           </div>
