@@ -163,9 +163,9 @@ export function CheckoutForm({ email }: { email: string }) {
             <Image
               src={product.image}
               alt={product.name}
-              width={100}
+              width={190}
               height={100}
-              className="rounded-md h-20"
+              className="h-20 w-full object-cover aspect-[1.91/1]"
               loading="lazy"
               layout="responsive"
             />
