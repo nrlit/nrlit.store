@@ -19,6 +19,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { currency } from "@/lib/constants";
+import { Separator } from "./ui/separator";
 
 const formSchema = z.object({
   orderEmail: z.string().email({
@@ -41,8 +42,8 @@ const formSchema = z.object({
 // Mock product data
 const product = {
   name: "Premium Streaming Package",
-  description: "High-quality streaming tools for professionals",
-  price: 99.99,
+  variation: "1 Month",
+  price: 369,
   image: "/placeholder.svg",
 };
 
@@ -75,8 +76,9 @@ export function CheckoutForm({ email }: { email: string }) {
 
   // Order summary data
   const orderSummary = {
-    subtotal: product.price,
-    total: product.price,
+    priceWithoutOff: Math.round(product.price * 1.25).toFixed(2),
+    subtotal: Math.round(product.price).toFixed(2),
+    total: Math.round(product.price).toFixed(2),
   };
 
   return (
@@ -170,9 +172,15 @@ export function CheckoutForm({ email }: { email: string }) {
             />
             <div>
               <h3 className="font-semibold">{product.name}</h3>
-              <p className="text-sm text-gray-600">{product.description}</p>
+              <p className="text-md font-semibold mt-2">{product.variation}</p>
               <p className="text-lg font-semibold mt-2">
-                ${product.price.toFixed(2)}
+                {currency}
+                {product.price.toFixed(2)}
+                &nbsp;
+                <span className="text-sm line-through font-light">
+                  {currency}
+                  {orderSummary.priceWithoutOff}
+                </span>
               </p>
             </div>
           </div>
@@ -181,17 +189,29 @@ export function CheckoutForm({ email }: { email: string }) {
           <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span>Subtotal</span>
+              <span>Price</span>
               <span>
                 {currency}
-                {orderSummary.subtotal.toFixed(2)}
+                {orderSummary.priceWithoutOff}
               </span>
             </div>
+            <div className="flex justify-between">
+              <span>Off</span>
+              <span>25%</span>
+            </div>
+            <div className="flex justify-between">
+              <span>SubTotal</span>
+              <span>
+                {currency}
+                {orderSummary.subtotal}
+              </span>
+            </div>
+            <Separator />
             <div className="flex justify-between font-semibold text-lg">
               <span>Total</span>
               <span>
                 {currency}
-                {orderSummary.total.toFixed(2)}
+                {orderSummary.total}
               </span>
             </div>
           </div>
