@@ -1,3 +1,4 @@
+import RootLayout from "@/components/RootLayout";
 import {
   Accordion,
   AccordionContent,
@@ -50,16 +51,18 @@ export default function FAQPage() {
   ];
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">Frequently Asked Questions</h1>
-      <Accordion type="single" collapsible className="w-full">
-        {faqs.map((faq, index) => (
-          <AccordionItem key={index} value={`item-${index}`}>
-            <AccordionTrigger>{faq.question}</AccordionTrigger>
-            <AccordionContent>{faq.answer}</AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </div>
+    <RootLayout>
+      <div className="container mx-auto py-8">
+        <h1 className="text-3xl font-bold mb-8">Frequently Asked Questions</h1>
+        <Accordion type="single" collapsible className="w-full">
+          {faqs.map((faq, index) => (
+            <AccordionItem key={index} value={`item-${index}`}>
+              <AccordionTrigger>{faq.question}</AccordionTrigger>
+              <AccordionContent>{faq.answer}</AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </RootLayout>
   );
 }
