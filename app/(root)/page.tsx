@@ -1,5 +1,5 @@
 import { CategoryGrid } from "@/components/category-grid";
-// import { CategoryProducts } from "@/components/category-products";
+import { CategoryProducts } from "@/components/category-products";
 import { FeaturedProducts } from "@/components/featured-products";
 import { Hero } from "@/components/hero";
 import { LoadingSkeleton } from "@/app/components/loading-skeleton";
@@ -17,7 +17,7 @@ export default async function Home() {
 
         <FeaturedProducts />
 
-        {/* <CategoryProducts /> */}
+        <CategoryProducts />
         <ClientOnly>
           <ServiceWorkerRegistration />
         </ClientOnly>

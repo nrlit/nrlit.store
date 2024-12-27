@@ -140,6 +140,18 @@ export async function Header() {
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col space-y-4">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Link href="#">Categories</Link>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    {categories.map((category) => (
+                      <DropdownMenuItem key={category.name} asChild>
+                        <Link href={category.href}>{category.name}</Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
                 {navItems.map((item) => (
                   <Link
                     key={item.name}

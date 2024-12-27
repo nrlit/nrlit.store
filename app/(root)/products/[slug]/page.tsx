@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -13,9 +12,10 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-// import { ProductCard } from "@/components/product-card";
-import { getProductBySlug } from "@/app/actions/product";
+import { getProductByCategory, getProductBySlug } from "@/app/actions/product";
 import { currency } from "../../../../lib/constants";
+import { ProductCard } from "@/components/product-card";
+import { ShareButton } from "@/components/share-button";
 
 export async function generateMetadata({
   params,
@@ -66,10 +66,14 @@ export default async function ProductPage({
 }) {
   const slug = (await params).slug;
   const product = await getProductBySlug(slug);
-
   if (!product) {
     notFound();
   }
+
+  const categoryProducts = await getProductByCategory(product.category);
+  const recommendedProducts = categoryProducts
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 4);
 
   const variants = JSON.parse(product.variations);
 
@@ -181,9 +185,7 @@ export default async function ProductPage({
             </Card>
             <div className="flex space-x-4">
               <Button className="flex-1">Purchase</Button>
-              <Button variant="outline" size="icon">
-                <Share2 className="h-4 w-4" />
-              </Button>
+              <ShareButton name={product.name} description={product.metaDescription} />
             </div>
             <div className="text-sm text-muted-foreground">
               <p>Category: {product.category}</p>
@@ -239,14 +241,14 @@ export default async function ProductPage({
 
         {/* <Separator className="my-8" /> */}
 
-        {/* <div>
+        <div>
           <h2 className="text-2xl font-bold mb-4">Related Products</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {relatedProducts.map((product, index) => (
+            {recommendedProducts.map((product, index) => (
               <ProductCard key={product.id} {...product} index={index} />
             ))}
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
