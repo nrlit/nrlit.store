@@ -191,7 +191,9 @@ export default async function ProductPage({
               />
             </div>
             <div className="text-sm text-muted-foreground">
-              <p>Category: {product.category}</p>
+              <p>
+                Category: <span className="uppercase">{product.category}</span>
+              </p>
               <p>Created: {new Date(product.createdAt).toLocaleDateString()}</p>
               <p>
                 Last Updated: {new Date(product.updatedAt).toLocaleDateString()}
