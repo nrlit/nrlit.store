@@ -165,9 +165,8 @@ export function CheckoutForm({ email }: { email: string }) {
               alt={product.name}
               width={190}
               height={100}
-              className="h-20 w-full object-cover aspect-[1.91/1]"
+              className="h-24 object-cover rounded-md aspect-[1.91/1]"
               loading="lazy"
-              layout="responsive"
             />
             <div>
               <h3 className="font-semibold">{product.name}</h3>
