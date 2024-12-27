@@ -184,7 +184,9 @@ export default async function ProductPage({
               </CardContent>
             </Card>
             <div className="flex space-x-4">
-              <Button className="flex-1">Purchase</Button>
+              <Button className="flex-1" asChild>
+                <Link href="/checkout">Buy Now</Link>
+              </Button>
               <ShareButton
                 name={product.name}
                 description={product.metaDescription}
