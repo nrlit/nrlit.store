@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
+import { currency } from "@/lib/constants";
 
 const formSchema = z.object({
   orderEmail: z.string().email({
@@ -75,8 +76,7 @@ export function CheckoutForm({ email }: { email: string }) {
   // Order summary data
   const orderSummary = {
     subtotal: product.price,
-    shipping: 5.0,
-    total: product.price + 5.0,
+    total: product.price,
   };
 
   return (
@@ -166,6 +166,8 @@ export function CheckoutForm({ email }: { email: string }) {
               width={100}
               height={100}
               className="rounded-md"
+              loading="lazy"
+              layout="responsive"
             />
             <div>
               <h3 className="font-semibold">{product.name}</h3>
@@ -181,15 +183,17 @@ export function CheckoutForm({ email }: { email: string }) {
           <div className="space-y-2">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>${orderSummary.subtotal.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Shipping</span>
-              <span>${orderSummary.shipping.toFixed(2)}</span>
+              <span>
+                {currency}
+                {orderSummary.subtotal.toFixed(2)}
+              </span>
             </div>
             <div className="flex justify-between font-semibold text-lg">
               <span>Total</span>
-              <span>${orderSummary.total.toFixed(2)}</span>
+              <span>
+                {currency}
+                {orderSummary.total.toFixed(2)}
+              </span>
             </div>
           </div>
         </div>
