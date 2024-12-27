@@ -165,7 +165,7 @@ export function CheckoutForm({ email }: { email: string }) {
               alt={product.name}
               width={100}
               height={100}
-              className="rounded-md"
+              className="rounded-md h-20"
               loading="lazy"
               layout="responsive"
             />
