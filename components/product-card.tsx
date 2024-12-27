@@ -53,7 +53,7 @@ export async function ProductCard({
         </p>
       </CardContent>
       <CardFooter className="flex items-center justify-between p-4 bg-secondary">
-        <span className="text-lg font-bold">
+        <span className="text-lg font-bold flex items-center">
           {allVariation.length > 1 ? (
             <>
               {currency}
@@ -64,6 +64,11 @@ export async function ProductCard({
             <>
               {currency}
               {allVariation[0].price}
+              &nbsp;
+              <span className="text-sm line-through font-light">
+                {currency}
+                {Math.round(Number(allVariation[0].price) * 1.25)}
+              </span>
             </>
           )}
         </span>

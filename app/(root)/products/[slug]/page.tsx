@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 // import { ProductCard } from "@/components/product-card";
 import { getProductBySlug } from "@/app/actions/product";
+import { currency } from "../../../../lib/constants";
 
 export async function generateMetadata({
   params,
@@ -165,7 +166,12 @@ export default async function ProductPage({
                           key={variant.validity}
                           value={variant.validity}
                         >
-                          {variant.validity} - ${variant.price}
+                          {variant.validity} - {currency}
+                          {variant.price}&nbsp;
+                          <span className="text-sm line-through font-light">
+                            {currency}
+                            {Math.round(Number(variant.price) * 1.25)}
+                          </span>
                         </SelectItem>
                       )
                     )}
@@ -174,7 +180,7 @@ export default async function ProductPage({
               </CardContent>
             </Card>
             <div className="flex space-x-4">
-              <Button className="flex-1">Add to Cart</Button>
+              <Button className="flex-1">Purchase</Button>
               <Button variant="outline" size="icon">
                 <Share2 className="h-4 w-4" />
               </Button>
