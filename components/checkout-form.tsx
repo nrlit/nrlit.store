@@ -20,6 +20,11 @@ import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { currency } from "@/lib/constants";
 import { Separator } from "./ui/separator";
+import { useCheckoutProductStore } from "@/stores/checkout-product-store";
+import { useRouter } from "next/navigation";
+import { createOrder } from "@/app/actions/order";
+
+export type CheckOutFormData = z.infer<typeof formSchema>;
 
 const formSchema = z.object({
   orderEmail: z.string().email({
@@ -39,17 +44,11 @@ const formSchema = z.object({
   }),
 });
 
-// Mock product data
-const product = {
-  name: "Premium Streaming Package",
-  variation: "1 Month",
-  price: 369,
-  image: "/placeholder.svg",
-};
-
 export function CheckoutForm({ email }: { email: string }) {
   const { toast } = useToast();
+  const { product } = useCheckoutProductStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,28 +60,123 @@ export function CheckoutForm({ email }: { email: string }) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  if (!email) {
+    toast({
+      title: "Sign In Required",
+      description: "Please sign in to place an order.",
+      variant: "destructive",
+    });
+    router.push("/sign-in");
+    return null;
+  }
+
+  if (!product) {
+    toast({
+      title: "Product Not Found",
+      description: "Please select a product to place an order.",
+      variant: "destructive",
+    });
+    router.push("/shop");
+    return null;
+  }
+
+  const variation = JSON.parse(product?.variant);
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log(values);
+    try {
+      if (product) {
+        const response = await createOrder({ values, product });
+        if (response) {
+          toast({
+            title: "Order Placed",
+            description: "Your order has been successfully placed.",
+          });
+          router.push("/");
+        }
+      }
+    } catch (error) {
+      console.error(error);
       setIsSubmitting(false);
       toast({
-        title: "Order Placed",
-        description: "Your order has been successfully placed.",
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
       });
-    }, 2000);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   // Order summary data
   const orderSummary = {
-    priceWithoutOff: Math.round(product.price * 1.25).toFixed(2),
-    subtotal: Math.round(product.price).toFixed(2),
-    total: Math.round(product.price).toFixed(2),
+    priceWithoutOff: Math.round(variation.price * 1.25).toFixed(2),
+    subtotal: Math.round(variation.price).toFixed(2),
+    total: Math.round(variation.price).toFixed(2),
   };
 
   return (
     <div className="grid gap-6 lg:grid-cols-2">
+      <div className="space-y-6">
+        <div className="md:p-6 rounded-lg">
+          <h2 className="text-xl font-semibold mb-4">Product Preview</h2>
+          <div className="flex flex-col sm:flex-row md:space-x-4">
+            <Image
+              src={product.image}
+              alt={product.name}
+              width={190}
+              height={100}
+              className="w-full sm:max-w-fit object-cover rounded-md aspect-[1.91/1]"
+              loading="lazy"
+            />
+            <div className="ml-0 sm:ml-4 mt-4 md:mt-0">
+              <h3 className="text-xl font-semibold">{product.name}</h3>
+              <p className="text-md font-semibold mt-2">{variation.validity}</p>
+              <p className="text-md font-semibold mt-2">
+                {currency}
+                {variation.price.toFixed(2)}
+                &nbsp;
+                <span className="line-through font-light">
+                  {currency}
+                  {orderSummary.priceWithoutOff}
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <Separator />
+        <div className="md:p-6 rounded-lg">
+          <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <span>Price</span>
+              <span>
+                {currency}
+                {orderSummary.priceWithoutOff}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span>Off</span>
+              <span>25%</span>
+            </div>
+            <div className="flex justify-between">
+              <span>SubTotal</span>
+              <span>
+                {currency}
+                {orderSummary.subtotal}
+              </span>
+            </div>
+            <Separator />
+            <div className="flex justify-between font-semibold text-lg">
+              <span>Total</span>
+              <span>
+                {currency}
+                {orderSummary.total}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -91,7 +185,12 @@ export function CheckoutForm({ email }: { email: string }) {
               name="orderEmail"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>
+                    Email&nbsp;&nbsp;
+                    <span className="text-red-700 text-xs">
+                      *Note: Put the email you want to order.
+                    </span>
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="john@example.com" {...field} />
                   </FormControl>
@@ -157,65 +256,6 @@ export function CheckoutForm({ email }: { email: string }) {
             </Button>
           </form>
         </Form>
-      </div>
-      <div className="space-y-6">
-        <div className="p-6 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">Product Preview</h2>
-          <div className="flex items-center space-x-4">
-            <Image
-              src={product.image}
-              alt={product.name}
-              width={190}
-              height={100}
-              className="h-24 object-cover rounded-md aspect-[1.91/1]"
-              loading="lazy"
-            />
-            <div>
-              <h3 className="font-semibold">{product.name}</h3>
-              <p className="text-md font-semibold mt-2">{product.variation}</p>
-              <p className="text-lg font-semibold mt-2">
-                {currency}
-                {product.price.toFixed(2)}
-                &nbsp;
-                <span className="text-sm line-through font-light">
-                  {currency}
-                  {orderSummary.priceWithoutOff}
-                </span>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className=" p-6 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>Price</span>
-              <span>
-                {currency}
-                {orderSummary.priceWithoutOff}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span>Off</span>
-              <span>25%</span>
-            </div>
-            <div className="flex justify-between">
-              <span>SubTotal</span>
-              <span>
-                {currency}
-                {orderSummary.subtotal}
-              </span>
-            </div>
-            <Separator />
-            <div className="flex justify-between font-semibold text-lg">
-              <span>Total</span>
-              <span>
-                {currency}
-                {orderSummary.total}
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

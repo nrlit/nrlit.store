@@ -1,15 +1,6 @@
 import { ProductCard } from "@/components/product-card";
 import { getAllProducts } from "@/app/actions/product";
 
-// const categories = [
-//   "Streaming",
-//   "Learning",
-//   "Creativity",
-//   "Utility",
-//   "Service",
-//   "Others",
-// ];
-
 export default async function ShopPage() {
   const allProducts = await getAllProducts();
   return (

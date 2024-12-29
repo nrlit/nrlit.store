@@ -1,21 +1,12 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getProductByCategory, getProductBySlug } from "@/app/actions/product";
-import { currency } from "@/lib/constants";
 import { ProductCard } from "@/components/product-card";
-import { ShareButton } from "@/components/share-button";
+import { ProductSelectAndBuyAndShare } from "@/components/product-buy-selection";
+import { currentUser } from "@clerk/nextjs/server";
 
 export async function generateMetadata({
   params,
@@ -66,6 +57,7 @@ export default async function ProductPage({
 }) {
   const slug = (await params).slug;
   const product = await getProductBySlug(slug);
+  const user = await currentUser();
   if (!product) {
     notFound();
   }
@@ -74,8 +66,6 @@ export default async function ProductPage({
   const recommendedProducts = categoryProducts
     .sort(() => 0.5 - Math.random())
     .slice(0, 4);
-
-  const variants = JSON.parse(product.variations);
 
   return (
     <div className="container mx-auto py-8">
@@ -157,41 +147,14 @@ export default async function ProductPage({
                 </Badge>
               ))}
             </div>
-            <Card>
-              <CardContent className="pt-6">
-                <Select>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a plan" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {variants.map(
-                      (variant: { validity: string; price: number }) => (
-                        <SelectItem
-                          key={variant.validity}
-                          value={variant.validity}
-                        >
-                          {variant.validity} - {currency}
-                          {variant.price}&nbsp;
-                          <span className="text-sm line-through font-light">
-                            {currency}
-                            {Math.round(Number(variant.price) * 1.25)}
-                          </span>
-                        </SelectItem>
-                      )
-                    )}
-                  </SelectContent>
-                </Select>
-              </CardContent>
-            </Card>
-            <div className="flex space-x-4">
-              <Button className="flex-1" asChild>
-                <Link href="/checkout">Buy Now</Link>
-              </Button>
-              <ShareButton
-                name={product.name}
-                description={product.metaDescription}
-              />
-            </div>
+            <ProductSelectAndBuyAndShare
+              id={product.id}
+              name={product.name}
+              variations={product.variations}
+              image={product.image}
+              metaDescription={product.metaDescription}
+              userId={user?.id ?? ""}
+            />
             <div className="text-sm text-muted-foreground">
               <p>
                 Category: <span className="uppercase">{product.category}</span>
