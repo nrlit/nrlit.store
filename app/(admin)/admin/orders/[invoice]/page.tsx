@@ -29,7 +29,7 @@ export default async function AdminOrderPage({
 
   const user = await db.user.findUnique({
     where: {
-      id: order.userId,
+      clerkUserId: order.userId,
     },
   });
 
