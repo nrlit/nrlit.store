@@ -52,6 +52,7 @@ export default async function AdminOrderPage({
               <h3 className="font-semibold">Customer Information:</h3>
               {user ? (
                 <>
+                  <p>Username: {user.username}</p>
                   <p>Name: {user.name}</p>
                   <p>Email: {user.email}</p>
                   <p>Phone: {order.userContactNumber}</p>
@@ -59,7 +60,7 @@ export default async function AdminOrderPage({
                   <p>Clerk ID: {user.clerkUserId}</p>
                 </>
               ) : (
-                <p>Information not available</p>
+                <p>User information not available</p>
               )}
             </div>
             <div>
