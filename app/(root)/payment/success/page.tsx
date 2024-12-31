@@ -9,12 +9,12 @@ import {
 } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
 
-export default function PaymentSuccess({
+export default async function PaymentSuccess({
   searchParams,
 }: {
-  searchParams: { trxID: string; amount: string; paymentID: string };
+  searchParams: Promise<{ trxID: string; amount: string; paymentID: string }>;
 }) {
-  const { trxID, amount, paymentID } = searchParams;
+  const { trxID, amount, paymentID } = await searchParams;
 
   if (!trxID || !amount || !paymentID) {
     redirect("/");
