@@ -35,24 +35,30 @@ export default async function AdminOrdersPage() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Order ID</TableHead>
             <TableHead>Invoice No.</TableHead>
             <TableHead>Order Email</TableHead>
+            <TableHead>Product Name</TableHead>
             <TableHead>Validity</TableHead>
             <TableHead>Price</TableHead>
+            <TableHead>Transaction No.</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders.map((order) => {
+          {orders.map(async (order) => {
             const rawVariation = order.variation;
             const formatedVariation = JSON.parse(rawVariation);
+            const product = await db.product.findUnique({
+              where: {
+                id: order.productId,
+              },
+            });
             return (
               <TableRow key={order.id}>
-                <TableCell>{order.id}</TableCell>
                 <TableCell>{order.invoiceNumber}</TableCell>
                 <TableCell>{order.orderEmail}</TableCell>
+                <TableCell>{product?.name}</TableCell>
                 <TableCell className="uppercase">
                   {formatedVariation.validity}
                 </TableCell>
@@ -60,6 +66,7 @@ export default async function AdminOrdersPage() {
                   {currency}
                   {formatedVariation.price}
                 </TableCell>
+                <TableCell>{order.transactionId}</TableCell>
                 <TableCell>
                   <Badge
                     variant={
@@ -73,7 +80,7 @@ export default async function AdminOrdersPage() {
                 </TableCell>
                 <TableCell>
                   <Button asChild variant="outline" size="sm">
-                    <Link href={`/admin/orders/${order.id}`}>View</Link>
+                    <Link href={`/admin/orders/${order.invoiceNumber}`}>View</Link>
                   </Button>
                 </TableCell>
               </TableRow>

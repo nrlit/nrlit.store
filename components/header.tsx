@@ -102,6 +102,9 @@ export async function Header() {
                   <Link href="/user-profile">Account</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
+                  <Link href="/orders">Orders</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
                   <SignOutButton />
                 </DropdownMenuItem>
               </DropdownMenuContent>

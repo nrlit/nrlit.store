@@ -7,6 +7,7 @@ import { OrderStatus } from "@prisma/client";
 export const createOrder = async ({
   values,
   product,
+  invoiceNumber,
 }: {
   values: CheckOutFormData;
   product: {
@@ -16,20 +17,20 @@ export const createOrder = async ({
     image: string;
     userId: string;
   };
+  invoiceNumber: string;
 }) => {
   try {
     const order = await db.order.create({
       data: {
         orderEmail: values.orderEmail,
         userContactNumber: values.userContactNumber,
-        userAdditionalNote: values.userAdditionalNote ?? "",
-        paymentMethod: values.paymentMethod,
         variation: product.variant,
-        productId: product.id,
         orderStatus: OrderStatus.pending,
-        invoiceNumber: `INV_NRLIT_${Date.now()}_${
-          Math.floor(Math.random()) * 10
-        }`,
+        userAdditionalNote: values.userAdditionalNote ?? "",
+        invoiceNumber: invoiceNumber,
+        paymentMethod: values.paymentMethod,
+        isPaid: false,
+        productId: product.id,
         userId: product.userId,
       },
     });
@@ -40,3 +41,102 @@ export const createOrder = async ({
     return false;
   }
 };
+
+export const getOrdersForUser = async (userId: string) => {
+  try {
+    const orders = await db.order.findMany({
+      where: {
+        userId,
+      },
+    });
+
+    return orders;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+export const getOrderByInvoiceNumber = async (invoiceNumber: string) => {
+  try {
+    const order = await db.order.findFirst({
+      where: {
+        invoiceNumber,
+      },
+    });
+
+    return order;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+export const getOrderByInvoiceNumberAndUpdatePaymentId = async ({
+  invoiceNumber,
+  paymentId,
+}: {
+  invoiceNumber: string;
+  paymentId: string;
+}) => {
+  try {
+    const order = await db.order.findFirst({
+      where: {
+        invoiceNumber,
+      },
+    });
+
+    if (order) {
+      await db.order.update({
+        where: {
+          id: order.id,
+        },
+        data: {
+          paymentId: paymentId,
+        },
+      });
+    }
+
+    return order;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+export const getOrderByInvoiceNumberAndPaymentIdAndUpdateIsPaidAndTransactionId =
+  async ({
+    invoiceNumber,
+    paymentId,
+    transactionId,
+  }: {
+    invoiceNumber: string;
+    paymentId: string;
+    transactionId: string;
+  }) => {
+    try {
+      const order = await db.order.findFirst({
+        where: {
+          invoiceNumber,
+          paymentId,
+        },
+      });
+
+      if (order) {
+        await db.order.update({
+          where: {
+            id: order.id,
+          },
+          data: {
+            transactionId: transactionId,
+            isPaid: true,
+          },
+        });
+      }
+
+      return order;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };

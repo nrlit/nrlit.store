@@ -3,9 +3,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function LoadingSkeleton() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen ">
       {/* Navigation Loading State */}
-      <nav className="border-b border-gray-800">
+      {/* <nav className="border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center gap-8">
@@ -22,7 +22,7 @@ export function LoadingSkeleton() {
             </div>
           </div>
         </div>
-      </nav>
+      </nav> */}
 
       {/* Hero Section Loading State */}
       <div className="relative">

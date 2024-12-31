@@ -102,11 +102,15 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-              <InstallPWA />
-              {children}
-              <Analytics />
-              <SpeedInsights />
-              <Toaster />
+            <InstallPWA />
+            {children}
+            {process.env.NODE_ENV !== "development" && (
+              <>
+                <Analytics />
+                <SpeedInsights />
+              </>
+            )}
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>

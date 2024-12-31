@@ -22,7 +22,11 @@ import { currency } from "@/lib/constants";
 import { Separator } from "./ui/separator";
 import { useCheckoutProductStore } from "@/stores/checkout-product-store";
 import { useRouter } from "next/navigation";
-import { createOrder } from "@/app/actions/order";
+import {
+  createOrder,
+  getOrderByInvoiceNumberAndUpdatePaymentId,
+} from "@/app/actions/order";
+import { bkashCreatePayment, bkashGrantToken } from "@/app/actions/bkash";
 
 export type CheckOutFormData = z.infer<typeof formSchema>;
 
@@ -86,14 +90,75 @@ export function CheckoutForm({ email }: { email: string }) {
     setIsSubmitting(true);
     try {
       if (product) {
-        const response = await createOrder({ values, product });
+        // Generate invoice number
+        const invoiceNumber = `INV_${Date.now().toString()}`;
+        // Set New Order Data to Database
+        const response = await createOrder({ values, product, invoiceNumber });
         if (response) {
+          // Generate bKash Token
+          const grantToken = (await bkashGrantToken()) as {
+            data: IBkashGrantTokenResponse;
+            success: boolean;
+          };
+          if (grantToken.success) {
+            const id_token = grantToken.data.id_token;
+            // Create Payment Request
+            const createPayment = (await bkashCreatePayment({
+              id_token: id_token,
+              invoice: invoiceNumber,
+              amount: variation.price.toFixed(2).toString(),
+            })) as {
+              data: IBkashCreatePaymentSuccessResponse;
+              success: boolean;
+            };
+
+            if (createPayment.success) {
+              const createPaymentResponse = createPayment.data;
+              // Update Order with Payment ID
+              const updatePaymentId =
+                await getOrderByInvoiceNumberAndUpdatePaymentId({
+                  invoiceNumber: invoiceNumber,
+                  paymentId: createPaymentResponse.paymentID,
+                });
+
+              if (updatePaymentId) {
+                // Redirect to bKash Payment Page
+                window.location.href = createPaymentResponse.bkashURL;
+              } else {
+                toast({
+                  title: "Error",
+                  description: "Something went wrong. Please try again.",
+                  variant: "destructive",
+                });
+              }
+            } else {
+              toast({
+                title: "Error",
+                description: "Something went wrong. Please try again.",
+                variant: "destructive",
+              });
+            }
+          } else {
+            const data = grantToken.data;
+            toast({
+              title: "Error",
+              description: data.statusMessage,
+              variant: "destructive",
+            });
+          }
+        } else {
           toast({
-            title: "Order Placed",
-            description: "Your order has been successfully placed.",
+            title: "Error",
+            description: "Something went wrong. Please try again.",
+            variant: "destructive",
           });
-          router.push("/");
         }
+      } else {
+        toast({
+          title: "Error",
+          description: "Product not found. Please try again.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
       console.error(error);
