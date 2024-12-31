@@ -9,12 +9,12 @@ import {
 import { XCircle } from "lucide-react";
 import Link from "next/link";
 
-export default function PaymentFailed({
+export default async function PaymentFailed({
   searchParams,
 }: {
-  searchParams: { error?: string };
+  searchParams: Promise<{ error?: string }>;
 }) {
-  const { error } = searchParams;
+  const { error } = await searchParams;
 
   return (
     <div className="container mx-auto py-10 px-4">
