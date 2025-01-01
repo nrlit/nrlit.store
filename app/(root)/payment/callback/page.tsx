@@ -6,7 +6,7 @@ import { bkashExecutePayment, bkashGrantToken } from "@/app/actions/bkash";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import {
-  getOrderByInvoiceNumberAndPaymentIdAndDeleteOrder,
+  getOrderByPaymentIdAndDeleteOrder,
   getOrderByInvoiceNumberAndPaymentIdAndUpdateIsPaidAndTransactionId,
 } from "@/app/actions/order";
 
@@ -20,6 +20,18 @@ export default function Callback() {
 
   useEffect(() => {
     const handlePayment = async () => {
+      if (status === "cancel" && paymentID) {
+        await getOrderByPaymentIdAndDeleteOrder(paymentID).then(() => {
+          router.push("/payment/failed?error=Payment was cancelled by user");
+        });
+        return;
+      }
+      if (status === "failure" && paymentID) {
+        await getOrderByPaymentIdAndDeleteOrder(paymentID).then(() => {
+          router.push("/payment/failed?error=Failed to process payment");
+        });
+        return;
+      }
       if (status !== "success" || !paymentID) {
         router.push(
           "/payment/failed?error=Invalid payment status or missing payment ID"
@@ -58,32 +70,33 @@ export default function Callback() {
               );
             });
           } else {
-            await getOrderByInvoiceNumberAndPaymentIdAndDeleteOrder({
-              invoiceNumber: paymentData.merchantInvoiceNumber,
-              paymentId: paymentID,
+            await getOrderByPaymentIdAndDeleteOrder(paymentID).then(() => {
+              router.push(
+                `/payment/failed?error=${
+                  paymentData.statusMessage || "Payment execution failed"
+                }`
+              );
             });
-            router.push(
-              `/payment/failed?error=${
-                paymentData.statusMessage || "Payment execution failed"
-              }`
-            );
           }
         } else {
           const errorData =
             executePaymentResponse.data as IBkashExecutePaymentErrorResponse;
-          router.push(
-            `/payment/failed?error=${
-              errorData.errorMessage || "Payment execution failed"
-            }`
-          );
+          await getOrderByPaymentIdAndDeleteOrder(paymentID).then(() => {
+            router.push(
+              `/payment/failed?error=${
+                errorData.errorMessage || "Payment execution failed"
+              }`
+            );
+          });
         }
       } catch (error) {
-        console.error("Payment processing error:", error);
-        router.push(
-          `/payment/failed?error=${encodeURIComponent(
-            (error as Error).message || "An unexpected error occurred"
-          )}`
-        );
+        await getOrderByPaymentIdAndDeleteOrder(paymentID).then(() => {
+          router.push(
+            `/payment/failed?error=${encodeURIComponent(
+              (error as Error).message || "An unexpected error occurred"
+            )}`
+          );
+        });
       } finally {
         setIsProcessing(false);
       }

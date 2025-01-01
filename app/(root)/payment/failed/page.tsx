@@ -35,7 +35,7 @@ export default async function PaymentFailed({
         </CardContent>
         <CardFooter className="flex justify-center space-x-4">
           <Button asChild>
-            <a href="/checkout">Try Again</a>
+            <Link href="/shop">Shop Again</Link>
           </Button>
           <Button variant="outline" asChild>
             <Link href="/">Return to Home</Link>

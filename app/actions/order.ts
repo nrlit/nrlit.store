@@ -141,20 +141,15 @@ export const getOrderByInvoiceNumberAndPaymentIdAndUpdateIsPaidAndTransactionId 
     }
   };
 
-export const getOrderByInvoiceNumberAndPaymentIdAndDeleteOrder = async ({
-  paymentId,
-  invoiceNumber,
-}: {
-  paymentId: string;
-  invoiceNumber: string;
-}) => {
+export const getOrderByPaymentIdAndDeleteOrder = async (paymentId: string) => {
+  console.log("paymentId from actions", paymentId);
   try {
     const order = await db.order.findFirst({
       where: {
         paymentId,
-        invoiceNumber,
       },
     });
+    console.log("order from actions", order);
 
     if (order) {
       await db.order.delete({
