@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Order, OrderStatus } from "@prisma/client";
 import { currency } from "@/lib/constants";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { db } from "@/lib/db";
 
 interface OrderListProps {
   orders: Order[];
@@ -20,8 +21,13 @@ export function OrderList({ orders }: OrderListProps) {
     <div>
       {/* Mobile view */}
       <div className="grid grid-cols-1 gap-4 md:hidden">
-        {orders.map((order) => {
+        {orders.map(async (order) => {
           const variation = JSON.parse(order.variation);
+          const product = await db.product.findUnique({
+            where: { id: order.productId },
+            select: { name: true },
+          });
+          const productName = product?.name || "Unknown Product";
           return (
             <Card key={order.id}>
               <CardHeader>
@@ -31,7 +37,7 @@ export function OrderList({ orders }: OrderListProps) {
                 <dl className="grid grid-cols-2 gap-2 text-sm">
                   <div>
                     <dt className="font-medium">Product</dt>
-                    <dd>{order.productId}</dd>
+                    <dd>{productName}</dd>
                   </div>
                   <div>
                     <dt className="font-medium">Date</dt>
@@ -44,6 +50,8 @@ export function OrderList({ orders }: OrderListProps) {
                         variant={
                           order.orderStatus === OrderStatus.completed
                             ? "default"
+                            : order.orderStatus === OrderStatus.cancelled
+                            ? "destructive"
                             : "secondary"
                         }
                       >
@@ -88,12 +96,17 @@ export function OrderList({ orders }: OrderListProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders.map((order) => {
+            {orders.map(async (order) => {
               const variation = JSON.parse(order.variation);
+              const product = await db.product.findUnique({
+                where: { id: order.productId },
+                select: { name: true },
+              });
+              const productName = product?.name || "Unknown Product";
               return (
                 <TableRow key={order.id}>
                   <TableCell>{order.invoiceNumber}</TableCell>
-                  <TableCell>{order.productId}</TableCell>
+                  <TableCell>{productName}</TableCell>
                   <TableCell>
                     {new Date(order.createdAt).toLocaleDateString()}
                   </TableCell>
@@ -102,6 +115,8 @@ export function OrderList({ orders }: OrderListProps) {
                       variant={
                         order.orderStatus === OrderStatus.completed
                           ? "default"
+                          : order.orderStatus === OrderStatus.cancelled
+                          ? "destructive"
                           : "secondary"
                       }
                     >

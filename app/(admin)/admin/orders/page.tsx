@@ -13,6 +13,7 @@ import { currency } from "@/lib/constants";
 import { db } from "@/lib/db";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { OrderStatus } from "@prisma/client";
 
 export default async function AdminOrdersPage() {
   const orders = await db.order.findMany();
@@ -70,8 +71,10 @@ export default async function AdminOrdersPage() {
                 <TableCell>
                   <Badge
                     variant={
-                      order.orderStatus === "completed"
-                        ? "outline"
+                      order.orderStatus === OrderStatus.completed
+                        ? "default"
+                        : order.orderStatus === OrderStatus.cancelled
+                        ? "destructive"
                         : "secondary"
                     }
                   >
@@ -80,7 +83,9 @@ export default async function AdminOrdersPage() {
                 </TableCell>
                 <TableCell>
                   <Button asChild variant="outline" size="sm">
-                    <Link href={`/admin/orders/${order.invoiceNumber}`}>View</Link>
+                    <Link href={`/admin/orders/${order.invoiceNumber}`}>
+                      View
+                    </Link>
                   </Button>
                 </TableCell>
               </TableRow>

@@ -79,6 +79,8 @@ export default async function AdminOrderPage({
                   variant={
                     order.orderStatus === OrderStatus.completed
                       ? "default"
+                      : order.orderStatus === OrderStatus.cancelled
+                      ? "destructive"
                       : "secondary"
                   }
                 >
