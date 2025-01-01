@@ -5,8 +5,13 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
+  // Remove optimizeCss from experimental as it's causing issues
   experimental: {
-    optimizeCss: true,
+    turbo: {
+      rules: {
+        // Add any custom rules here if needed
+      },
+    },
   },
   images: {
     remotePatterns: [
@@ -24,6 +29,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Production-specific options
   productionBrowserSourceMaps: false,
   compress: true,
   poweredByHeader: false,
