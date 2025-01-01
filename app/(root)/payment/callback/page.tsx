@@ -5,7 +5,10 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { bkashExecutePayment, bkashGrantToken } from "@/app/actions/bkash";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
-import { getOrderByInvoiceNumberAndPaymentIdAndUpdateIsPaidAndTransactionId } from "@/app/actions/order";
+import {
+  getOrderByInvoiceNumberAndPaymentIdAndDeleteOrder,
+  getOrderByInvoiceNumberAndPaymentIdAndUpdateIsPaidAndTransactionId,
+} from "@/app/actions/order";
 
 export default function Callback() {
   const searchParams = useSearchParams();
@@ -55,6 +58,10 @@ export default function Callback() {
               );
             });
           } else {
+            await getOrderByInvoiceNumberAndPaymentIdAndDeleteOrder({
+              invoiceNumber: paymentData.merchantInvoiceNumber,
+              paymentId: paymentID,
+            });
             router.push(
               `/payment/failed?error=${
                 paymentData.statusMessage || "Payment execution failed"

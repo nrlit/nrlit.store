@@ -140,3 +140,33 @@ export const getOrderByInvoiceNumberAndPaymentIdAndUpdateIsPaidAndTransactionId 
       return false;
     }
   };
+
+export const getOrderByInvoiceNumberAndPaymentIdAndDeleteOrder = async ({
+  paymentId,
+  invoiceNumber,
+}: {
+  paymentId: string;
+  invoiceNumber: string;
+}) => {
+  try {
+    const order = await db.order.findFirst({
+      where: {
+        paymentId,
+        invoiceNumber,
+      },
+    });
+
+    if (order) {
+      await db.order.delete({
+        where: {
+          id: order.id,
+        },
+      });
+    }
+
+    return order;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
