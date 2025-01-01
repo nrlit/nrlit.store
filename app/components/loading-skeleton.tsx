@@ -25,7 +25,7 @@ export function LoadingSkeleton() {
       </nav> */}
 
       {/* Hero Section Loading State */}
-      <div className="relative">
+      {/* <div className="relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-20 text-center bg-gradient-to-b from-blue-500 to-blue-600 rounded-lg my-8 animate-pulse">
             <div className="flex flex-col items-center justify-center gap-4">
@@ -35,7 +35,7 @@ export function LoadingSkeleton() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Categories Loading State */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
