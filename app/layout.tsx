@@ -8,6 +8,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "@/components/ui/toaster";
 import { InstallPWA } from "./components/InstallPWA";
+import { AnimationWrapper } from "@/components/animation-wrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -102,15 +103,17 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <InstallPWA />
-            {children}
+            <AnimationWrapper>
+              <InstallPWA />
+              {children}
+              <Toaster />
+            </AnimationWrapper>
             {process.env.NODE_ENV !== "development" && (
               <>
                 <Analytics />
                 <SpeedInsights />
               </>
             )}
-            <Toaster />
           </ThemeProvider>
         </body>
       </html>
