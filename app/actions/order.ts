@@ -3,6 +3,10 @@
 import { CheckOutFormData } from "@/components/checkout-form";
 import { db } from "@/lib/db";
 import { OrderStatus } from "@prisma/client";
+import {
+  sendOrderConfirmationEmailToAdmin,
+  sendOrderConfirmationEmailToCustomer,
+} from "./email";
 
 export const createOrder = async ({
   values,
@@ -113,43 +117,79 @@ export const getOrderByInvoiceNumberAndPaymentIdAndUpdateIsPaidAndTransactionId 
     invoiceNumber: string;
     paymentId: string;
     transactionId: string;
-  }) => {
+  }): Promise<boolean> => {
     try {
       const order = await db.order.findFirst({
-        where: {
-          invoiceNumber,
-          paymentId,
-        },
+        where: { invoiceNumber, paymentId },
       });
 
-      if (order) {
-        await db.order.update({
-          where: {
-            id: order.id,
-          },
-          data: {
-            transactionId: transactionId,
-            isPaid: true,
-          },
-        });
+      if (!order) {
+        console.error("Order not found");
+        return false;
       }
 
-      return order;
+      const updatedOrder = await db.order.update({
+        where: { id: order.id },
+        data: { transactionId, isPaid: true },
+      });
+
+      if (!updatedOrder) {
+        console.error("Failed to update order");
+        return false;
+      }
+
+      const [product, user] = await Promise.all([
+        db.product.findFirst({ where: { id: updatedOrder.productId } }),
+        db.user.findFirst({ where: { clerkUserId: updatedOrder.userId } }),
+      ]);
+
+      if (!product || !user) {
+        console.error("Product or user not found");
+        return false;
+      }
+
+      const commonEmailData = {
+        productName: product.name,
+        productImage: product.image,
+        productSlug: product.slug,
+        variation: JSON.parse(updatedOrder.variation),
+        customerName: user.name ?? updatedOrder.orderEmail,
+        paidStatus: "Paid",
+        invoiceNumber: updatedOrder.invoiceNumber,
+        transactionNumber: updatedOrder.transactionId ?? transactionId,
+        orderEmail: updatedOrder.orderEmail,
+      };
+
+      await Promise.all([
+        sendOrderConfirmationEmailToCustomer(commonEmailData),
+        sendOrderConfirmationEmailToAdmin({
+          ...commonEmailData,
+          customerEmail: user.email,
+          customerPhone: updatedOrder.userContactNumber,
+          orderDate: updatedOrder.createdAt.toDateString(),
+          orderTime: updatedOrder.createdAt.toTimeString(),
+          paymentId: updatedOrder.paymentId ?? paymentId,
+          orderId: updatedOrder.id,
+          userId: user.id,
+          clerkId: user.clerkUserId,
+          productId: updatedOrder.productId,
+        }),
+      ]);
+
+      return true;
     } catch (error) {
-      console.error(error);
+      console.error("Error in processing order:", error);
       return false;
     }
   };
 
 export const getOrderByPaymentIdAndDeleteOrder = async (paymentId: string) => {
-  console.log("paymentId from actions", paymentId);
   try {
     const order = await db.order.findFirst({
       where: {
         paymentId,
       },
     });
-    console.log("order from actions", order);
 
     if (order) {
       await db.order.delete({
