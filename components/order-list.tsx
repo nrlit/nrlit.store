@@ -11,6 +11,7 @@ import { Order, OrderStatus } from "@prisma/client";
 import { currency } from "@/lib/constants";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { db } from "@/lib/db";
+import { PaymentButton } from "./payment-button";
 
 interface OrderListProps {
   orders: Order[];
@@ -36,15 +37,15 @@ export function OrderList({ orders }: OrderListProps) {
               <CardContent>
                 <dl className="grid grid-cols-2 gap-2 text-sm">
                   <div>
-                    <dt className="font-medium">Product</dt>
+                    <dt className="font-medium">Product:</dt>
                     <dd>{productName}</dd>
                   </div>
                   <div>
-                    <dt className="font-medium">Date</dt>
+                    <dt className="font-medium">Date:</dt>
                     <dd>{new Date(order.createdAt).toLocaleDateString()}</dd>
                   </div>
                   <div>
-                    <dt className="font-medium">Status</dt>
+                    <dt className="font-medium">Status:</dt>
                     <dd>
                       <Badge
                         variant={
@@ -60,19 +61,33 @@ export function OrderList({ orders }: OrderListProps) {
                     </dd>
                   </div>
                   <div>
-                    <dt className="font-medium">Validity</dt>
+                    <dt className="font-medium">Validity:</dt>
                     <dd>{variation.validity}</dd>
                   </div>
                   <div>
-                    <dt className="font-medium">Price</dt>
+                    <dt className="font-medium">Price:</dt>
                     <dd>
                       {currency}
                       {variation.price}
                     </dd>
                   </div>
                   <div>
-                    <dt className="font-medium">Transaction No.</dt>
-                    <dd>{order.transactionId}</dd>
+                    <dt className="font-medium">Payment:</dt>
+                    <dd>
+                      <Badge variant={order.isPaid ? "default" : "destructive"}>
+                        {order.isPaid ? "Paid" : "Unpaid"}
+                      </Badge>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="font-medium">Transaction No:</dt>
+                    <dd>
+                      {order.isPaid ? (
+                        order.transactionId
+                      ) : (
+                        <PaymentButton order={order} />
+                      )}
+                    </dd>
                   </div>
                 </dl>
               </CardContent>
@@ -92,6 +107,7 @@ export function OrderList({ orders }: OrderListProps) {
               <TableHead>Status</TableHead>
               <TableHead>Validity</TableHead>
               <TableHead>Price</TableHead>
+              <TableHead>Payment</TableHead>
               <TableHead>Transaction No.</TableHead>
             </TableRow>
           </TableHeader>
@@ -128,7 +144,18 @@ export function OrderList({ orders }: OrderListProps) {
                     {currency}
                     {variation.price}
                   </TableCell>
-                  <TableCell>{order.transactionId}</TableCell>
+                  <TableCell>
+                    <Badge variant={order.isPaid ? "default" : "destructive"}>
+                      {order.isPaid ? "Paid" : "Unpaid"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    {order.isPaid ? (
+                      order.transactionId
+                    ) : (
+                      <PaymentButton order={order} />
+                    )}
+                  </TableCell>
                 </TableRow>
               );
             })}

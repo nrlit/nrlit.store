@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import {
   generateAdminOrderNotificationEmail,
   generateCustomerOrderConfirmationEmail,
+  generateOrderStatusUpdateEmail,
 } from "@/lib/emailTemplate";
 import nodemailer from "nodemailer";
 
@@ -188,6 +189,61 @@ export const sendOrderConfirmationEmailToAdmin = async ({
           ? toAddresses
           : process.env.GMAIL_SMTP_USERNAME,
       subject: "New Order Notification",
+      html: mailHtml,
+    });
+
+    return { message: "Email sent successfully", success: true };
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return { message: "Failed to send email.", success: false };
+  }
+};
+
+export const sendOrderStatusUpdateEmail = async ({
+  productName,
+  productImage,
+  productSlug,
+  variation,
+  customerName,
+  invoiceNumber,
+  newStatus,
+  additionalInfo,
+  orderEmail,
+}: {
+  productName: string;
+  productImage: string;
+  productSlug: string;
+  variation: { price: number; validity: string };
+  customerName: string;
+  invoiceNumber: string;
+  newStatus: string;
+  additionalInfo?: string;
+  orderEmail: string;
+}) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.GMAIL_SMTP_USERNAME,
+      pass: process.env.GMAIL_SMTP_PASSWORD,
+    },
+  });
+
+  const mailHtml = generateOrderStatusUpdateEmail({
+    productName,
+    productImage,
+    productSlug,
+    variation,
+    customerName,
+    invoiceNumber,
+    newStatus,
+    additionalInfo,
+    orderEmail,
+  });
+  try {
+    await transporter.sendMail({
+      from: process.env.GMAIL_SMTP_USERNAME,
+      to: orderEmail,
+      subject: `Order Status Update: ${productName}`,
       html: mailHtml,
     });
 

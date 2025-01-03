@@ -7,6 +7,7 @@ import { OrderStatus } from "@prisma/client";
 import { getOrderByInvoiceNumber } from "@/app/actions/order";
 import { db } from "@/lib/db";
 import { currency } from "@/lib/constants";
+import { OrderActions } from "@/components/admin/order-actions";
 
 export default async function AdminOrderPage({
   params,
@@ -89,22 +90,32 @@ export default async function AdminOrderPage({
               </p>
             </div>
           </div>
-          <div>
-            <h3 className="font-semibold">Payment Information:</h3>
-            <p>Method: {order.paymentMethod}</p>
-            <p>Transaction ID: {order.transactionId}</p>
-            <p>Payment ID: {order.paymentId}</p>
-            <p>
-              Payment Status:{" "}
-              <Badge variant={order.isPaid ? "default" : "destructive"}>
-                {order.isPaid ? "Paid" : "Unpaid"}
-              </Badge>
-            </p>
-          </div>
-          <div>
-            <h3 className="font-semibold">Dates:</h3>
-            <p>Created: {new Date(order.createdAt).toLocaleString()}</p>
-            <p>Last Updated: {new Date(order.updatedAt).toLocaleString()}</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className=" flex flex-col gap-4">
+              <div>
+                <h3 className="font-semibold">Payment Information:</h3>
+                <p>Method: {order.paymentMethod}</p>
+                <p>Transaction ID: {order.transactionId}</p>
+                <p>Payment ID: {order.paymentId}</p>
+                <p>
+                  Payment Status:{" "}
+                  <Badge variant={order.isPaid ? "default" : "destructive"}>
+                    {order.isPaid ? "Paid" : "Unpaid"}
+                  </Badge>
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold">Dates:</h3>
+                <p>Created: {new Date(order.createdAt).toLocaleString()}</p>
+                <p>
+                  Last Updated: {new Date(order.updatedAt).toLocaleString()}
+                </p>
+              </div>
+            </div>
+            {order && product && user && (
+              <OrderActions order={order} product={product} user={user} />
+            )}
           </div>
         </CardContent>
       </Card>

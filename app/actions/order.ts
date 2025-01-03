@@ -124,7 +124,6 @@ export const getOrderByInvoiceNumberAndPaymentIdAndUpdateIsPaidAndTransactionId 
       });
 
       if (!order) {
-        console.error("Order not found");
         return false;
       }
 
@@ -134,7 +133,6 @@ export const getOrderByInvoiceNumberAndPaymentIdAndUpdateIsPaidAndTransactionId 
       });
 
       if (!updatedOrder) {
-        console.error("Failed to update order");
         return false;
       }
 
@@ -144,7 +142,6 @@ export const getOrderByInvoiceNumberAndPaymentIdAndUpdateIsPaidAndTransactionId 
       ]);
 
       if (!product || !user) {
-        console.error("Product or user not found");
         return false;
       }
 
@@ -178,7 +175,7 @@ export const getOrderByInvoiceNumberAndPaymentIdAndUpdateIsPaidAndTransactionId 
 
       return true;
     } catch (error) {
-      console.error("Error in processing order:", error);
+      console.error(error);
       return false;
     }
   };
@@ -200,6 +197,45 @@ export const getOrderByPaymentIdAndDeleteOrder = async (paymentId: string) => {
     }
 
     return order;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+export const updateOrderStatus = async ({
+  orderId,
+  newStatus,
+}: {
+  orderId: string;
+  newStatus: OrderStatus;
+}) => {
+  try {
+    const order = await db.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        orderStatus: newStatus,
+      },
+    });
+
+    return order;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+export const deleteOrder = async (orderId: string) => {
+  try {
+    await db.order.delete({
+      where: {
+        id: orderId,
+      },
+    });
+
+    return true;
   } catch (error) {
     console.error(error);
     return false;
