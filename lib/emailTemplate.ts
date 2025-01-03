@@ -440,9 +440,9 @@ export function generateOrderStatusUpdateEmail(orderData: {
                         <p style="color: #ffffff; margin: 0;">Validity: ${
                           variation.validity
                         }</p>
-                        <p style="color: #ffffff; margin: 5px 0 0;">Price: $${variation.price.toFixed(
-                          2
-                        )}</p>
+                        <p style="color: #ffffff; margin: 5px 0 0;">Price: ${currency}${variation.price.toFixed(
+    2
+  )}</p>
                         <p style="margin: 10px 0 0;">
                           <a href="${baseUrl}/products/${productSlug}" style="color: #3b82f6; text-decoration: none;">View Product</a>
                         </p>
@@ -492,6 +492,134 @@ export function generateOrderStatusUpdateEmail(orderData: {
         <tr>
           <td style="padding: 20px; text-align: center; background: linear-gradient(135deg, #1e3a8a, #3b82f6);">
             <p style="margin: 0; font-size: 14px; color: #ffffff;">Thank you for shopping with NRLIT Store!</p>
+            <p style="margin: 10px 0 0; font-size: 12px; color: #d1d5db;">© ${new Date().getFullYear()} NRLIT Store. All rights reserved.</p>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+  `;
+}
+
+export function generateRefundEmail(refundData: {
+  customerName: string;
+  orderNumber: string;
+  refundAmount: number;
+  refundReason: string;
+  productName: string;
+  productImage: string;
+  productSlug: string;
+  orderDate: string;
+  refundDate: string;
+  additionalInfo?: string;
+}) {
+  const {
+    customerName,
+    orderNumber,
+    refundAmount,
+    refundReason,
+    productName,
+    productImage,
+    productSlug,
+    orderDate,
+    refundDate,
+    additionalInfo,
+  } = refundData;
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://www.nrlit-store.com";
+
+  return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Refund Confirmation - NRLIT Store</title>
+    </head>
+    <body style="font-family: 'Arial', sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #1a1a1a; color: #e0e0e0;">
+      <table role="presentation" style="width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse; background-color: #2a2a2a; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);">
+        <tr>
+          <td style="padding: 40px 0; text-align: center; background: linear-gradient(135deg, #3b82f6, #1e3a8a);">
+            <h1 style="color: #ffffff; font-size: 32px; margin: 0; text-transform: uppercase; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">NRLIT Store</h1>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 30px;">
+            <h2 style="color: #3b82f6; font-size: 24px; margin: 0 0 20px; border-bottom: 2px solid #3b82f6; padding-bottom: 10px;">Refund Confirmation</h2>
+            <p style="color: #ffffff; font-size: 16px; margin-bottom: 20px;">Dear ${customerName},</p>
+            <p style="color: #ffffff; font-size: 16px; margin-bottom: 20px;">We're writing to confirm that your refund has been processed for your recent order.</p>
+            
+            <table role="presentation" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+              <tr>
+                <td style="padding: 15px; background-color: #3a3a3a; border-radius: 4px;">
+                  <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                      <td style="padding-right: 15px;">
+                        <img src="${productImage}" alt="${productName}" style="max-width: 150px; height: auto; border-radius: 4px;">
+                      </td>
+                      <td style="vertical-align: top;">
+                        <h3 style="color: #3b82f6; margin: 0 0 10px;">${productName}</h3>
+                        <p style="color: #ffffff; margin: 5px 0 0;">Refund Amount: ${currency}${refundAmount.toFixed(
+    2
+  )}</p>
+                        <p style="margin: 10px 0 0;">
+                          <a href="${baseUrl}/products/${productSlug}" style="color: #3b82f6; text-decoration: none;">View Product</a>
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            
+            <table role="presentation" style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #444444;">
+                  <strong style="color: #3b82f6; display: inline-block; width: 150px;">Order Number:</strong>
+                  <span style="color: #ffffff;">${orderNumber}</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #444444;">
+                  <strong style="color: #3b82f6; display: inline-block; width: 150px;">Order Date:</strong>
+                  <span style="color: #ffffff;">${orderDate}</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #444444;">
+                  <strong style="color: #3b82f6; display: inline-block; width: 150px;">Refund Date:</strong>
+                  <span style="color: #ffffff;">${refundDate}</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #444444;">
+                  <strong style="color: #3b82f6; display: inline-block; width: 150px;">Refund Reason:</strong>
+                  <span style="color: #ffffff;">${refundReason}</span>
+                </td>
+              </tr>
+            </table>
+
+            ${
+              additionalInfo
+                ? `
+            <p style="color: #ffffff; font-size: 16px; margin-top: 20px;">${additionalInfo}</p>
+            `
+                : ""
+            }
+
+            <p style="color: #ffffff; font-size: 16px; margin-top: 20px;">The refunded amount should appear in your account within 5-10 business days, depending on your payment method and financial institution.</p>
+
+            <p style="color: #ffffff; font-size: 16px; margin-top: 20px;">If you have any questions about this refund, please don't hesitate to contact our customer support team.</p>
+            
+            <p style="color: #ffffff; font-size: 16px; margin-top: 20px;">
+              <a href="${baseUrl}/orders" style="color: #3b82f6; text-decoration: none;">View your order history</a>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 20px; text-align: center; background: linear-gradient(135deg, #1e3a8a, #3b82f6);">
+            <p style="margin: 0; font-size: 14px; color: #ffffff;">Thank you for your understanding and continued support.</p>
             <p style="margin: 10px 0 0; font-size: 12px; color: #d1d5db;">© ${new Date().getFullYear()} NRLIT Store. All rights reserved.</p>
           </td>
         </tr>
