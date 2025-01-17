@@ -15,7 +15,6 @@ import { Button } from "./ui/button";
 import { ShareButton } from "./share-button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { sendGTMEvent } from "@next/third-parties/google";
 
 interface Props {
   id: string;
@@ -39,20 +38,6 @@ export function ProductSelectAndBuyAndShare({
   const { setProduct } = useCheckoutProductStore();
   const variants = JSON.parse(variations);
   const [variant, setVariant] = useState<string>("");
-
-  sendGTMEvent({
-    event: "view_item",
-    ecommerce: {
-      items: [
-        {
-          item_id: id,
-          item_name: name,
-          item_category: "category",
-          price: variants[0].price,
-        },
-      ],
-    },
-  });
 
   const handleBuyNow = () => {
     if (!variant) {
