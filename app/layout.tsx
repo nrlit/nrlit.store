@@ -4,7 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { dark } from "@clerk/themes";
-import { Analytics } from "@vercel/analytics/next";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "@/components/ui/toaster";
 import { InstallPWA } from "./components/InstallPWA";
@@ -102,12 +102,12 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-              <InstallPWA />
-              {children}
-              <Toaster />
+            <InstallPWA />
+            <GoogleTagManager gtmId={process.env.GTM_ID! as string} />
+            {children}
+            <Toaster />
             {process.env.NODE_ENV !== "development" && (
               <>
-                <Analytics />
                 <SpeedInsights />
               </>
             )}
