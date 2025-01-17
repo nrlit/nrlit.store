@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { registerServiceWorker } from "../pwa";
-import { sendGTMEvent } from "@next/third-parties/google";
 
 export default function ServiceWorkerRegistration() {
   useEffect(() => {
@@ -20,8 +19,6 @@ export default function ServiceWorkerRegistration() {
       "See %chttps://nrlit.store/security-warning",
       "color: #00aaff; text-decoration: underline; font-size: 20px;"
     );
-
-    sendGTMEvent("service-worker-registered");
   }, []);
 
   return null;
