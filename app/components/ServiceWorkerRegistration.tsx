@@ -21,7 +21,7 @@ export default function ServiceWorkerRegistration() {
       "color: #00aaff; text-decoration: underline; font-size: 20px;"
     );
 
-    sendGTMEvent("page_view");
+    sendGTMEvent("service-worker-registered");
   }, []);
 
   return null;
