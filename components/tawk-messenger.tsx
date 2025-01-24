@@ -29,8 +29,8 @@ export default function TawkMessenger() {
 
   return (
     <TawkMessengerReact
-      propertyId="679362333a8427326074551f"
-      widgetId="1iibrf6ej"
+      propertyId={process.env.TAWK_PROPERTY_ID!}
+      widgetId={process.env.TAWK_WIDGET_ID!}
       onLoad={onLoad}
       onStatusChange={onStatusChange}
       onChatStarted={onChatStarted}
