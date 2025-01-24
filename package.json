@@ -31,6 +31,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-switch": "^1.1.2",
     "@radix-ui/react-toast": "^1.2.4",
+    "@tawk.to/tawk-messenger-react": "^2.0.2",
     "@types/nodemailer": "^6.4.17",
     "@vercel/speed-insights": "^1.1.0",
     "apexcharts": "^4.3.0",
