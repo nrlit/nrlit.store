@@ -8,7 +8,6 @@ import { dark } from "@clerk/themes";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "@/components/ui/toaster";
 import { InstallPWA } from "./components/InstallPWA";
-import FacebookPixel from "@/components/FacebookPixel";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -106,7 +105,6 @@ export default function RootLayout({
             <InstallPWA />
             {/* <GoogleTagManager gtmId={process.env.GTM_ID! as string} /> */}
             {children}
-            <FacebookPixel />
             <Toaster />
             {process.env.NODE_ENV !== "development" && (
               <>

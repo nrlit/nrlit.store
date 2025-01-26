@@ -13,11 +13,13 @@ interface EventOptions {
   num_items?: number
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const sendEvent = (eventName: string, options: EventOptions, userData: any = {}) => {
   // Generate a unique event ID for deduplication
   const eventId = uuidv4()
 
   // Client-side tracking
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   event(eventName as any, { ...options, eventID: eventId })
 
   // Server-side tracking

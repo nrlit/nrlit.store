@@ -2,6 +2,7 @@
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fbq: any;
   }
 }
@@ -22,6 +23,7 @@ export const pageview = (url: string) => {
   });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const event = <T extends Record<string, any>>(
   name: FacebookEventType,
   options: T = {} as T
