@@ -2,7 +2,7 @@ import crypto from "crypto";
 
 const FACEBOOK_ACCESS_TOKEN =
   process.env.FACEBOOK_CAPI_TOKEN! ||
-  "EAAISBkSsO1QBOxLgEV3yfWN63rBsi9pt5wezD6BtrT8ZAPBtSH4xtIYVFE8nZBPFG7v7QpwZCLm4469K8vT6iJT1ug5QNDIVmS7rrDtc3ktOKNacG1tooZB8krEVQedlSx1pqs6ztdLDhBV3MPLh9CovcueLhyv6EcvJXYojec17h4JkS0SbDzqSKJbZBNiue1AZDZD"; // Replace with your actual access token
+  "EAAISBkSsO1QBO6utNHEdtR75hZCjQ2TG6yU9wn6acpMjLDqZAPzp9JFyiFjOzlMpW8XA1wpOXMHyVPuryKofciLo5IWqQe5uYR1ZCX8GYlmyHdIFdXU3rYZBC50bveQtpesRBcw6jhTZCc73LSQ4ZBAaMWqZAZBDZCbmntq1M5Q2dRzmj08WlXtmhCFztZA8ZA7rTmqBgZDZD"; // Replace with your actual access token
 const FB_PIXEL_ID = process.env.FACEBOOK_PIXEL_ID! || "523534143408812"; // Replace with your actual Pixel ID
 
 interface UserData {
