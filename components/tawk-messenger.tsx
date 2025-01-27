@@ -2,10 +2,13 @@
 
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 
-export default function TawkMessenger() {
-  const propertyID =
-    process.env.TAWK_PROPERTY_ID! || "679362333a8427326074551f";
-  const widgetID = process.env.TAWK_WIDGET_ID! || "1iibrf6ej";
+export default function TawkMessenger({
+  propertyID,
+  widgetID,
+}: {
+  propertyID: string;
+  widgetID: string;
+}) {
 
   // const onLoad = () => {
   //   console.log("Chat widget loaded!");

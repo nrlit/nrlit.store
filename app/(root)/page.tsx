@@ -6,8 +6,12 @@ import { LoadingSkeleton } from "@/app/components/loading-skeleton";
 import { Suspense } from "react";
 import ClientOnly from "../components/ClientOnly";
 import ServiceWorkerRegistration from "../components/ServiceWorkerRegistration";
+import TawkMessenger from "@/components/tawk-messenger";
 
 export default async function Home() {
+  const tawkPropertyId = process.env.TAWK_PROPERTY_ID!;
+  const tawkWidgetId = process.env.TAWK_WIDGET_ID!;
+
   return (
     <div className="flex flex-col min-h-screen">
       <Hero />
@@ -18,6 +22,7 @@ export default async function Home() {
 
         <CategoryProducts />
         <ClientOnly>
+          <TawkMessenger propertyID={tawkPropertyId} widgetID={tawkWidgetId} />
           <ServiceWorkerRegistration />
         </ClientOnly>
       </Suspense>
