@@ -13,9 +13,8 @@ import { useRouter } from "next/navigation";
 import { useCheckoutProductStore } from "@/stores/checkout-product-store";
 import { Button } from "./ui/button";
 import { ShareButton } from "./share-button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { addToCart, contentView } from "@/utils/facebookEvents";
 
 interface Props {
   id: string;
@@ -40,11 +39,6 @@ export function ProductSelectAndBuyAndShare({
   const variants = JSON.parse(variations);
   const [variant, setVariant] = useState<string>("");
 
-  // Facebook event for product view
-  useEffect(() => {
-    contentView(name, id, "product");
-  }, [id, name]);
-
   const handleBuyNow = () => {
     if (!variant) {
       toast({
@@ -60,9 +54,6 @@ export function ProductSelectAndBuyAndShare({
       });
     } else {
       setProduct({ name, id, variant, image, userId });
-      const price = JSON.parse(variant).price;
-      // Facebook event for add to cart
-      addToCart(name, id, price, "BDT", 1);
       router.push("/checkout");
     }
   };

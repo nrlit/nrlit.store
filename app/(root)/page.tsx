@@ -6,7 +6,6 @@ import { LoadingSkeleton } from "@/app/components/loading-skeleton";
 import { Suspense } from "react";
 import ClientOnly from "../components/ClientOnly";
 import ServiceWorkerRegistration from "../components/ServiceWorkerRegistration";
-import FacebookPixel from "@/components/FacebookPixel";
 
 export default async function Home() {
   return (
@@ -19,7 +18,6 @@ export default async function Home() {
 
         <CategoryProducts />
         <ClientOnly>
-          <FacebookPixel />
           <ServiceWorkerRegistration />
         </ClientOnly>
       </Suspense>
