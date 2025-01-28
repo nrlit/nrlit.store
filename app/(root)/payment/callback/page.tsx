@@ -92,6 +92,8 @@ export default function Callback() {
                     value: variant.price,
                     content_type: "product",
                     content_name: product.name,
+                    order_id: order.invoiceNumber,
+                    transaction_id: paymentData.trxID,
                     content_id: order.productId,
                     content_category: product.category,
                   });
