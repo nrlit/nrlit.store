@@ -152,6 +152,7 @@ export default async function ProductPage({
               name={product.name}
               variations={product.variations}
               image={product.image}
+              category={product.category}
               metaDescription={product.metaDescription}
               userId={user?.id ?? ""}
             />

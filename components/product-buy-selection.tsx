@@ -13,14 +13,16 @@ import { useRouter } from "next/navigation";
 import { useCheckoutProductStore } from "@/stores/checkout-product-store";
 import { Button } from "./ui/button";
 import { ShareButton } from "./share-button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { sendGTMEvent } from "@next/third-parties/google";
 
 interface Props {
   id: string;
   name: string;
   variations: string;
   image: string;
+  category: string;
   metaDescription: string;
   userId: string;
 }
@@ -30,6 +32,7 @@ export function ProductSelectAndBuyAndShare({
   name,
   variations,
   image,
+  category,
   metaDescription,
   userId,
 }: Props) {
@@ -38,6 +41,23 @@ export function ProductSelectAndBuyAndShare({
   const { setProduct } = useCheckoutProductStore();
   const variants = JSON.parse(variations);
   const [variant, setVariant] = useState<string>("");
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: "view_content",
+      ecommerce: {
+        currencyCode: "BDT",
+        detail: {
+          product: {
+            id: id,
+            name: name,
+            category: category,
+            price: variants[0].price,
+          }
+        }
+      }
+    })
+  }, [category, id, name, variants]);
 
   const handleBuyNow = () => {
     if (!variant) {
