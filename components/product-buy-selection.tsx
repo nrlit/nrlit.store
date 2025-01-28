@@ -111,6 +111,55 @@ export function ProductSelectAndBuyAndShare({
       });
     } else {
       setProduct({ name, id, variant, image, userId });
+
+      // GTM Event
+      const rawVariant = JSON.parse(variant);
+      function refineProductsArray({
+        products,
+        product,
+      }: {
+        products: Product[];
+        product: Product;
+      }) {
+        const index = products.findIndex((item) => item.id === product.id);
+
+        if (index !== -1) {
+          const [existingProduct] = products.splice(index, 1);
+          products.unshift(existingProduct);
+        } else {
+          products.unshift(product);
+        }
+
+        const mapedProducts = products.map((product) => {
+          return {
+            id: product.id,
+            name: product.name,
+            category: product.category,
+            variants: JSON.parse(product.variations),
+          };
+        });
+
+        return mapedProducts;
+      }
+
+      const refinedContents = refineProductsArray({
+        products: recommendedProducts,
+        product: currentProduct,
+      });
+
+      const refinedContentsIds = refinedContents.map((product) => product.id);
+
+      sendGTMEvent({
+        event: "add_to_cart",
+        content_id: id,
+        content_type: "product",
+        currency: "BDT",
+        value: rawVariant.price,
+        content_name: name,
+        content_category: category,
+        contents: refinedContents,
+        content_ids: refinedContentsIds,
+      });
       router.push("/checkout");
     }
   };
