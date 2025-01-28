@@ -27,6 +27,7 @@ import {
   getOrderByInvoiceNumberAndUpdatePaymentId,
 } from "@/app/actions/order";
 import { bkashCreatePayment, bkashGrantToken } from "@/app/actions/bkash";
+import { sendGTMEvent } from "@next/third-parties/google";
 
 export type CheckOutFormData = z.infer<typeof formSchema>;
 
@@ -122,6 +123,25 @@ export function CheckoutForm({ email }: { email: string }) {
                 });
 
               if (updatePaymentId) {
+                // GTM Event
+                const rawVariant = JSON.parse(product.variant);
+                sendGTMEvent({
+                  event: "initiate_checkout",
+                  content_ids: [product.id],
+                  contents: [
+                    {
+                      id: product.id,
+                      name: product.name,
+                      price: rawVariant.price,
+                    },
+                  ],
+                  currency: "BDT",
+                  num_items: 1,
+                  value: rawVariant.price,
+                  content_type: "product",
+                  content_name: product.name,
+                  content_id: product.id,
+                });
                 // Redirect to bKash Payment Page
                 window.location.href = createPaymentResponse.bkashURL;
               } else {
