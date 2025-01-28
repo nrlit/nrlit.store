@@ -241,3 +241,25 @@ export const deleteOrder = async (orderId: string) => {
     return false;
   }
 };
+
+export const getOrderByInvoiceNumberAndPaymentId = async ({
+  invoiceId,
+  paymentId,
+}: {
+  invoiceId: string;
+  paymentId: string;
+}) => {
+  try {
+    const order = await db.order.findFirst({
+      where: {
+        invoiceNumber: invoiceId,
+        paymentId: paymentId,
+      },
+    });
+
+    return order;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};

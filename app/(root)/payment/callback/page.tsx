@@ -8,7 +8,10 @@ import { Loader2 } from "lucide-react";
 import {
   getOrderByPaymentIdAndDeleteOrder,
   getOrderByInvoiceNumberAndPaymentIdAndUpdateIsPaidAndTransactionId,
+  getOrderByInvoiceNumberAndPaymentId,
 } from "@/app/actions/order";
+import { sendGTMEvent } from "@next/third-parties/google";
+import { getProductById } from "@/app/actions/product";
 
 export default function Callback() {
   const searchParams = useSearchParams();
@@ -64,7 +67,36 @@ export default function Callback() {
                 paymentId: paymentID,
                 transactionId: paymentData.trxID,
               }
-            ).then(() => {
+            ).then(async () => {
+              const order = await getOrderByInvoiceNumberAndPaymentId({
+                invoiceId: paymentData.merchantInvoiceNumber,
+                paymentId: paymentData.paymentID,
+              });
+              if (order) {
+                const product = await getProductById(order.productId);
+                if (product) {
+                  const variant = await JSON.parse(order.variation);
+                  sendGTMEvent({
+                    event: "purchase",
+                    content_ids: [order.productId],
+                    contents: [
+                      {
+                        id: order.productId,
+                        name: product.name,
+                        category: product.category,
+                        price: variant.price,
+                      },
+                    ],
+                    currency: "BDT",
+                    num_items: 1,
+                    value: variant.price,
+                    content_type: "product",
+                    content_name: product.name,
+                    content_id: order.productId,
+                    content_category: product.category,
+                  });
+                }
+              }
               router.push(
                 `/payment/success?trxID=${paymentData.trxID}&amount=${paymentData.amount}&paymentID=${paymentData.paymentID}`
               );
