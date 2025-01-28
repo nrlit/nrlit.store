@@ -8,7 +8,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "@/components/ui/toaster";
 import { InstallPWA } from "./components/InstallPWA";
-import TagManager from "./components/TagManager";
+import ClientOnly from "./components/ClientOnly";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -106,7 +107,9 @@ export default function RootLayout({
             <InstallPWA />
             {children}
             <Toaster />
-            <TagManager />
+            <ClientOnly>
+              <GoogleTagManager gtmId={process.env.GTM_ID! as string} />
+            </ClientOnly>
             {process.env.NODE_ENV !== "development" && (
               <>
                 <SpeedInsights />
