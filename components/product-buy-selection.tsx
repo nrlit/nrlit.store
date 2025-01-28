@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { useCheckoutProductStore } from "@/stores/checkout-product-store";
 import { Button } from "./ui/button";
 import { ShareButton } from "./share-button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { sendGTMEvent } from "@next/third-parties/google";
 import { Product } from "@prisma/client";
@@ -47,54 +47,52 @@ export function ProductSelectAndBuyAndShare({
   const variants = JSON.parse(variations);
   const [variant, setVariant] = useState<string>("");
 
-  useEffect(() => {
-    function refineProductsArray({
-      products,
-      product,
-    }: {
-      products: Product[];
-      product: Product;
-    }) {
-      const index = products.findIndex((item) => item.id === product.id);
+  function refineProductsArray({
+    products,
+    product,
+  }: {
+    products: Product[];
+    product: Product;
+  }) {
+    const index = products.findIndex((item) => item.id === product.id);
 
-      if (index !== -1) {
-        const [existingProduct] = products.splice(index, 1);
-        products.unshift(existingProduct);
-      } else {
-        products.unshift(product);
-      }
-
-      const mapedProducts = products.map((product) => {
-        return {
-          id: product.id,
-          name: product.name,
-          category: product.category,
-          variants: JSON.parse(product.variations),
-        };
-      });
-
-      return mapedProducts;
+    if (index !== -1) {
+      const [existingProduct] = products.splice(index, 1);
+      products.unshift(existingProduct);
+    } else {
+      products.unshift(product);
     }
 
-    const refinedContents = refineProductsArray({
-      products: recommendedProducts,
-      product: currentProduct,
+    const mapedProducts = products.map((product) => {
+      return {
+        id: product.id,
+        name: product.name,
+        category: product.category,
+        variants: JSON.parse(product.variations),
+      };
     });
 
-    const refinedContentsIds = refinedContents.map((product) => product.id);
+    return mapedProducts;
+  }
 
-    sendGTMEvent({
-      event: "view_content",
-      content_id: id,
-      content_type: "product",
-      currency: "BDT",
-      value: variants[0].price,
-      content_name: name,
-      content_category: category,
-      contents: refinedContents,
-      content_ids: refinedContentsIds,
-    });
-  }, [category, currentProduct, id, name, recommendedProducts, variants]);
+  const refinedContents = refineProductsArray({
+    products: recommendedProducts,
+    product: currentProduct,
+  });
+
+  const refinedContentsIds = refinedContents.map((product) => product.id);
+
+  sendGTMEvent({
+    event: "view_content",
+    content_id: id,
+    content_type: "product",
+    currency: "BDT",
+    value: variants[0].price,
+    content_name: name,
+    content_category: category,
+    contents: refinedContents,
+    content_ids: refinedContentsIds,
+  });
 
   const handleBuyNow = () => {
     if (!variant) {
