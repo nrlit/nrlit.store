@@ -81,6 +81,8 @@ export function ProductSelectAndBuyAndShare({
       product: currentProduct,
     });
 
+    const refinedContentsIds = refinedContents.map((product) => product.id);
+
     sendGTMEvent({
       event: "view_content",
       content_id: id,
@@ -90,6 +92,7 @@ export function ProductSelectAndBuyAndShare({
       content_name: name,
       content_category: category,
       contents: refinedContents,
+      content_ids: refinedContentsIds,
     });
   }, [category, currentProduct, id, name, recommendedProducts, variants]);
 
