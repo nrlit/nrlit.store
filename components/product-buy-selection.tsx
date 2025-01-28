@@ -45,15 +45,17 @@ export function ProductSelectAndBuyAndShare({
   useEffect(() => {
     sendGTMEvent({
       event: "view_content",
+      content_ids: [id],
+      content_type: "product",
+      contents: [
+        { id, name, image, category, metaDescription, variants: [...variants] },
+      ],
       currency: "BDT",
-      product: {
-        content_ids: [id],
-        content_name: name,
-        content_category: category,
-        value: variants[0].price,
-      },
+      value: variants[0].price,
+      content_name: name,
+      content_category: category,
     });
-  }, [category, id, name, variants]);
+  }, [category, id, image, metaDescription, name, variants]);
 
   const handleBuyNow = () => {
     if (!variant) {
