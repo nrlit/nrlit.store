@@ -49,14 +49,15 @@ export function ProductSelectAndBuyAndShare({
         currencyCode: "BDT",
         detail: {
           product: {
-            id: id,
-            name: name,
-            category: category,
-            price: variants[0].price,
-          }
-        }
-      }
-    })
+            content_ids: [id],
+            content_name: name,
+            content_category: category,
+            value: variants[0].price,
+            currencyCode: "BDT",
+          },
+        },
+      },
+    });
   }, [category, id, name, variants]);
 
   const handleBuyNow = () => {
