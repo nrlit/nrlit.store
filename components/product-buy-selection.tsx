@@ -45,17 +45,12 @@ export function ProductSelectAndBuyAndShare({
   useEffect(() => {
     sendGTMEvent({
       event: "view_content",
-      ecommerce: {
-        currencyCode: "BDT",
-        detail: {
-          product: {
-            content_ids: [id],
-            content_name: name,
-            content_category: category,
-            value: variants[0].price,
-            currencyCode: "BDT",
-          },
-        },
+      currency: "BDT",
+      product: {
+        content_ids: [id],
+        content_name: name,
+        content_category: category,
+        value: variants[0].price,
       },
     });
   }, [category, id, name, variants]);
