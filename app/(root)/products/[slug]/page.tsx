@@ -155,6 +155,8 @@ export default async function ProductPage({
               category={product.category}
               metaDescription={product.metaDescription}
               userId={user?.id ?? ""}
+              recommendedProducts={recommendedProducts}
+              currentProduct={product}
             />
             <div className="text-sm text-muted-foreground">
               <p>
