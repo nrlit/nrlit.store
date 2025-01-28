@@ -5,8 +5,10 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { dark } from "@clerk/themes";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "@/components/ui/toaster";
 import { InstallPWA } from "./components/InstallPWA";
+import TagManager from "./components/TagManager";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -104,9 +106,11 @@ export default function RootLayout({
             <InstallPWA />
             {children}
             <Toaster />
+            <TagManager />
             {process.env.NODE_ENV !== "development" && (
               <>
                 <SpeedInsights />
+                <Analytics />
               </>
             )}
           </ThemeProvider>
