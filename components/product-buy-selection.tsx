@@ -47,15 +47,13 @@ export function ProductSelectAndBuyAndShare({
       event: "view_content",
       content_ids: [id],
       content_type: "product",
-      contents: [
-        { id, name, image, category, metaDescription, variants: [...variants] },
-      ],
+      contents: [{ id, name, category, variants: [...variants] }],
       currency: "BDT",
       value: variants[0].price,
       content_name: name,
       content_category: category,
     });
-  }, [category, id, image, metaDescription, name, variants]);
+  }, [category, id, name, variants]);
 
   const handleBuyNow = () => {
     if (!variant) {
