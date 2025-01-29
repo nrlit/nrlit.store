@@ -117,7 +117,7 @@ export function InstallPWA() {
 
     // Debug: Log when display mode changes
     const displayModeHandler = () => {
-      console.log("Display mode changed");
+      // console.log("Display mode changed");
       checkInstallState();
     };
     window

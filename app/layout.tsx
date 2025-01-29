@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { InstallPWA } from "./components/InstallPWA";
 import ClientOnly from "./components/ClientOnly";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import TawkMessenger from "@/components/tawk-messenger";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -80,6 +81,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const tawkPropertyId = process.env.TAWK_PROPERTY_ID!;
+  const tawkWidgetId = process.env.TAWK_WIDGET_ID!;
   return (
     <ClerkProvider
       appearance={{
@@ -109,6 +112,10 @@ export default function RootLayout({
             <Toaster />
             <ClientOnly>
               <GoogleTagManager gtmId={process.env.GTM_ID! as string} />
+              <TawkMessenger
+                propertyID={tawkPropertyId}
+                widgetID={tawkWidgetId}
+              />
             </ClientOnly>
             {process.env.NODE_ENV !== "development" && (
               <>

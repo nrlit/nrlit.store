@@ -10,40 +10,40 @@ export default function TawkMessenger({
   widgetID: string;
 }) {
 
-  // const onLoad = () => {
-  //   console.log("Chat widget loaded!");
-  // };
+  const onLoad = () => {
+    console.log("Chat widget loaded!");
+  };
 
-  // const onStatusChange = (status: string) => {
-  //   console.log("Chat status changed:", status);
-  // };
+  const onStatusChange = (status: string) => {
+    console.log("Chat status changed:", status);
+  };
 
-  // const onChatStarted = () => {
-  //   console.log("Chat started");
-  // };
+  const onChatStarted = () => {
+    console.log("Chat started");
+  };
 
-  // const onChatEnded = () => {
-  //   console.log("Chat ended");
-  // };
+  const onChatEnded = () => {
+    console.log("Chat ended");
+  };
 
-  // const onPrechatSubmit = (data: Record<string, unknown>) => {
-  //   console.log("Prechat data submitted:", data);
-  // };
+  const onPrechatSubmit = (data: Record<string, unknown>) => {
+    console.log("Prechat data submitted:", data);
+  };
 
-  // const onOfflineSubmit = (data: Record<string, unknown>) => {
-  //   console.log("Offline message submitted:", data);
-  // };
+  const onOfflineSubmit = (data: Record<string, unknown>) => {
+    console.log("Offline message submitted:", data);
+  };
 
   return (
     <TawkMessengerReact
       propertyId={propertyID}
       widgetId={widgetID}
-      // onLoad={onLoad}
-      // onStatusChange={onStatusChange}
-      // onChatStarted={onChatStarted}
-      // onChatEnded={onChatEnded}
-      // onPrechatSubmit={onPrechatSubmit}
-      // onOfflineSubmit={onOfflineSubmit}
+      onLoad={onLoad}
+      onStatusChange={onStatusChange}
+      onChatStarted={onChatStarted}
+      onChatEnded={onChatEnded}
+      onPrechatSubmit={onPrechatSubmit}
+      onOfflineSubmit={onOfflineSubmit}
       customStyle={{
         visibility: {
           desktop: {
