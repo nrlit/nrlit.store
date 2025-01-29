@@ -7,13 +7,11 @@ const nextConfig: NextConfig = {
   },
   // Remove optimizeCss from experimental as it's causing issues
   experimental: {
-    turbo: {
-      rules: {
-        // Add any custom rules here if needed
-      },
-    },
+    // Enable detailed attribution for Core Web Vitals
+    webVitalsAttribution: ["CLS", "LCP", "FCP", "INP", "TTFB"],
   },
   images: {
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",

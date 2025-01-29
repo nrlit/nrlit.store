@@ -4,21 +4,44 @@ import { useReportWebVitals } from "next/web-vitals";
 
 export function WebVitals() {
   useReportWebVitals((metric) => {
-    const { id, name, label, value } = metric;
+    const { name, value, id } = metric;
 
-    // GA4 Measurement Protocol
-    if (typeof window !== "undefined" && window.gtag) {
-      window.gtag("event", name, {
-        // GA4 automatically receives these parameters
-        value: Math.round(name === "CLS" ? value * 1000 : value),
-        metric_id: id,
-        metric_value: value,
-        metric_delta: value,
-        metric_label: label,
-        // Custom dimensions
-        store: "nrlit.store",
-        secure: window.location.protocol === "https:",
-        page_path: window.location.pathname,
+    // Log metrics that match PageSpeed Insights
+    switch (name) {
+      case "LCP":
+        console.log(`Largest Contentful Paint: ${value}`);
+        break;
+      case "INP":
+        console.log(`Interaction to Next Paint: ${value}`);
+        break;
+      case "CLS":
+        console.log(`Cumulative Layout Shift: ${value}`);
+        break;
+      case "FCP":
+        console.log(`First Contentful Paint: ${value}`);
+        break;
+      case "TTFB":
+        console.log(`Time to First Byte: ${value}`);
+        break;
+    }
+
+    // Send to analytics endpoint
+    const analyticsEndpoint = "/api/vitals";
+    const body = {
+      id,
+      name,
+      value,
+      timestamp: Date.now(),
+    };
+
+    // Use `navigator.sendBeacon()` if available
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(analyticsEndpoint, JSON.stringify(body));
+    } else {
+      fetch(analyticsEndpoint, {
+        body: JSON.stringify(body),
+        method: "POST",
+        keepalive: true,
       });
     }
   });
