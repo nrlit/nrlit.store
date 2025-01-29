@@ -109,12 +109,12 @@ export default function RootLayout({
             <Toaster />
             <ClientOnly>
               <GoogleTagManager gtmId={process.env.GTM_ID! as string} />
-              <GoogleAnalytics gaId={process.env.GA4_ID! as string} />
             </ClientOnly>
             {process.env.NODE_ENV !== "development" && (
               <>
                 <SpeedInsights />
                 <Analytics />
+                <GoogleAnalytics gaId={process.env.GA4_ID! as string} />
               </>
             )}
           </ThemeProvider>
