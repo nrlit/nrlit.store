@@ -9,7 +9,6 @@ export default function TawkMessenger({
   propertyID: string;
   widgetID: string;
 }) {
-
   const onLoad = () => {
     console.log("Chat widget loaded!");
   };
@@ -34,6 +33,10 @@ export default function TawkMessenger({
     console.log("Offline message submitted:", data);
   };
 
+  const onBeforeLoad = () => {
+    console.log("Chat widget is about to load");
+  };
+
   return (
     <TawkMessengerReact
       propertyId={propertyID}
@@ -44,6 +47,7 @@ export default function TawkMessenger({
       onChatEnded={onChatEnded}
       onPrechatSubmit={onPrechatSubmit}
       onOfflineSubmit={onOfflineSubmit}
+      onBeforeLoad={onBeforeLoad}
       customStyle={{
         visibility: {
           desktop: {
