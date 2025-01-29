@@ -15,7 +15,7 @@ export default function robots(): MetadataRoute.Robots {
           '/checkout',
           '/user-profile',
           '/payment',
-          '/*?*', // Disallow all URL parameters
+          // '/*?*', // Disallow all URL parameters
         ]
       },
     ],
