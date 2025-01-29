@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 
 export default function TawkMessenger({
@@ -10,18 +9,6 @@ export default function TawkMessenger({
   propertyID: string;
   widgetID: string;
 }) {
-  const [error, setError] = useState<Error | null>(null);
-
-  const handleError = (err: Error) => {
-    console.error("Tawk messenger error:", err);
-    setError(err);
-  };
-
-  if (error) {
-    console.error("Failed to load Tawk messenger:", error);
-    return null; // Fail silently in production
-  }
-
   const onLoad = () => {
     console.log("Chat widget loaded!");
   };
@@ -107,7 +94,6 @@ export default function TawkMessenger({
       propertyId={propertyID}
       widgetId={widgetID}
       onLoad={onLoad}
-      onError={handleError}
       onStatusChange={onStatusChange}
       onChatStarted={onChatStarted}
       onChatEnded={onChatEnded}
