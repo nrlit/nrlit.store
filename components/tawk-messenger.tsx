@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { useUser } from "@clerk/nextjs";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 
 export default function TawkMessenger({
@@ -9,9 +11,29 @@ export default function TawkMessenger({
   propertyID: string;
   widgetID: string;
 }) {
-  const onLoad = () => {
-    console.log("Chat widget loaded!");
+  const { user, isLoaded } = useUser();
+  const [error, setError] = useState<Error | null>(null);
+
+  const handleError = (err: Error) => {
+    console.error("Tawk messenger error:", err);
+    setError(err);
   };
+
+  const handleLoad = () => {
+    // Set visitor information if user is logged in
+    if (isLoaded && user) {
+      window.Tawk_API?.setAttributes({
+        name: user.fullName || "Guest",
+        email: user.primaryEmailAddress?.emailAddress || "",
+        id: user.id,
+      });
+    }
+  };
+
+  if (error) {
+    console.error("Failed to load Tawk messenger:", error);
+    return null; // Fail silently in production
+  }
 
   const onStatusChange = (status: string) => {
     console.log("Chat status changed:", status);
@@ -93,7 +115,8 @@ export default function TawkMessenger({
     <TawkMessengerReact
       propertyId={propertyID}
       widgetId={widgetID}
-      onLoad={onLoad}
+      onLoad={handleLoad}
+      onError={handleError}
       onStatusChange={onStatusChange}
       onChatStarted={onChatStarted}
       onChatEnded={onChatEnded}

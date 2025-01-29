@@ -20,6 +20,7 @@ declare module "@tawk.to/tawk-messenger-react" {
       };
     };
     onLoad?: () => void;
+    onError?: (error: Error) => void;
     onStatusChange?: (status: string) => void;
     onChatMaximized?: () => void;
     onChatMinimized?: () => void;
