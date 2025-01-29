@@ -39,6 +39,7 @@ declare module "@tawk.to/tawk-messenger-react" {
     onVisitorNameChanged?: (visitorName: string) => void;
     onFileUpload?: (link: string) => void;
     onTagsUpdated?: (tags: string[]) => void;
+    ref?: React.Ref<unknown>;
   }
 
   const TawkMessengerReact: ComponentType<TawkMessengerProps>;
