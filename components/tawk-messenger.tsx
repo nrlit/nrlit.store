@@ -37,6 +37,18 @@ export default function TawkMessenger({
     console.log("Chat widget is about to load");
   };
 
+  const onUnreadCountChanged = (unreadCount: number) => {
+    console.log("Unread count changed:", unreadCount);
+  };
+
+  const onChatMinimized = () => {
+    console.log("Chat minimized");
+  };
+
+  const onChatMaximized = () => {
+    console.log("Chat maximized");
+  };
+
   return (
     <TawkMessengerReact
       propertyId={propertyID}
@@ -48,6 +60,9 @@ export default function TawkMessenger({
       onPrechatSubmit={onPrechatSubmit}
       onOfflineSubmit={onOfflineSubmit}
       onBeforeLoad={onBeforeLoad}
+      onUnreadCountChanged={onUnreadCountChanged}
+      onChatMinimized={onChatMinimized}
+      onChatMaximized={onChatMaximized}
       customStyle={{
         visibility: {
           desktop: {

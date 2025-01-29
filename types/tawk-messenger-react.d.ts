@@ -27,6 +27,7 @@ declare module "@tawk.to/tawk-messenger-react" {
     onChatStarted?: () => void;
     onChatEnded?: () => void;
     onBeforeLoad?: () => void;
+    onUnreadCountChanged?: (unreadCount: number) => void;
     onPrechatSubmit?: (data: Record<string, unknown>) => void;
     onOfflineSubmit?: (data: Record<string, unknown>) => void;
     onChatMessageVisitor?: (message: string) => void;
