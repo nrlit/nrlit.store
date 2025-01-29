@@ -11,6 +11,7 @@ import { InstallPWA } from "./components/InstallPWA";
 import ClientOnly from "./components/ClientOnly";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import TawkMessenger from "@/components/tawk-messenger";
+import { WebVitals } from "@/components/web-vitals";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -122,6 +123,7 @@ export default function RootLayout({
                 <SpeedInsights />
                 <Analytics />
                 <GoogleAnalytics gaId={process.env.GA4_ID! as string} />
+                <WebVitals />
               </>
             )}
           </ThemeProvider>
