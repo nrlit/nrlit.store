@@ -1,23 +1,6 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
-import { RefObject, useRef } from "react";
-
-interface TawkVisitorData {
-  name?: string;
-  email?: string;
-  // Add other possible visitor properties here
-}
-
-// Type for the ref object
-interface TawkMessengerRef {
-  visitor: (data: TawkVisitorData) => void;
-  // Add other methods that might be available on the ref
-}
-
-// Type for the ref prop of TawkMessengerReact
-type TawkMessengerRefProp = RefObject<TawkMessengerRef>;
 
 export default function TawkMessenger({
   propertyID,
@@ -26,16 +9,7 @@ export default function TawkMessenger({
   propertyID: string;
   widgetID: string;
 }) {
-  const user = useUser();
-  const tawkMessengerRef = useRef<TawkMessengerRef>(null);
-
   const onLoad = () => {
-    if (user.isSignedIn && user.isLoaded) {
-      tawkMessengerRef.current?.visitor({
-        name: user.user.fullName ?? user.user.username ?? "Guest",
-        email: user.user.primaryEmailAddress?.emailAddress,
-      });
-    }
     console.log("Chat widget loaded!");
   };
 
@@ -139,7 +113,6 @@ export default function TawkMessenger({
       onVisitorNameChanged={onVisitorNameChanged}
       onFileUpload={onFileUpload}
       onTagsUpdated={onTagsUpdated}
-      ref={tawkMessengerRef as TawkMessengerRefProp}
       customStyle={{
         visibility: {
           desktop: {
