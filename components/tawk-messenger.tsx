@@ -49,6 +49,46 @@ export default function TawkMessenger({
     console.log("Chat maximized");
   };
 
+  const onChatMessageSystem = (message: string) => {
+    console.log("System message received:", message);
+  };
+
+  const onChatMessageVisitor = (message: string) => {
+    console.log("Visitor message received:", message);
+  };
+
+  const onChatMessageAgent = (message: string) => {
+    console.log("Agent message received:", message);
+  };
+
+  const onChatHidden = () => {
+    console.log("Chat widget hidden");
+  };
+
+  const onAgentJoinChat = (data: { name: string; [key: string]: unknown }) => {
+    console.log("Agent joined chat:", data);
+  };
+
+  const onAgentLeaveChat = (data: { name: string; [key: string]: unknown }) => {
+    console.log("Agent left chat:", data);
+  };
+
+  const onChatSatisfaction = (satisfaction: string) => {
+    console.log("Chat satisfaction:", satisfaction);
+  };
+
+  const onVisitorNameChanged = (visitorName: string) => {
+    console.log("Visitor name changed:", visitorName);
+  };
+
+  const onFileUpload = (link: string) => {
+    console.log("File uploaded:", link);
+  };
+
+  const onTagsUpdated = (tags: string[]) => {
+    console.log("Tags updated:", tags);
+  };
+
   return (
     <TawkMessengerReact
       propertyId={propertyID}
@@ -63,6 +103,16 @@ export default function TawkMessenger({
       onUnreadCountChanged={onUnreadCountChanged}
       onChatMinimized={onChatMinimized}
       onChatMaximized={onChatMaximized}
+      onChatMessageSystem={onChatMessageSystem}
+      onChatMessageVisitor={onChatMessageVisitor}
+      onChatMessageAgent={onChatMessageAgent}
+      onChatHidden={onChatHidden}
+      onAgentJoinChat={onAgentJoinChat}
+      onAgentLeaveChat={onAgentLeaveChat}
+      onChatSatisfaction={onChatSatisfaction}
+      onVisitorNameChanged={onVisitorNameChanged}
+      onFileUpload={onFileUpload}
+      onTagsUpdated={onTagsUpdated}
       customStyle={{
         visibility: {
           desktop: {
