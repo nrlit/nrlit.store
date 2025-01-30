@@ -40,7 +40,7 @@ export default function AdSenseAd({
     <ins
       className="adsbygoogle"
       style={style || { display: "block" }}
-      data-ad-client="ca-pub-YOUR_CLIENT_ID"
+      data-ad-client="ca-pub-8544770399231501"
       data-ad-slot={adSlot}
       data-ad-format={adFormat}
       data-full-width-responsive="true"
