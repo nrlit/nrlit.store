@@ -99,7 +99,7 @@ export default function RootLayout({
           <link rel="apple-touch-icon" href="/icons/apple-icon-180x180.png" />
           <Script
             async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8544770399231501`}
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.ADSENSE_CLIENT_ID! as string}`}
             strategy="afterInteractive"
             crossOrigin="anonymous"
           />
