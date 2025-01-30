@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { InstallPWA } from "./components/InstallPWA";
 import ClientOnly from "./components/ClientOnly";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -96,6 +97,12 @@ export default function RootLayout({
           />
           <meta name="apple-mobile-web-app-title" content="NRLIT Store" />
           <link rel="apple-touch-icon" href="/icons/apple-icon-180x180.png" />
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8544770399231501`}
+            strategy="afterInteractive"
+            crossOrigin="anonymous"
+          />
         </head>
         <body className={inter.className} suppressHydrationWarning>
           <ThemeProvider
