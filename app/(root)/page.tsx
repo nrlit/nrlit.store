@@ -7,7 +7,6 @@ import { Suspense } from "react";
 import ClientOnly from "../components/ClientOnly";
 import ServiceWorkerRegistration from "../components/ServiceWorkerRegistration";
 import TawkMessenger from "@/components/tawk-messenger";
-import AdSenseAd from "../components/AdSenseAd";
 
 export default async function Home() {
   const tawkPropertyId = process.env.TAWK_PROPERTY_ID!;
@@ -18,8 +17,6 @@ export default async function Home() {
       <Hero />
       <Suspense fallback={<LoadingSkeleton />}>
         <CategoryGrid />
-
-        <AdSenseAd adSlot="4750692434" />
 
         <FeaturedProducts />
 
