@@ -36,29 +36,36 @@ import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Order, OrderStatus } from "@prisma/client";
+import { type Order, OrderStatus } from "@prisma/client";
 import { bkashGrantToken, bkashRefundTransaction } from "@/app/actions/bkash";
 import { toast } from "@/hooks/use-toast";
 import { getOrderByIdAndUpdateRSRTRARR } from "@/app/actions/order";
 import { currency } from "@/lib/constants";
 
-const formSchema = z.object({
-  refundAmount: z.number().min(1, {
-    message: "Refund amount is required.",
-  }),
-  reason: z.string().min(1, {
-    message: "Reason is required.",
-  }),
-});
-
 export default function RefundButton({ order }: { order: Order }) {
   const [open, setOpen] = useState(false);
+
+  const orderPrice = JSON.parse(order.variation).price;
+
+  const formSchema = z.object({
+    refundAmount: z
+      .number()
+      .min(1, {
+        message: "Refund amount is required.",
+      })
+      .max(orderPrice, {
+        message: `Refund amount cannot exceed ${orderPrice}${currency}.`,
+      }),
+    reason: z.string().min(1, {
+      message: "Reason is required.",
+    }),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      refundAmount: JSON.parse(order.variation).price,
-      reason: "",
+      refundAmount: orderPrice,
+      reason: "unknown",
     },
   });
 
@@ -152,13 +159,17 @@ export default function RefundButton({ order }: { order: Order }) {
                   <FormControl>
                     <Input
                       type="number"
-                      step="0.01"
+                      step="1"
                       placeholder="0.00"
                       {...field}
+                      onChange={(e) =>
+                        field.onChange(Number.parseFloat(e.target.value))
+                      }
                     />
                   </FormControl>
                   <FormDescription>
-                    Enter the amount you wish to refund.
+                    Enter the amount you wish to refund (max: {orderPrice}
+                    {currency}).
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
