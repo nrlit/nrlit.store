@@ -1,8 +1,7 @@
-import React, { ErrorInfo, ReactNode } from "react";
+import React, { type ErrorInfo, type ReactNode } from "react";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
-  fallback: ReactNode;
 }
 
 interface ErrorBoundaryState {
@@ -29,7 +28,7 @@ class ErrorBoundary extends React.Component<
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback;
+      return <h1>Something went wrong.</h1>;
     }
 
     return this.props.children;
