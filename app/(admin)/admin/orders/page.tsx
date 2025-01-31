@@ -16,7 +16,11 @@ import { Input } from "@/components/ui/input";
 import { OrderStatus } from "@prisma/client";
 
 export default async function AdminOrdersPage() {
-  const orders = await db.order.findMany();
+  const unsortedOrder = await db.order.findMany();
+
+  const orders = unsortedOrder.sort((a, b) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
 
   return (
     <div className="space-y-4">
@@ -73,7 +77,8 @@ export default async function AdminOrdersPage() {
                     variant={
                       order.orderStatus === OrderStatus.completed
                         ? "default"
-                        : order.orderStatus === OrderStatus.cancelled
+                        : order.orderStatus === OrderStatus.cancelled ||
+                          order.isRefunded
                         ? "destructive"
                         : "secondary"
                     }

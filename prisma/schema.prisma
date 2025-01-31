@@ -54,19 +54,23 @@ model Product {
 }
 
 model Order {
-  id                 String        @id @default(uuid())
-  orderEmail         String
-  userContactNumber  String
-  variation          String
-  orderStatus        OrderStatus
-  userAdditionalNote String?
-  invoiceNumber      String
-  paymentMethod      PaymentMethod
-  transactionId      String?
-  isPaid             Boolean       @default(false)
-  paymentId          String?
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @updatedAt
+  id                  String        @id @default(uuid())
+  orderEmail          String
+  userContactNumber   String
+  variation           String
+  orderStatus         OrderStatus
+  userAdditionalNote  String?
+  invoiceNumber       String
+  paymentMethod       PaymentMethod
+  transactionId       String?
+  isPaid              Boolean       @default(false)
+  isRefunded          Boolean      @default(false)
+  refundTransactionId String?
+  refundReason        String?
+  refundAmount        Float?
+  paymentId           String?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
 
   // Relations
   userId    String
@@ -96,6 +100,7 @@ enum OrderStatus {
   confirmed
   completed
   cancelled
+  refunded
 }
 
 enum PaymentMethod {

@@ -29,9 +29,16 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
-import { deleteOrder, updateOrderStatus } from "@/app/actions/order";
+import {
+  deleteOrder,
+  getOrderByIdAndUpdatePaymentId,
+  updateOrderStatus,
+} from "@/app/actions/order";
 import { sendOrderStatusUpdateEmail } from "@/app/actions/email";
 import { useRouter } from "next/navigation";
+import RefundButton from "./refund-button";
+import { bkashGrantToken } from "@/app/actions/bkash";
+import { bkashCreatePayment } from "../../app/actions/bkash";
 
 interface Props {
   order: Order;
@@ -102,12 +109,55 @@ export function OrderActions({ order, product, user }: Props) {
     }
   };
 
-  const handlePayment = () => {
-    // TODO: Implement the payment gateway integration
-  };
+  const handlePayment = async () => {
+    try {
+      const amount = JSON.parse(order.variation).price;
+      const tokenRes = await bkashGrantToken();
+      if (tokenRes.success) {
+        const id_token = tokenRes.data.id_token;
+        const bkashCreatePaymentRes = await bkashCreatePayment({
+          id_token: id_token,
+          amount: amount.toString(),
+          invoice: order.invoiceNumber,
+          reference: order.id,
+        });
+        if (bkashCreatePaymentRes.success) {
+          const updatedOrder = await getOrderByIdAndUpdatePaymentId({
+            orderId: order.id,
+            paymentId: bkashCreatePaymentRes.data.paymentID,
+          });
 
-  const handleRefund = () => {
-    // TODO: Implement the refund functionality
+          if (updatedOrder) {
+            window.location.href = bkashCreatePaymentRes.data.bkashURL;
+          } else {
+            toast({
+              title: "Failed to process payment.",
+              description: "An error occurred while updating the order.",
+              variant: "destructive",
+            });
+          }
+        } else {
+          toast({
+            title: "Failed to process payment.",
+            description: "An error occurred while creating the payment.",
+            variant: "destructive",
+          });
+        }
+      } else {
+        toast({
+          title: "Failed to process payment.",
+          description: "An error occurred while generating the token.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Failed to process payment.",
+        description: "An error occurred while processing the payment.",
+        variant: "destructive",
+      });
+      console.error(error);
+    }
   };
 
   return (
@@ -120,7 +170,8 @@ export function OrderActions({ order, product, user }: Props) {
               className="bg-green-500 text-white hover:bg-green-600"
               disabled={
                 order.orderStatus === OrderStatus.completed ||
-                order.orderStatus === OrderStatus.cancelled
+                order.orderStatus === OrderStatus.cancelled ||
+                order.isRefunded
               }
             >
               Update Status
@@ -152,7 +203,8 @@ export function OrderActions({ order, product, user }: Props) {
               className="w-full"
               disabled={
                 order.orderStatus === OrderStatus.completed ||
-                order.orderStatus === OrderStatus.cancelled
+                order.orderStatus === OrderStatus.cancelled ||
+                order.isRefunded
               }
             >
               Update Status
@@ -215,13 +267,7 @@ export function OrderActions({ order, product, user }: Props) {
         >
           Pay Now
         </Button>
-        <Button
-          className="bg-yellow-500 text-white hover:bg-yellow-600"
-          onClick={handleRefund}
-          disabled={!order.isPaid}
-        >
-          Refund
-        </Button>
+        <RefundButton order={order} />
       </div>
     </div>
   );

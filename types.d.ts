@@ -25,6 +25,7 @@ interface IBkashCreatePaymentRequest {
   id_token: string;
   amount: string;
   invoice: string;
+  reference?: string;
 }
 
 interface IBkashCreatePaymentSuccessResponse {

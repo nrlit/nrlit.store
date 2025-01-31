@@ -80,7 +80,8 @@ export default async function AdminOrderPage({
                   variant={
                     order.orderStatus === OrderStatus.completed
                       ? "default"
-                      : order.orderStatus === OrderStatus.cancelled
+                      : order.orderStatus === OrderStatus.cancelled ||
+                        order.isRefunded
                       ? "destructive"
                       : "secondary"
                   }
@@ -88,6 +89,18 @@ export default async function AdminOrderPage({
                   {order.orderStatus}
                 </Badge>
               </p>
+              {order.isRefunded && (
+                <>
+                  <p>Refund Reason: {order.refundReason}</p>
+                  <p>
+                    Refund Amount: {currency}
+                    {order.refundAmount}
+                  </p>
+                </>
+              )}
+              {order.userAdditionalNote && (
+                <p>Note: {order.userAdditionalNote}</p>
+              )}
             </div>
           </div>
 

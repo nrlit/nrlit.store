@@ -114,7 +114,7 @@ export const bkashCreatePayment = async (
         }),
         body: JSON.stringify({
           mode: "0011",
-          payerReference: " ",
+          payerReference: reqData.reference ?? " ",
           callbackURL: bkashConfigInstance.callbackUrl,
           amount: reqData.amount,
           currency: "BDT",

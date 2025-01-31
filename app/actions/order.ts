@@ -263,3 +263,63 @@ export const getOrderByInvoiceNumberAndPaymentId = async ({
     return false;
   }
 };
+
+export const getOrderByIdAndUpdateRSRTRARR = async ({
+  orderId,
+  isRefunded,
+  newStatus,
+  refundTransactionId,
+  refundAmount,
+  refundReason,
+}: {
+  orderId: string;
+  isRefunded: boolean;
+  newStatus: OrderStatus;
+  refundTransactionId: string;
+  refundAmount: number;
+  refundReason: string;
+}) => {
+  try {
+    const order = await db.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        isRefunded: isRefunded,
+        orderStatus: newStatus,
+        refundTransactionId: refundTransactionId,
+        refundAmount: refundAmount,
+        refundReason: refundReason,
+      },
+    });
+
+    return order;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+export const getOrderByIdAndUpdatePaymentId = async ({
+  orderId,
+  paymentId,
+}: {
+  orderId: string;
+  paymentId: string;
+}) => {
+  try {
+    const order = await db.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        paymentId,
+      },
+    });
+
+    return order;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};

@@ -108,6 +108,7 @@ export function CheckoutForm({ email }: { email: string }) {
               id_token: id_token,
               invoice: invoiceNumber,
               amount: variation.price.toFixed(2).toString(),
+              reference: response.invoiceNumber
             })) as {
               data: IBkashCreatePaymentSuccessResponse;
               success: boolean;

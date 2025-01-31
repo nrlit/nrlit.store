@@ -48,6 +48,10 @@ export function CustomerTable({ initialCustomers }: CustomerTableProps) {
     setCustomers(initialCustomers);
   }, [initialCustomers]);
 
+  const sortedCustmer = customers.sort((a, b) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
+
   const formatDate = (date: Date) => {
     return date.toLocaleDateString("en-US", {
       year: "numeric",
@@ -85,8 +89,8 @@ export function CustomerTable({ initialCustomers }: CustomerTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {customers.map((customer) => (
-            <TableRow key={customer.id}>
+          {sortedCustmer.map((customer) => (
+            <TableRow key={customer.id} className="text-xs">
               <TableCell>{customer.id}</TableCell>
               <TableCell>{customer.name}</TableCell>
               <TableCell>{customer.email}</TableCell>
