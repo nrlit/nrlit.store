@@ -25,6 +25,7 @@ export async function generateMetadata({
   return {
     title: `${product.metaTitle} | NRLIT Store`,
     description: product.metaDescription,
+    keywords: product.tags,
     openGraph: {
       title: `${product.metaTitle} | NRLIT Store`,
       description: product.metaDescription,

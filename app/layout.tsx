@@ -9,17 +9,13 @@ import { Analytics } from "@vercel/analytics/next";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
 import dynamic from "next/dynamic";
-import ErrorBoundary from "@/app/components/ErrorBoundary";
-import { useEnvironment } from "@/hooks/useEnvironment";
+import { ClientErrorBoundary } from "./components/ClientErrorBoundary";
 import { getEnvVariable } from "@/utils/env";
 import { metadata, viewport } from "./metadata";
+import { ClientInstallPWA } from "./components/ClientInstallPWA";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const InstallPWA = dynamic(
-  () => import("./components/InstallPWA").then((mod) => mod.InstallPWA),
-  { ssr: false }
-);
 const Toaster = dynamic(() =>
   import("@/components/ui/toaster").then((mod) => mod.Toaster)
 );
@@ -31,8 +27,6 @@ interface RootLayoutProps {
 export { metadata, viewport };
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const { isDevelopment } = useEnvironment();
-
   return (
     <ClerkProvider
       appearance={{
@@ -64,13 +58,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
             enableSystem
             disableTransitionOnChange
           >
-            <ErrorBoundary>
-              <InstallPWA />
+            <ClientErrorBoundary>
+              <ClientInstallPWA />
               {children}
               <Toaster />
-            </ErrorBoundary>
+            </ClientErrorBoundary>
             <GoogleTagManager gtmId={getEnvVariable("GTM_ID")} />
-            {!isDevelopment && (
+            {process.env.NODE_ENV !== "development" && (
               <>
                 <SpeedInsights />
                 <Analytics />
