@@ -51,7 +51,14 @@ export default function FAQPage() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">Frequently Asked Questions</h1>
+      {/* <h1 className="text-3xl font-bold mb-8">Frequently Asked Questions</h1> */}
+      <div className="text-center mb-12 bg-gradient-to-r from-[#4e7cff] to-[#3b82f6] py-16 rounded-lg">
+        <h1 className="text-4xl font-bold mb-4">Frequently Asked Questions</h1>
+        <p className="text-gray-100">
+          Have a question? Check out our FAQs below or contact us for
+          assistance.
+        </p>
+      </div>
       <Accordion type="single" collapsible className="w-full">
         {faqs.map((faq, index) => (
           <AccordionItem key={index} value={`item-${index}`}>

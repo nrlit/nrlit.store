@@ -1,7 +1,13 @@
 export default function PrivacyPolicyPage() {
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">Privacy Policy</h1>
+      {/* <h1 className="text-3xl font-bold mb-8">Privacy Policy</h1> */}
+      <div className="text-center mb-12 bg-gradient-to-r from-[#4e7cff] to-[#3b82f6] py-16 rounded-lg">
+        <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
+        <p className="text-gray-100">
+          We are committed to protecting your personal data
+        </p>
+      </div>
       <div className="prose max-w-none">
         <p>Last updated: {new Date().toLocaleDateString()}</p>
         <h2>1. Introduction</h2>

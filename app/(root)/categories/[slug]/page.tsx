@@ -1,4 +1,5 @@
 import { getProductByCategory } from "@/app/actions/product";
+import Banner from "@/components/banner";
 import { ProductCard } from "@/components/product-card";
 import { ProductCategory } from "@prisma/client";
 import { notFound } from "next/navigation";
@@ -81,22 +82,28 @@ export default async function CategoryPage({
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-4">{category.name}</h1>
-      <p className="text-muted-foreground mb-8">{category.description}</p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {category.products.length === 0 ? (
-          <div className="max-w-md mx-auto bg-secondary rounded-lg shadow-lg p-6">
-            <div className="text-center text-gray-400">
-              <p>Nothing available at the moment for this category.</p>
+    <>
+      <Banner
+        title={`${category.name} Products`}
+        subtitle={category.description}
+      />
+      <div className="container mx-auto py-8">
+        {/* <h1 className="text-3xl font-bold mb-4">{category.name}</h1>
+        <p className="text-muted-foreground mb-8">{category.description}</p> */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {category.products.length === 0 ? (
+            <div className="max-w-md mx-auto bg-secondary rounded-lg shadow-lg p-6">
+              <div className="text-center text-gray-400">
+                <p>Nothing available at the moment for this category.</p>
+              </div>
             </div>
-          </div>
-        ) : (
-          category.products.map((product, index) => (
-            <ProductCard key={product.id} {...product} index={index} />
-          ))
-        )}
+          ) : (
+            category.products.map((product, index) => (
+              <ProductCard key={product.id} {...product} index={index} />
+            ))
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

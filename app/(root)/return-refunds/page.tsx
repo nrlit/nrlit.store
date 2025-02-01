@@ -1,7 +1,14 @@
 export default function ReturnRefundsPage() {
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">Return and Refund Policy</h1>
+      {/* <h1 className="text-3xl font-bold mb-8">Return and Refund Policy</h1> */}
+      <div className="text-center mb-12 bg-gradient-to-r from-[#4e7cff] to-[#3b82f6] py-16 rounded-lg">
+        <h1 className="text-4xl font-bold mb-4">Return and Refund Policy</h1>
+        <p className="text-gray-100">
+          We want you to be happy with your purchase. If you have any questions
+          or concerns, please contact us
+        </p>
+      </div>
       <div className="prose max-w-none">
         <p>Last updated: {new Date().toLocaleDateString()}</p>
         <h2>1. Digital Products</h2>
