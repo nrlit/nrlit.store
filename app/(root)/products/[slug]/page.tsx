@@ -7,6 +7,7 @@ import { getProductByCategory, getProductBySlug } from "@/app/actions/product";
 import { ProductCard } from "@/components/product-card";
 import { ProductSelectAndBuyAndShare } from "@/components/product-buy-selection";
 import { currentUser } from "@clerk/nextjs/server";
+import { RichTextPreview } from "@/components/rich-text-preview";
 
 export async function generateMetadata({
   params,
@@ -181,7 +182,8 @@ export default async function ProductPage({
 
         <div>
           <h2 className="text-2xl font-bold mb-4">Product Details</h2>
-          <p className="text-muted-foreground">{product.description}</p>
+          {/* <p className="text-muted-foreground"></p> */}
+          <RichTextPreview content={product.description} />
         </div>
 
         <Separator className="my-8" />

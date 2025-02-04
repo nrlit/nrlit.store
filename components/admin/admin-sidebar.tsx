@@ -10,6 +10,7 @@ import {
   Users,
 } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
+import { ModeToggle } from "../mode-toggle";
 
 export async function AdminSidebar() {
   return (
@@ -20,6 +21,7 @@ export async function AdminSidebar() {
             <Shield className="h-6 w-6" />
             <span className="">NRLIT Admin</span>
           </Link>
+          <ModeToggle />
           <UserButton />
         </div>
         <ScrollArea className="flex-1 px-3">

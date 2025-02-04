@@ -25,11 +25,12 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { X } from "lucide-react";
+import { RichTextEditor } from "./rich-text-editor";
 
 export type ProductFormData = z.infer<typeof productSchema>;
 
 const productSchema = z.object({
-  productSlug: z.string().min(1, "Product slug is required"),
+  productSlug: z.string().min(1, "Product slug is required").trim(),
   name: z.string().min(1, "Name is required"),
   description: z.string().min(1, "Description is required"),
   category: z.enum([
@@ -153,7 +154,8 @@ export function ProductForm({ initialData, onSubmit }: ProductFormProps) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Product description" {...field} />
+                {/* <Textarea placeholder="Product description" {...field} /> */}
+                <RichTextEditor value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
