@@ -73,8 +73,8 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
 
   useEffect(() => {
     if (editor && previousSelection.current) {
-      // Restore the previous selection/cursor position after content is set
-      editor.view.setSelection(previousSelection.current);
+      // Use editor.commands.setTextSelection() to restore the cursor position
+      editor.commands.setTextSelection(previousSelection.current);
     }
   }, [editor]);
 
