@@ -56,7 +56,8 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
 
   useEffect(() => {
     if (editor && previousValue.current !== value) {
-      editor.commands.setContent(value); // Set content only if it's different
+      // Only update if the content has changed
+      editor.commands.setContent(value, false); // The 'false' prevents focus reset
       previousValue.current = value; // Update previous value
     }
   }, [value, editor]);
