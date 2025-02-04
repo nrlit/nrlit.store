@@ -56,27 +56,22 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
   const previousSelection = useRef(editor?.state.selection); // Ref to store selection
 
   useEffect(() => {
-    if (editor && previousValue.current !== value) {
-      // Save the current selection before updating content
-      previousSelection.current = editor.state.selection;
-
-      // Update content carefully without resetting the entire document
-      editor.commands.insertContentAt(
-        0, // Insert content at the start (or where required)
-        value
-      );
-
-      // Update the previous value
-      previousValue.current = value;
+    if (editor) {
+      // Only set content if value has changed to prevent infinite loops
+      if (previousValue.current !== value) {
+        previousSelection.current = editor.state.selection; // Save the selection
+        editor.commands.setContent(value); // Set the new content
+        previousValue.current = value; // Update the ref with the new value
+      }
     }
-  }, [value, editor]);
+  }, [value, editor]); // This effect runs only when value changes
 
   useEffect(() => {
     if (editor && previousSelection.current) {
-      // Use editor.commands.setTextSelection() to restore the cursor position
+      // Restores the cursor position after content change
       editor.commands.setTextSelection(previousSelection.current);
     }
-  }, [editor]);
+  }, [editor]); // Run this effect only after editor is initialized
 
   if (!editor) {
     return <div>Loading editor...</div>;
