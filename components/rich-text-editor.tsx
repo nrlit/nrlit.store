@@ -17,7 +17,7 @@ import TableHeader from "@tiptap/extension-table-header";
 import TableCell from "@tiptap/extension-table-cell";
 import TextStyle from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -52,9 +52,12 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     },
   });
 
+  const previousValue = useRef(value); // Ref to track previous value
+
   useEffect(() => {
-    if (editor) {
-      editor.commands.setContent(value);
+    if (editor && previousValue.current !== value) {
+      editor.commands.setContent(value); // Set content only if it's different
+      previousValue.current = value; // Update previous value
     }
   }, [value, editor]);
 
